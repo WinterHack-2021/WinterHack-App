@@ -38,8 +38,8 @@ class _HomeState extends State<Home> {
           TextButton(
               onPressed: () {
                 Navigator.push(
-                  ctxt,
-                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
+                  context,
+                  new MaterialPageRoute(builder: (ctxt) => new blistpage()),
                 );
               },
               child: Text('CLICK HERE'))
