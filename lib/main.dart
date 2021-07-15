@@ -1,5 +1,7 @@
 import 'dart:ffi';
 import 'blacklistPage.dart';
+import 'locationPage.dart';
+import 'welcomePage.dart';
 
 import 'package:flutter/material.dart';
 
@@ -47,7 +49,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
+                  new MaterialPageRoute(builder: (ctxt) => new locationPage()),
                 );
               },
               child: Text('Locations')),
@@ -55,10 +57,10 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
+                  new MaterialPageRoute(builder: (ctxt) => new welcomePage()),
                 );
               },
-              child: Text('Blocked Apps'))
+              child: Text('welcome page'))
         ],
       ),
       extendBody: true,
