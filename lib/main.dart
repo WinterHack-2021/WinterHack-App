@@ -39,7 +39,7 @@ class _HomeState extends State<Home> {
               onPressed: () {
                 Navigator.push(
                   context,
-                  new MaterialPageRoute(builder: (ctxt) => new blistpage()),
+                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
                 );
               },
               child: Text('CLICK HERE'))
