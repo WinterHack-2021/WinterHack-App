@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
       home: Home(),
-      theme: ThemeData(primarySwatch: Colors.purple),
+      theme: ThemeData(primaryColor: Colors.lightGreen.shade500),
     ));
 
 class Home extends StatefulWidget {
@@ -21,21 +21,11 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('onTrack'),
+        title: Text('onTrack', style: TextStyle(color: Colors.white)),
         centerTitle: true,
       ),
       body: Row(
         children: <Widget>[
-          Center(
-            child: Text(
-              '$timeontrack',
-              style: TextStyle(
-                  fontSize: 20,
-                  fontWeight: FontWeight.bold,
-                  letterSpacing: 2.0,
-                  color: Colors.grey[600]),
-            ),
-          ),
           TextButton(
               onPressed: () {
                 Navigator.push(
