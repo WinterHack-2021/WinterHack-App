@@ -1,4 +1,3 @@
-import 'dart:ffi';
 import 'blacklistPage.dart';
 import 'locationPage.dart';
 import 'welcomePage.dart';
@@ -7,6 +6,7 @@ import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
       home: Home(),
+      theme: ThemeData(primarySwatch: Colors.purple),
     ));
 
 class Home extends StatefulWidget {
@@ -23,7 +23,6 @@ class _HomeState extends State<Home> {
       appBar: AppBar(
         title: Text('onTrack'),
         centerTitle: true,
-        backgroundColor: Colors.purple,
       ),
       body: Row(
         children: <Widget>[
@@ -65,13 +64,12 @@ class _HomeState extends State<Home> {
       ),
       extendBody: true,
       floatingActionButton: FloatingActionButton(
-        child: Text('Press to Block'),
+        child: Icon(Icons.plus_one),
         onPressed: () {
           setState(() {
             timeontrack += 1;
           });
         },
-        backgroundColor: Colors.deepPurple,
       ),
     );
   }
