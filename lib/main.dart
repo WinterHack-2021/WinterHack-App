@@ -42,7 +42,23 @@ class _HomeState extends State<Home> {
                   new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
                 );
               },
-              child: Text('CLICK HERE'))
+              child: Text('Blocked Apps')),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
+                );
+              },
+              child: Text('Locations')),
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
+                );
+              },
+              child: Text('Blocked Apps'))
         ],
       ),
       extendBody: true,
