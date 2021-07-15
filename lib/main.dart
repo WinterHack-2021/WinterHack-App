@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'blacklistPage.dart';
 
 import 'package:flutter/material.dart';
 
@@ -34,7 +35,14 @@ class _HomeState extends State<Home> {
                   color: Colors.grey[600]),
             ),
           ),
-          TextButton(onPressed: () {}, child: Text('CLICK HERE'))
+          TextButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  new MaterialPageRoute(builder: (ctxt) => new blistpage()),
+                );
+              },
+              child: Text('CLICK HERE'))
         ],
       ),
       extendBody: true,
