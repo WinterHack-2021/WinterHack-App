@@ -20,47 +20,53 @@ class _HomeState extends State<Home> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.lightGreen.shade500,
       appBar: AppBar(
         title: Text('onTrack', style: TextStyle(color: Colors.white)),
         centerTitle: true,
+        elevation: 0,
       ),
-      body: Row(
-        children: <Widget>[
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (ctxt) => new blacklistPage()),
-                );
-              },
-              child: Text('Blocked Apps')),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (ctxt) => new locationPage()),
-                );
-              },
-              child: Text('Locations')),
-          TextButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  new MaterialPageRoute(builder: (ctxt) => new welcomePage()),
-                );
-              },
-              child: Text('welcome page'))
-        ],
-      ),
-      extendBody: true,
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.plus_one),
-        onPressed: () {
-          setState(() {
-            timeontrack += 1;
-          });
-        },
-      ),
+      body: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: <Widget>[
+            Container(
+                alignment: Alignment.center,
+                margin: EdgeInsets.symmetric(horizontal: 20),
+                decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(20.0)),
+                child: Column(
+                  children: [
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (ctxt) => new blacklistPage()),
+                          );
+                        },
+                        child: Text('Blocked Apps')),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (ctxt) => new locationPage()),
+                          );
+                        },
+                        child: Text('Locations')),
+                    TextButton(
+                        onPressed: () {
+                          Navigator.push(
+                            context,
+                            new MaterialPageRoute(
+                                builder: (ctxt) => new welcomePage()),
+                          );
+                        },
+                        child: Text('welcome page'))
+                  ],
+                ))
+          ]),
     );
   }
 }
