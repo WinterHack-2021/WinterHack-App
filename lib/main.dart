@@ -23,6 +23,16 @@ class _HomeState extends State<Home> {
       backgroundColor: Colors.lightGreen.shade500,
       appBar: AppBar(
         title: Text('onTrack', style: TextStyle(color: Colors.white)),
+        actions: [
+          IconButton(
+            icon: const Icon(Icons.notifications, color: Colors.white),
+            tooltip: 'Notifications',
+            padding: EdgeInsets.only(right: 20),
+            onPressed: () {
+              // handle the press
+            },
+          ),
+        ],
         centerTitle: true,
         elevation: 0,
       ),
