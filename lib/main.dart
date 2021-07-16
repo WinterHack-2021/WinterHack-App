@@ -1,7 +1,7 @@
 import 'blacklistPage.dart';
 import 'locationPage.dart';
 import 'welcomePage.dart';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
@@ -9,14 +9,7 @@ void main() => runApp(MaterialApp(
       theme: ThemeData(primaryColor: Colors.lightGreen.shade500),
     ));
 
-class Home extends StatefulWidget {
-  @override
-  _HomeState createState() => _HomeState();
-}
-
-class _HomeState extends State<Home> {
-  int timeontrack = 0;
-
+class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -37,11 +30,20 @@ class _HomeState extends State<Home> {
         elevation: 0,
       ),
       body: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            CupertinoButton(
+              alignment: Alignment.topRight,
+              child: Text('Activate'),
+              color: Colors.green,
+              disabledColor: Colors.red,
+              pressedOpacity: 0.4,
+              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
+              onPressed: () {},
+            ),
             Container(
                 alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 20),
+                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
                 decoration: BoxDecoration(
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(20.0)),
