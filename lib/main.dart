@@ -1,17 +1,26 @@
+import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+
 import 'blacklistPage.dart';
 import 'locationPage.dart';
 import 'welcomePage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MaterialApp(
-      home: Home(),
-      theme: ThemeData(primaryColor: Colors.lightGreen.shade500),
+      home: HomeWidget(),
+      theme: ThemeData(primarySwatch: Colors.green),
     ));
 
-class Home extends StatelessWidget {
+class HomeWidget extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() => Home();
+}
+
+class Home extends State<HomeWidget> {
+  bool isActive = false;
+
   @override
   Widget build(BuildContext context) {
+    var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.lightGreen.shade500,
       appBar: AppBar(
@@ -29,56 +38,58 @@ class Home extends StatelessWidget {
         centerTitle: true,
         elevation: 0,
       ),
-      body: Column(
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: <Widget>[
-            CupertinoButton(
-              alignment: Alignment.topRight,
-              child: Text('Activate'),
-              color: Colors.green,
-              disabledColor: Colors.red,
-              pressedOpacity: 0.4,
-              borderRadius: const BorderRadius.all(Radius.circular(8.0)),
-              onPressed: () {},
-            ),
-            Container(
-                alignment: Alignment.center,
-                margin: EdgeInsets.symmetric(horizontal: 20, vertical: 15),
-                decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(20.0)),
-                child: Column(
-                  children: [
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (ctxt) => new blacklistPage()),
-                          );
-                        },
-                        child: Text('Blocked Apps')),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (ctxt) => new locationPage()),
-                          );
-                        },
-                        child: Text('Locations')),
-                    TextButton(
-                        onPressed: () {
-                          Navigator.push(
-                            context,
-                            new MaterialPageRoute(
-                                builder: (ctxt) => new welcomePage()),
-                          );
-                        },
-                        child: Text('welcome page'))
-                  ],
-                ))
-          ]),
+      body: Column(children: <Widget>[
+        SizedBox(height: 20),
+        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          Text("Active: ", style: theme.textTheme.headline5!.copyWith(color: Colors.white)),
+          SizedBox(width: 30),
+          AnimatedToggleSwitch<bool>.dual(
+            first: false,
+            current: isActive,
+            second: true,
+            onChanged: (b) => setState(() => isActive = b),
+            colorBuilder: (b) => !b ? Colors.red.shade500 : Colors.green,
+            borderColorBuilder: (b) => !b ? Colors.red.shade500 : Colors.green,
+          )
+        ]),
+        SizedBox(height: 20),
+        Container(
+            alignment: Alignment.center,
+            margin: EdgeInsets.symmetric(horizontal: 20),
+            decoration: BoxDecoration(
+                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
+            child: Column(
+              children: [
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (ctxt) => new blacklistPage()),
+                      );
+                    },
+                    child: Text('Blocked Apps')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (ctxt) => new locationPage()),
+                      );
+                    },
+                    child: Text('Locations')),
+                TextButton(
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(
+                            builder: (ctxt) => new welcomePage()),
+                      );
+                    },
+                    child: Text('welcome page'))
+              ],
+            ))
+      ]),
     );
   }
 }
