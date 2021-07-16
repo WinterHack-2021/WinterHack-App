@@ -1,5 +1,4 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-
 import 'blacklistPage.dart';
 import 'locationPage.dart';
 import 'welcomePage.dart';
@@ -41,7 +40,8 @@ class Home extends State<HomeWidget> {
       body: Column(children: <Widget>[
         SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("Active: ", style: theme.textTheme.headline5!.copyWith(color: Colors.white)),
+          Text("Active: ",
+              style: theme.textTheme.headline5!.copyWith(color: Colors.white)),
           SizedBox(width: 30),
           AnimatedToggleSwitch<bool>.dual(
             first: false,
