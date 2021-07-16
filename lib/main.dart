@@ -74,7 +74,7 @@ class Home extends State<HomeWidget> {
                       Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (ctxt) => new locationPage()),
+                            builder: (ctxt) => new LocationPage()),
                       );
                     },
                     child: Text('Locations')),
