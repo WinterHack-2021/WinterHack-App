@@ -1,6 +1,5 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-//import 'package:location/location.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +21,7 @@ class LocationBox extends StatefulWidget {
 }
 
 class _LocationBoxState extends State<LocationBox> {
-  Future<Position> poscoord = _determinePosition();
+  dynamic poscoord;
   Widget build(BuildContext context) {
     return Container(
         child: Column(children: [
@@ -33,7 +32,7 @@ class _LocationBoxState extends State<LocationBox> {
             });
           },
           child: Text('Click for location')),
-      Text(this.poscoord.toString())
+      Text(this.poscoord.latitude.toString())
     ]));
   }
 }
