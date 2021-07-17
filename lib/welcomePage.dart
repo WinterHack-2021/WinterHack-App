@@ -18,13 +18,36 @@ class WelcomePage extends StatelessWidget {
             SizedBox(
               height: 10.0,
             ),
-            TypewriterAnimatedTextKit(
-                text: ["Productive!", "synonym 1!", "synonym 2!", "#onTrack"],
-                textStyle:
-                  TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold),
-                textAlign: TextAlign.center,
-                totalRepeatCount: 4,
-                displayFullTextOnTap: true,
+            AnimatedTextKit(
+              animatedTexts: [
+                TypewriterAnimatedText(
+                    'Productive!',
+                    textStyle:
+                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                ),
+                TypewriterAnimatedText(
+                    'Focused!',
+                    textStyle:
+                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                ),
+                TypewriterAnimatedText(
+                    'Concentrated!',
+                    textStyle:
+                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                ),
+                ColorizeAnimatedText(
+                    '#onTrack',
+                    textStyle:
+                      TextStyle(fontSize: 42.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
+                    colors: [
+                      Colors.purple,
+                      Colors.blue,
+                      Colors.yellow,
+                      Colors.red,
+                    ]
+                )
+              ],
+                totalRepeatCount: 1,
                 stopPauseOnTap: true
             )
           ]
