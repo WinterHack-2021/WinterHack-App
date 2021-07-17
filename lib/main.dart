@@ -75,22 +75,14 @@ class Home extends State<HomeWidget> {
                       Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (ctxt) => new LocationPage()),
-                      );
-                    },
-                    child: Text('Locations')),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
                             builder: (ctxt) => new WelcomePage()),
                       );
                     },
                     child: Text('welcome page')),
               ],
             )),
-        ClickableContainer()
+        ClickableLocationContainer(),
+        ClickableAppsContainer()
       ]),
     );
   }

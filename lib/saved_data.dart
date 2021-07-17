@@ -9,4 +9,13 @@ var savedlocations = [
   'KPMG Office'
 ];
 
-var loadedapps = [];
+var loadedapps = [
+  'Minecraft',
+  'TikTok',
+  'Facebook',
+  'Instagram',
+  'YouTube',
+  'Snapchat',
+  'Clash of Clans',
+  'Subway'
+];
