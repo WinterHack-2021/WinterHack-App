@@ -3,6 +3,7 @@ import 'blacklistPage.dart';
 import 'locationPage.dart';
 import 'welcomePage.dart';
 import 'package:flutter/material.dart';
+import 'clickable_container.dart';
 
 void main() => runApp(MaterialApp(
       home: HomeWidget(),
@@ -86,9 +87,10 @@ class Home extends State<HomeWidget> {
                             builder: (ctxt) => new welcomePage()),
                       );
                     },
-                    child: Text('welcome page'))
+                    child: Text('welcome page')),
               ],
-            ))
+            )),
+        ClickableContainer()
       ]),
     );
   }
