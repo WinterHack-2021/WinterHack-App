@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
 
@@ -20,8 +21,44 @@ import 'package:installed_apps/app_info.dart';
 //   _BlacklistBoxState createState() => _BlacklistBoxState();
 // }
 
-class BlacklistPage extends MaterialApp {
-  Widget get home => _BlacklistBoxState();
+class BlacklistPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return Blacklist();
+  }
+}
+
+class Blacklist extends State<BlacklistPage> {
+  //Widget get home => _BlacklistBoxState();
+
+  static const platform = const MethodChannel('blacklist-channel');
+  String _randomString = '';
+
+  Future<void> _getAndroidString() async {
+    String randomString;
+    try {
+      final String result = await platform.invokeMethod('disablerEnabler');
+      randomString = 'Random string $result % .';
+    } on PlatformException catch (e) {
+      randomString = "Failed to get random string: '${e.message}'.";
+    }
+
+    setState(() {
+      _randomString = randomString;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _getAndroidString();
+    // 1. Enable an app
+    // 2. Disable app
+    // enableApp(appId)
+    // disableApp(appId)
+    print(_randomString);
+    return Scaffold(body: Column(children:[Text(_randomString)]));
+  }
 }
 
 class _BlacklistBoxState extends StatelessWidget {
@@ -198,7 +235,6 @@ class AppInfoScreen extends StatelessWidget {
     );
   }
 }
-
 
 // Widget build(BuildContext context) {
 //   return Container(
