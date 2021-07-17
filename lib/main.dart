@@ -95,17 +95,3 @@ class Home extends State<HomeWidget> {
     );
   }
 }
-
-class Timebar extends StatefulWidget {
-  @override
-  _TimebarState createState() => _TimebarState();
-}
-
-class _TimebarState extends State<Timebar> {
-  int counter = 0;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container();
-  }
-}

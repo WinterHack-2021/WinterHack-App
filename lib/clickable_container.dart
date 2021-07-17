@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'locationPage.dart';
 
 class ClickableContainer extends StatefulWidget {
   const ClickableContainer({Key? key}) : super(key: key);
@@ -15,12 +16,27 @@ class _ClickableContainerState extends State<ClickableContainer> {
       Container(
         margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
         height: 300,
+        width: 200,
         child: Card(
-            child: new InkWell(onTap: () {}),
-            color: Colors.white,
-            elevation: 3,
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30))),
+          child: new InkWell(
+            onTap: () {},
+            child: Column(children: [
+              TextButton(
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      new MaterialPageRoute(
+                          builder: (ctxt) => new LocationPage()));
+                },
+                child: Text('Location'),
+              )
+            ]),
+          ),
+          color: Colors.white,
+          elevation: 3,
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+        ),
       )
     ]);
   }
