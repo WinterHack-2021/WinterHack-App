@@ -19,16 +19,14 @@ class _ClickableContainerState extends State<ClickableContainer> {
         width: 200,
         child: Card(
           child: new InkWell(
-            onTap: () {},
+            onTap: () {
+              Navigator.push(context,
+                  new MaterialPageRoute(builder: (ctxt) => new LocationPage()));
+            },
             child: Column(children: [
               TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      new MaterialPageRoute(
-                          builder: (ctxt) => new LocationPage()));
-                },
-                child: Text('Location'),
+                onPressed: () {},
+                child: Text('University'),
               )
             ]),
           ),
