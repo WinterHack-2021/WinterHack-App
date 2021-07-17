@@ -66,7 +66,7 @@ class Home extends State<HomeWidget> {
                       Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (ctxt) => new blacklistPage()),
+                            builder: (ctxt) => new BlacklistPage()),
                       );
                     },
                     child: Text('Blocked Apps')),
@@ -84,7 +84,7 @@ class Home extends State<HomeWidget> {
                       Navigator.push(
                         context,
                         new MaterialPageRoute(
-                            builder: (ctxt) => new welcomePage()),
+                            builder: (ctxt) => new WelcomePage()),
                       );
                     },
                     child: Text('welcome page')),
