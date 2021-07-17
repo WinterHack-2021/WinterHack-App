@@ -4,7 +4,6 @@ import 'package:flutter/cupertino.dart';
 
 class ClickableContainer extends StatefulWidget {
   const ClickableContainer({Key? key}) : super(key: key);
-
   @override
   State<ClickableContainer> createState() => _ClickableContainerState();
 }
@@ -12,7 +11,6 @@ class ClickableContainer extends StatefulWidget {
 /// This is the private State class that goes with ClickableContainer.
 class _ClickableContainerState extends State<ClickableContainer> {
   @override
-  bool uniswitch = false;
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
@@ -28,7 +26,9 @@ class _ClickableContainerState extends State<ClickableContainer> {
             child: Column(children: [
               FilterChip(
                 label: Text('University..'),
+                disabledColor: Colors.lightBlue,
                 selectedColor: Colors.orange,
+                selected: true,
                 onSelected: (bool selected) {
                   setState(() {});
                 },
