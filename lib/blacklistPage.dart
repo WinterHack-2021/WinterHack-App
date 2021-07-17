@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
 
@@ -20,8 +21,44 @@ import 'package:installed_apps/app_info.dart';
 //   _BlacklistBoxState createState() => _BlacklistBoxState();
 // }
 
-class BlacklistPage extends MaterialApp {
-  Widget get home => _BlacklistBoxState();
+class BlacklistPage extends StatefulWidget {
+  @override
+  State<StatefulWidget> createState() {
+    // TODO: implement createState
+    return Blacklist();
+  }
+}
+
+class Blacklist extends State<BlacklistPage> {
+  //Widget get home => _BlacklistBoxState();
+
+  static const platform = const MethodChannel('blacklist-channel');
+  String _randomString = '';
+
+  Future<void> _getAndroidString() async {
+    String randomString;
+    try {
+      final String result = await platform.invokeMethod('disablerEnabler');
+      randomString = 'Random string $result % .';
+    } on PlatformException catch (e) {
+      randomString = "Failed to get random string: '${e.message}'.";
+    }
+
+    setState(() {
+      _randomString = randomString;
+    });
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    _getAndroidString();
+    // 1. Enable an app
+    // 2. Disable app
+    // enableApp(appId)
+    // disableApp(appId)
+    print(_randomString);
+    return Scaffold(body: Column(children:[Text(_randomString)]));
+  }
 }
 
 class _BlacklistBoxState extends StatelessWidget {
@@ -93,12 +130,12 @@ class _BlacklistBoxState extends StatelessWidget {
                 subtitle: Text("Check if app is system app with package name"),
                 onTap: () =>
                     InstalledApps.isSystemApp("com.google.android.gm").then(
-                          (bool? value) => _showDialog(
-                          context,
-                          value ?? false
-                              ? "The requested app is system app."
-                              : "Requested app in not system app."),
-                    ),
+                  (bool? value) => _showDialog(
+                      context,
+                      value ?? false
+                          ? "The requested app is system app."
+                          : "Requested app in not system app."),
+                ),
               ),
             ),
           )
@@ -136,29 +173,29 @@ class InstalledAppsScreen extends StatelessWidget {
             (BuildContext buildContext, AsyncSnapshot<List<AppInfo>> snapshot) {
           return snapshot.connectionState == ConnectionState.done
               ? snapshot.hasData
-              ? ListView.builder(
-            itemCount: snapshot.data!.length,
-            itemBuilder: (context, index) {
-              AppInfo app = snapshot.data![index];
-              return Card(
-                child: ListTile(
-                  leading: CircleAvatar(
-                    backgroundColor: Colors.transparent,
-                    child: Image.memory(app.icon!),
-                  ),
-                  title: Text(app.name!),
-                  subtitle: Text(app.getVersionInfo()),
-                  onTap: () =>
-                      InstalledApps.startApp(app.packageName!),
-                  onLongPress: () =>
-                      InstalledApps.openSettings(app.packageName!),
-                ),
-              );
-            },
-          )
-              : Center(
-              child: Text(
-                  "Error occurred while getting installed apps ...."))
+                  ? ListView.builder(
+                      itemCount: snapshot.data!.length,
+                      itemBuilder: (context, index) {
+                        AppInfo app = snapshot.data![index];
+                        return Card(
+                          child: ListTile(
+                            leading: CircleAvatar(
+                              backgroundColor: Colors.transparent,
+                              child: Image.memory(app.icon!),
+                            ),
+                            title: Text(app.name!),
+                            subtitle: Text(app.getVersionInfo()),
+                            onTap: () =>
+                                InstalledApps.startApp(app.packageName!),
+                            onLongPress: () =>
+                                InstalledApps.openSettings(app.packageName!),
+                          ),
+                        );
+                      },
+                    )
+                  : Center(
+                      child: Text(
+                          "Error occurred while getting installed apps ...."))
               : Center(child: Text("Getting installed apps ...."));
         },
       ),
@@ -176,29 +213,28 @@ class AppInfoScreen extends StatelessWidget {
         builder: (BuildContext buildContext, AsyncSnapshot<AppInfo> snapshot) {
           return snapshot.connectionState == ConnectionState.done
               ? snapshot.hasData
-              ? Center(
-            child: Column(
-              children: [
-                Image.memory(snapshot.data!.icon!),
-                Text(
-                  snapshot.data!.name!,
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 40,
-                  ),
-                ),
-                Text(snapshot.data!.getVersionInfo())
-              ],
-            ),
-          )
-              : Center(child: Text("Error while getting app info ...."))
+                  ? Center(
+                      child: Column(
+                        children: [
+                          Image.memory(snapshot.data!.icon!),
+                          Text(
+                            snapshot.data!.name!,
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 40,
+                            ),
+                          ),
+                          Text(snapshot.data!.getVersionInfo())
+                        ],
+                      ),
+                    )
+                  : Center(child: Text("Error while getting app info ...."))
               : Center(child: Text("Getting app info ...."));
         },
       ),
     );
   }
 }
-
 
 // Widget build(BuildContext context) {
 //   return Container(
