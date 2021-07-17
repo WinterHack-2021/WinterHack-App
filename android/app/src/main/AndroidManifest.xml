@@ -6,6 +6,8 @@
    <application
         android:label="winterhack_2021"
         android:icon="@mipmap/ic_launcher">
+        <meta-data android:name="com.google.android.geo.API_KEY"
+               android:value="AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A"/>
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

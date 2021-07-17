@@ -1,5 +1,3 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'locationPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -16,7 +14,6 @@ class ClickableLocationContainer extends StatefulWidget {
 /// This is the private State class that goes with ClickableLocationContainer.
 class _ClickableLocationContainerState
     extends State<ClickableLocationContainer> {
-  @override
   // MaterialPageRoute navpage;
   // _ClickableLocationContainerState(this.navpage);
   chipList() {
@@ -61,7 +58,6 @@ class ClickableAppsContainer extends StatefulWidget {
 }
 
 class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
-  @override
   chipList() {
     return Wrap(
       spacing: 6.0,

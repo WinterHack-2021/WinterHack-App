@@ -1,6 +1,4 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
-import 'blacklistPage.dart';
-import 'locationPage.dart';
 import 'welcomePage.dart';
 import 'package:flutter/material.dart';
 import 'clickable_container.dart';

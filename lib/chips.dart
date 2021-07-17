@@ -1,8 +1,4 @@
-import 'dart:ui';
-
-import 'saved_data.dart';
 import 'package:flutter/material.dart';
-import 'clickable_container.dart';
 
 class ChipState extends StatefulWidget {
   String locationname;
