@@ -24,6 +24,8 @@ class Home extends State<HomeWidget> {
     return Scaffold(
       backgroundColor: Colors.lightGreen.shade500,
       appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
         title: Text('onTrack', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
@@ -31,12 +33,13 @@ class Home extends State<HomeWidget> {
             tooltip: 'Notifications',
             padding: EdgeInsets.only(right: 20),
             onPressed: () {
-              // handle the press
+              Navigator.push(
+                context,
+                new MaterialPageRoute(builder: (ctxt) => new WelcomePage()),
+              );
             },
           ),
         ],
-        centerTitle: true,
-        elevation: 0,
       ),
       body: Column(children: <Widget>[
         SizedBox(height: 20),
@@ -53,34 +56,6 @@ class Home extends State<HomeWidget> {
             borderColorBuilder: (b) => !b ? Colors.red.shade500 : Colors.green,
           )
         ]),
-        SizedBox(height: 20),
-        Container(
-            alignment: Alignment.center,
-            margin: EdgeInsets.symmetric(horizontal: 20),
-            decoration: BoxDecoration(
-                color: Colors.white, borderRadius: BorderRadius.circular(20.0)),
-            child: Column(
-              children: [
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (ctxt) => new BlacklistPage()),
-                      );
-                    },
-                    child: Text('Blocked Apps')),
-                TextButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(
-                            builder: (ctxt) => new WelcomePage()),
-                      );
-                    },
-                    child: Text('welcome page')),
-              ],
-            )),
         ClickableLocationContainer(),
         ClickableAppsContainer()
       ]),

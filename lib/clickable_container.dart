@@ -5,6 +5,7 @@ import 'locationPage.dart';
 import 'package:flutter/cupertino.dart';
 import 'saved_data.dart';
 import 'chips.dart';
+import 'blacklistPage.dart';
 
 class ClickableLocationContainer extends StatefulWidget {
   @override
@@ -84,7 +85,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
               ),
               onTap: () {
                 Navigator.push(context,
-                    new MaterialPageRoute(builder: (ctxt) => LocationPage()));
+                    new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
               },
               child: chipList()),
           color: Colors.white,
