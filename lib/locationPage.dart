@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class LocationPage extends StatelessWidget {
   @override
@@ -21,6 +22,14 @@ class LocationBox extends StatefulWidget {
 
 class _LocationBoxState extends State<LocationBox> {
   Position? position;
+
+  late GoogleMapController mapController;
+
+  final LatLng _center = const LatLng(45.521563, -122.677433);
+
+  void _onMapCreated(GoogleMapController controller) {
+    mapController = controller;
+  }
 
   void _getUserPosition() async {
     bool serviceEnabled;
@@ -59,7 +68,18 @@ class _LocationBoxState extends State<LocationBox> {
             });
           },
           child: Text('Click for location')),
-      Text(this.position.toString())
+      Text(this.position.toString()),
+      Container(
+        width: 200,
+        height: 400,
+        child: GoogleMap(
+          onMapCreated: _onMapCreated,
+          initialCameraPosition: CameraPosition(
+            target: _center,
+            zoom: 11.0,
+          ),
+        ),
+      )
     ]));
   }
 }
