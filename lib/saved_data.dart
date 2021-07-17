@@ -1,0 +1,3 @@
+var savedlocations = [];
+
+var loadedapps = [];
