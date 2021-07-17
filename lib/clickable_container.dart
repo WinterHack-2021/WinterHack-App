@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'locationPage.dart';
+import 'package:flutter/cupertino.dart';
 
 class ClickableContainer extends StatefulWidget {
   const ClickableContainer({Key? key}) : super(key: key);
@@ -11,12 +12,13 @@ class ClickableContainer extends StatefulWidget {
 /// This is the private State class that goes with ClickableContainer.
 class _ClickableContainerState extends State<ClickableContainer> {
   @override
+  bool uniswitch = false;
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 30),
+        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
         height: 300,
-        width: 200,
+        width: double.infinity,
         child: Card(
           child: new InkWell(
             onTap: () {
@@ -24,10 +26,13 @@ class _ClickableContainerState extends State<ClickableContainer> {
                   new MaterialPageRoute(builder: (ctxt) => new LocationPage()));
             },
             child: Column(children: [
-              TextButton(
-                onPressed: () {},
-                child: Text('University'),
-              )
+              FilterChip(
+                label: Text('University..'),
+                selectedColor: Colors.orange,
+                onSelected: (bool selected) {
+                  setState(() {});
+                },
+              ),
             ]),
           ),
           color: Colors.white,
