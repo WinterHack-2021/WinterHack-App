@@ -1,4 +1,5 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:winterhack_2021/initial.dart';
 import 'welcomePage.dart';
 import 'package:flutter/material.dart';
 import 'clickable_container.dart';
@@ -33,7 +34,7 @@ class Home extends State<HomeWidget> {
             onPressed: () {
               Navigator.push(
                 context,
-                new MaterialPageRoute(builder: (ctxt) => new WelcomePage()),
+                new MaterialPageRoute(builder: (ctxt) => new Initial()),
               );
             },
           ),
