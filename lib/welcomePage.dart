@@ -23,22 +23,22 @@ class WelcomePage extends StatelessWidget {
                 TyperAnimatedText(
                     'Productive!',
                     textStyle:
-                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
                 ),
                 TyperAnimatedText(
                     'Focused!',
                     textStyle:
-                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
                 ),
                 TyperAnimatedText(
                     'Concentrated!',
                     textStyle:
-                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
                 ),
                 ColorizeAnimatedText(
                     '#onTrack',
                     textStyle:
-                      TextStyle(fontSize: 50.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 45.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
                     colors: [
                       Colors.purple,
                       Colors.blue,
@@ -47,8 +47,7 @@ class WelcomePage extends StatelessWidget {
                     ]
                 )
               ],
-                totalRepeatCount: 1,
-                stopPauseOnTap: true
+                totalRepeatCount: 1
             )
           ]
         )
