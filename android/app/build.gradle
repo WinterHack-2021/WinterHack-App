@@ -56,6 +56,6 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.android.libraries.places:places:2.4.0'
+    implementation "com.google.android.libraries.places:places:2.4.0"
 
 }
