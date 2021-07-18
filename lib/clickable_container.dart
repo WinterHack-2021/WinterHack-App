@@ -78,10 +78,10 @@ class _ClickableLocationContainerState
   Widget build(BuildContext context) {
     return ClickableContainer(
         child: chipList(),
-        title:"Locations",
+        title: "Locations",
         onClick: () {
           Navigator.push(context,
-              new MaterialPageRoute(builder: (ctxt) => LocationPage()));
+              new CupertinoPageRoute(builder: (ctxt) => LocationPage()));
         });
   }
 }
@@ -104,10 +104,10 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   @override
   Widget build(BuildContext context) {
     return ClickableContainer(
-      title:"Disabled Apps",
+        title: "Disabled Apps",
         onClick: () {
           Navigator.push(context,
-              new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
+              new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
         },
         child: chipList());
   }
