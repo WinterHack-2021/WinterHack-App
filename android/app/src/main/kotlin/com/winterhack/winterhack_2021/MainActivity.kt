@@ -21,7 +21,7 @@ class MainActivity : FlutterActivity() {
                 if (call.method == "disablerEnabler") {
                     val appResult = disablerEnabler()
                     result.success(appResult)
-                } else if (call.method == 'mapshit') {
+                } else if (call.method == "mapshit") {
                     val appResult = mapshit()
                     result.success(appResult)
                 } else {
@@ -49,8 +49,8 @@ class MainActivity : FlutterActivity() {
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
 
-    private fun mapshit(): {
-
+    private fun mapshit(): String {
+        return "mapshittttt";
     }
 
     
