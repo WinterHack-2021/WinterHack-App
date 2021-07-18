@@ -6,33 +6,52 @@ import 'chips.dart';
 import 'blacklistPage.dart';
 
 class ClickableContainer extends StatelessWidget {
+  static const double BORDER_RADIUS = 10;
   final Widget child;
+  final String title;
   final void Function() onClick;
 
   @override
   Widget build(BuildContext context) {
     return Column(children: [
       Container(
-        margin: EdgeInsets.symmetric(vertical: 20, horizontal: 20),
-        width: double.infinity,
-        padding: EdgeInsets.all(8),
-        child: Card(z
+        margin: EdgeInsets.all(20),
+        child: Card(
           child: new InkWell(
               customBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+                borderRadius: BorderRadius.circular(BORDER_RADIUS),
               ),
               onTap: onClick,
-              child: child),
-          color: Colors.grey.shade800,
+              child: Column(children: [
+                Align(
+                    alignment: Alignment.centerLeft,
+                    child: Padding(
+                        padding:
+                            EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                        child: Text(title.toUpperCase(),
+                            style: Theme.of(context)
+                                .textTheme
+                                .caption!
+                                .copyWith(
+                                    color: Color(0xff969696),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14)))),
+                child
+              ])),
+          color: Color(0xff1c1c1e),
           elevation: 3,
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+          shape: RoundedRectangleBorder(
+              side: BorderSide(width: 1, color: Colors.grey.shade800),
+              borderRadius: BorderRadius.circular(BORDER_RADIUS)),
         ),
       ),
     ]);
   }
 
-  ClickableContainer({required this.child, required this.onClick});
+  ClickableContainer(
+      {required this.child,
+      required this.onClick,
+      this.title = "Sample Title"});
 }
 
 class ClickableLocationContainer extends StatefulWidget {
@@ -59,6 +78,7 @@ class _ClickableLocationContainerState
   Widget build(BuildContext context) {
     return ClickableContainer(
         child: chipList(),
+        title:"Locations",
         onClick: () {
           Navigator.push(context,
               new MaterialPageRoute(builder: (ctxt) => LocationPage()));
@@ -84,6 +104,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   @override
   Widget build(BuildContext context) {
     return ClickableContainer(
+      title:"Disabled Apps",
         onClick: () {
           Navigator.push(context,
               new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));

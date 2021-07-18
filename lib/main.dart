@@ -43,7 +43,7 @@ class Home extends State<HomeWidget> {
       body: Column(children: <Widget>[
         SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text((isActive?"on":"off")+"Track ",
+          Text((isActive ? "on" : "off") + "Track ",
               style: theme.textTheme.headline3!
                   .copyWith(fontWeight: FontWeight.w500, color: Colors.white)),
           SizedBox(width: 30),
@@ -55,7 +55,12 @@ class Home extends State<HomeWidget> {
               ))
         ]),
         ClickableLocationContainer(),
-        ClickableAppsContainer()
+        ClickableAppsContainer(),
+        ClickableContainer(
+            child: Padding(
+                padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                child: Text("10 Hours, 15 Minutes", style: theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
+            onClick: () {})
       ]),
     );
   }

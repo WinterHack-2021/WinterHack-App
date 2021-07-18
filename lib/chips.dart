@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 class ChipState extends StatefulWidget {
   String locationname;
+
   ChipState(this.locationname);
 
   @override
@@ -10,10 +11,13 @@ class ChipState extends StatefulWidget {
 
 class _ChipStateState extends State<ChipState> {
   bool _selected = false;
+
   @override
   Widget build(BuildContext context) {
     return FilterChip(
-      label: Text(widget.locationname, style: Theme.of(context).textTheme.caption!.copyWith(color: _selected?Colors.white:Colors.grey.shade800)),
+      label: Text(widget.locationname,
+          style: Theme.of(context).textTheme.caption!.copyWith(
+              color: _selected ? Colors.white : Colors.grey.shade800)),
       selected: _selected,
       backgroundColor: Colors.grey.shade300,
       selectedColor: Colors.orange,
