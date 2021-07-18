@@ -13,32 +13,32 @@ class WelcomePage extends StatelessWidget {
           children: <Widget>[
             Text(
               "Stay",
-              style: TextStyle(fontSize: 32.0, fontWeight: FontWeight.normal),
+              style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.normal),
             ),
             SizedBox(
               height: 10.0,
             ),
             AnimatedTextKit(
               animatedTexts: [
-                TypewriterAnimatedText(
+                TyperAnimatedText(
                     'Productive!',
                     textStyle:
-                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
                 ),
-                TypewriterAnimatedText(
+                TyperAnimatedText(
                     'Focused!',
                     textStyle:
-                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
                 ),
-                TypewriterAnimatedText(
+                TyperAnimatedText(
                     'Concentrated!',
                     textStyle:
-                      TextStyle(fontSize: 42.0, fontWeight: FontWeight.bold)
+                      TextStyle(fontSize: 50.0, fontWeight: FontWeight.bold)
                 ),
                 ColorizeAnimatedText(
                     '#onTrack',
                     textStyle:
-                      TextStyle(fontSize: 42.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
+                      TextStyle(fontSize: 50.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
                     colors: [
                       Colors.purple,
                       Colors.blue,
