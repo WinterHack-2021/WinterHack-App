@@ -55,6 +55,9 @@ class MainActivity : FlutterActivity() {
 
     
 }
+
+
+
 //
 //public class TaskChecker{
 //    public static String getForegroundApplication(Context context){
