@@ -10,8 +10,8 @@ class Initial extends StatelessWidget {
     return Scaffold(
       body: PageView(children: [
         WelcomePage(),
-        WelcomeApps(),
         WelcomeLocation(),
+        WelcomeApps(),
       ],
       ),
     );
