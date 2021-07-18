@@ -11,7 +11,7 @@ import android.app.ActivityManager
 
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "blacklist-channel"
+    private val CHANNEL = "winterhack-channel"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -20,6 +20,9 @@ class MainActivity : FlutterActivity() {
                 println("Hello");
                 if (call.method == "disablerEnabler") {
                     val appResult = disablerEnabler()
+                    result.success(appResult)
+                } else if (call.method == 'mapshit') {
+                    val appResult = mapshit()
                     result.success(appResult)
                 } else {
                     result.error("UNAVAILABLE", "Battery level not available.", null)
@@ -31,6 +34,8 @@ class MainActivity : FlutterActivity() {
 
     private fun disablerEnabler(): String {
         return "Suuup";
+
+    }
 //        String currentRunningApp = TaskChecker.getForegroundApplication(yourContext);
 //
 //        if(currentRunningApp.equals("com.whatsapp")){
@@ -43,7 +48,12 @@ class MainActivity : FlutterActivity() {
 //
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
+
+    private fun mapshit(): {
+
     }
+
+    
 }
 //
 //public class TaskChecker{
