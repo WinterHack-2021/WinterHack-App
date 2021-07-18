@@ -1,4 +1,5 @@
 import 'package:animated_toggle_switch/animated_toggle_switch.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'welcomePage.dart';
 import 'package:flutter/material.dart';
@@ -6,7 +7,7 @@ import 'clickable_container.dart';
 
 void main() => runApp(MaterialApp(
       home: HomeWidget(),
-      theme: ThemeData(primarySwatch: Colors.green),
+      theme: ThemeData.dark(),
     ));
 
 class HomeWidget extends StatefulWidget {
@@ -21,11 +22,10 @@ class Home extends State<HomeWidget> {
   Widget build(BuildContext context) {
     var theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: Colors.lightGreen.shade500,
+      backgroundColor: Colors.black,
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text('onTrack', style: TextStyle(color: Colors.white)),
         actions: [
           IconButton(
             icon: const Icon(Icons.notifications, color: Colors.white),
@@ -43,17 +43,16 @@ class Home extends State<HomeWidget> {
       body: Column(children: <Widget>[
         SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text("Active: ",
-              style: theme.textTheme.headline5!.copyWith(color: Colors.white)),
+          Text((isActive?"on":"off")+"Track ",
+              style: theme.textTheme.headline3!
+                  .copyWith(fontWeight: FontWeight.w500, color: Colors.white)),
           SizedBox(width: 30),
-          AnimatedToggleSwitch<bool>.dual(
-            first: false,
-            current: isActive,
-            second: true,
-            onChanged: (b) => setState(() => isActive = b),
-            colorBuilder: (b) => !b ? Colors.red.shade500 : Colors.green,
-            borderColorBuilder: (b) => !b ? Colors.red.shade500 : Colors.green,
-          )
+          Transform.scale(
+              scale: 1.5,
+              child: CupertinoSwitch(
+                value: isActive,
+                onChanged: (value) => setState(() => isActive = value),
+              ))
         ]),
         ClickableLocationContainer(),
         ClickableAppsContainer()

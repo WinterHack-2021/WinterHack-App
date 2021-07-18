@@ -1,4 +1,4 @@
-
+import 'package:flutter/widgets.dart';
 
 class PageIndicator extends StatelessWidget {
   const PageIndicator({Key? key}) : super(key: key);
