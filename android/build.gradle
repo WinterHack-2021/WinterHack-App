@@ -8,7 +8,7 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:4.0.1'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-        implementation 'com.google.android.libraries.places:places:2.4.0'
+        //compile 'com.google.android.libraries.places:places:2.4.0'
     }
 }
 
