@@ -65,7 +65,7 @@ class MainActivity : FlutterActivity() {
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
 
-    private fun getcurrentlocation(): String {
+    private fun getcurrentlocation(): List<Place.Field> {
         // Initialize the SDK
         fun getLocationPermission() {
             TODO()
@@ -75,12 +75,12 @@ class MainActivity : FlutterActivity() {
 
         // Create a new PlacesClient instance
         val placesClient = Places.createClient(this)
-        
 
-
+        // [START maps_places_current_place]
         // Use fields to define the data types to return.
         val placeFields: List<Place.Field> = listOf(Place.Field.NAME)
-        // // Use the builder to create a FindCurrentPlaceRequest.
+
+        // Use the builder to create a FindCurrentPlaceRequest.
         val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
 
         // Call findCurrentPlace and handle the response (first check that the user has granted permission).
@@ -109,12 +109,21 @@ class MainActivity : FlutterActivity() {
             // See https://developer.android.com/training/permissions/requesting
             getLocationPermission()
         }
-        
-        return "yoyo";
+
+        return placeFields
+        // [END maps_places_current_place]
     }
 
-    
+    private fun getLocationPermission() {
+        TODO()
+    }
+
+    companion object {
+        private val TAG = MainActivity::class.java.simpleName
+    }
 }
+
+    
 //
 //public class TaskChecker{
 //    public static String getForegroundApplication(Context context){

@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:flutter/services.dart';
+import 'package:installed_apps/installed_apps.dart';
+import 'package:installed_apps/app_info.dart';
 
 class LocationPage extends StatelessWidget {
   @override
@@ -29,6 +32,24 @@ class _LocationBoxState extends State<LocationBox> {
 
   void _onMapCreated(GoogleMapController controller) {
     mapController = controller;
+  }
+
+  static const platform = const MethodChannel('winterhack-channel');
+
+  String? _placefields;
+
+  Future<void> getPlaces() async {
+    String? placefields;
+    try {
+      final int result = await platform.invokeMethod('getcurrentlocation');
+      placefields = '$result';
+    } on PlatformException catch (e) {
+      placefields = "Failed to get places: '${e.message}'.";
+    }
+
+    setState(() {
+      _placefields = placefields;
+    });
   }
 
   void _getUserPosition() async {
@@ -71,7 +92,7 @@ class _LocationBoxState extends State<LocationBox> {
       Text(this.position.toString()),
       Container(
         width: 200,
-        height: 400,
+        height: 200,
         child: GoogleMap(
           onMapCreated: _onMapCreated,
           initialCameraPosition: CameraPosition(
@@ -79,7 +100,13 @@ class _LocationBoxState extends State<LocationBox> {
             zoom: 11.0,
           ),
         ),
-      )
+      ),
+      TextButton(
+          child: Text('Get Places'),
+          onPressed: () {
+            getPlaces();
+          }),
+      Container(child: Text(_placefields.toString()))
     ]));
   }
 }
