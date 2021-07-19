@@ -33,15 +33,15 @@ class Blacklist extends State<BlacklistPage> {
   //Widget get home => _BlacklistBoxState();
 
   static const platform = const MethodChannel('winterhack-channel');
-  String _randomString = '';
+  List<String> _randomString = [];
 
   Future<void> _getAndroidString() async {
-    String randomString;
+    List<String> randomString = [];
     try {
-      final String result = await platform.invokeMethod('disablerEnabler');
-      randomString = 'Random string $result % .';
+      final List<String> result = await platform.invokeMethod('applists');
+      randomString = result;
     } on PlatformException catch (e) {
-      randomString = "Failed to get random string: '${e.message}'.";
+      print("error");
     }
 
     setState(() {
@@ -49,16 +49,32 @@ class Blacklist extends State<BlacklistPage> {
     });
   }
 
+
   @override
   Widget build(BuildContext context) {
-    _getAndroidString();
-    // 1. Enable an app
-    // 2. Disable app
-    // enableApp(appId)
-    // disableApp(appId)
-    //print(_randomString);
-    return Scaffold(body: Column(children:[Text(_randomString)]));
+    return Scaffold(
+      body: Container(
+        child: Column(
+          children: [
+            for ( var i in _randomString ) Text(i.toString())
+          ],
+        ),
+      ),
+    );
   }
+
+
+
+  // @override
+  // Widget build(BuildContext context) {
+  //   _getAndroidString();
+  //   // 1. Enable an app
+  //   // 2. Disable app
+  //   // enableApp(appId)
+  //   // disableApp(appId)
+  //   //print(_randomString);
+  //   return Scaffold(body: Column(children:[Text(_randomString)]));
+  // }
 }
 
 class _BlacklistBoxState extends StatelessWidget {

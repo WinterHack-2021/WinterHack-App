@@ -1,29 +1,27 @@
 package com.winterhack.winterhack_2021
-import androidx.annotation.NonNull
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
-import android.app.ActivityManager.RunningTaskInfo
-import android.content.Context
-import android.app.ActivityManager
+
 
 import android.Manifest.permission
+import android.app.ActivityManager
+import android.content.Intent
+import android.content.pm.ApplicationInfo
+import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.os.Bundle
+import android.content.pm.ResolveInfo
 import android.util.Log
-import androidx.annotation.Nullable
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
-
-
-import com.google.android.libraries.places.api.Places
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
-import com.google.android.libraries.places.api.net.PlacesClient
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
+import java.util.*
+import kotlin.collections.ArrayList
+
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
@@ -34,10 +32,14 @@ class MainActivity : FlutterActivity() {
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             run {
                 println("Hello");
-                if (call.method == "disablerEnabler") {
+                if (call.method == "applists") {
+                    val appResult = applists()
+                    result.success(appResult)
+                } else if (call.method == "disablerEnabler"){
                     val appResult = disablerEnabler()
                     result.success(appResult)
-                } else if (call.method == "getcurrentlocation") {
+                }
+                else if (call.method == "getcurrentlocation") {
                     val appResult = getcurrentlocation()
                     result.success(appResult)
                 } else {
@@ -48,22 +50,37 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun disablerEnabler(): String {
-        return "Suuup";
+    private fun applists(): ArrayList<String> {
+        val packageManager = packageManager
+        val mainIntent = Intent(Intent.ACTION_MAIN, null)
+        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+        val apps: ArrayList<String> = ArrayList<String>();
 
+        val appList: MutableList<ResolveInfo> = packageManager.queryIntentActivities(mainIntent, 0)
+        Collections.sort(appList, ResolveInfo.DisplayNameComparator(packageManager))
+        val packs: List<PackageInfo> = packageManager.getInstalledPackages(0)
+        for (i in packs.indices) {
+            val p: PackageInfo = packs[i]
+            val a: ApplicationInfo = p.applicationInfo
+            // skip system apps if they shall not be included
+            if (a.flags and ApplicationInfo.FLAG_SYSTEM === 1) {
+                continue
+            }
+            apps.add(p.packageName)
+        }
+
+        return apps;
     }
-//        String currentRunningApp = TaskChecker.getForegroundApplication(yourContext);
-//
-//        if(currentRunningApp.equals("com.whatsapp")){
-//            ActivityManager am = (ActivityManager)yourContext.getSystemService(Context.ACTIVITY_SERVICE);
-//
-//            Intent startMain = new Intent(Intent.ACTION_MAIN);
-//            startMain.addCategory(Intent.CATEGORY_HOME);
-//            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            this.startActivity(startMain);
-//
-//            am.killBackgroundProcesses(currentRunningApp );
-//        }
+
+    private fun disablerEnabler(): String {
+        val mActivityManager = getSystemService(ACTIVITY_SERVICE) as ActivityManager
+        val RunningTask = mActivityManager.getRunningTasks(1)
+        val ar = RunningTask[0]
+        var activityOnTop = ar.topActivity!!.className
+
+        return "activityOnTop";
+    }
+
 
     private fun getcurrentlocation(): String {
         // Initialize the SDK
@@ -115,12 +132,4 @@ class MainActivity : FlutterActivity() {
 
     
 }
-//
-//public class TaskChecker{
-//    public static String getForegroundApplication(Context context){
-//        ActivityManager am=(ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-//        RunningTaskInfo foreground=am.getRunningTasks(1).get(0);
-//        return foreground.topActivity.getPackageName();
-//    }
-//}
 
