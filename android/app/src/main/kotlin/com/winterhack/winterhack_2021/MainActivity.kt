@@ -64,7 +64,7 @@ class MainActivity : FlutterActivity() {
 //
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
-
+    
     private fun getcurrentlocation(): List<Place.Field> {
         // Initialize the SDK
         fun getLocationPermission() {
@@ -78,7 +78,7 @@ class MainActivity : FlutterActivity() {
 
         // [START maps_places_current_place]
         // Use fields to define the data types to return.
-        val placeFields: List<Place.Field> = listOf(Place.Field.NAME)
+        val placeFields: List<Place.Field> = listOf(Place.Field.NAME, Place.Field.TYPES)
 
         // Use the builder to create a FindCurrentPlaceRequest.
         val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
@@ -94,7 +94,7 @@ class MainActivity : FlutterActivity() {
                     for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
                         Log.i(
                             TAG,
-                            "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood}"
+                            "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
                         )
                     }
                 } else {
@@ -109,7 +109,8 @@ class MainActivity : FlutterActivity() {
             // See https://developer.android.com/training/permissions/requesting
             getLocationPermission()
         }
-
+        println(placeFields)
+        println("fuckyea")
         return placeFields
         // [END maps_places_current_place]
     }
