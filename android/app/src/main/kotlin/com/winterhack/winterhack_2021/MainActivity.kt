@@ -25,7 +25,6 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
 import com.google.android.libraries.places.api.net.PlacesClient
 
-
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
     private val TAG = "MainActivity"
@@ -68,6 +67,10 @@ class MainActivity : FlutterActivity() {
 
     private fun getcurrentlocation(): String {
         // Initialize the SDK
+        fun getLocationPermission() {
+            TODO()
+        }
+        
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
 
         // Create a new PlacesClient instance
@@ -104,7 +107,7 @@ class MainActivity : FlutterActivity() {
         } else {
             // A local method to request required permissions;
             // See https://developer.android.com/training/permissions/requesting
-            //getLocationPermission()
+            getLocationPermission()
         }
         
         return "yoyo";
@@ -120,3 +123,4 @@ class MainActivity : FlutterActivity() {
 //        return foreground.topActivity.getPackageName();
 //    }
 //}
+
