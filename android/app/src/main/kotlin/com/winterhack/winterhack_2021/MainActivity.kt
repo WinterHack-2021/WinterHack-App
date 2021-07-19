@@ -65,12 +65,14 @@ class MainActivity : FlutterActivity() {
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
     
-    private fun getcurrentlocation(): List<Place.Field> {
+    private fun getcurrentlocation(): MutableList<String> {
         // Initialize the SDK
         fun getLocationPermission() {
             TODO()
         }
         
+        var placeslist = arrayListOf("")
+
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
 
         // Create a new PlacesClient instance
@@ -96,6 +98,7 @@ class MainActivity : FlutterActivity() {
                             TAG,
                             "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
                         )
+                        placeslist.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
                     }
                 } else {
                     val exception = task.exception
@@ -109,9 +112,10 @@ class MainActivity : FlutterActivity() {
             // See https://developer.android.com/training/permissions/requesting
             getLocationPermission()
         }
-        println(placeFields)
+        println(placeslist)
         println("fuckyea")
-        return placeFields
+        println(TAG)
+        return placeslist
         // [END maps_places_current_place]
     }
 
@@ -121,6 +125,7 @@ class MainActivity : FlutterActivity() {
 
     companion object {
         private val TAG = MainActivity::class.java.simpleName
+
     }
 }
 

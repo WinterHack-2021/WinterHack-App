@@ -1,7 +1,5 @@
-import 'package:animated_toggle_switch/animated_toggle_switch.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:winterhack_2021/initial.dart';
-import 'welcomePage.dart';
 import 'package:flutter/material.dart';
 import 'clickable_container.dart';
 
@@ -59,7 +57,8 @@ class Home extends State<HomeWidget> {
         ClickableContainer(
             child: Padding(
                 padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-                child: Text("10 Hours, 15 Minutes", style: theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
+                child: Text("10 Hours, 15 Minutes",
+                    style: theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
             onClick: () {})
       ]),
     );
