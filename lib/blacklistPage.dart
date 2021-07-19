@@ -32,7 +32,7 @@ class BlacklistPage extends StatefulWidget {
 class Blacklist extends State<BlacklistPage> {
   //Widget get home => _BlacklistBoxState();
 
-  static const platform = const MethodChannel('blacklist-channel');
+  static const platform = const MethodChannel('winterhack-channel');
   String _randomString = '';
 
   Future<void> _getAndroidString() async {
@@ -56,7 +56,7 @@ class Blacklist extends State<BlacklistPage> {
     // 2. Disable app
     // enableApp(appId)
     // disableApp(appId)
-    print(_randomString);
+    //print(_randomString);
     return Scaffold(body: Column(children:[Text(_randomString)]));
   }
 }
