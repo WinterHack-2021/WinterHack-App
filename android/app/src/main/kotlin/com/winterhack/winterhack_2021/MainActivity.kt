@@ -3,11 +3,7 @@ package com.winterhack.winterhack_2021
 
 import android.Manifest.permission
 import android.app.ActivityManager
-import android.content.Intent
-import android.content.pm.ApplicationInfo
-import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
-import android.content.pm.ResolveInfo
 import android.util.Log
 import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
@@ -19,27 +15,25 @@ import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import java.util.*
-import kotlin.collections.ArrayList
 
 
 class MainActivity : FlutterActivity() {
-    private val CHANNEL = "winterhack-channel"
-    private val TAG = "MainActivity"
+    private val CHANNEL = "winterhack-channel";
+    private val TAG = "MainActivity";
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             run {
-                println("Hello");
+                //println("Hello!!!!");
                 if (call.method == "applists") {
+                    print("calling");
                     val appResult = applists()
                     result.success(appResult)
                 } else if (call.method == "disablerEnabler"){
                     val appResult = disablerEnabler()
                     result.success(appResult)
-                }
-                else if (call.method == "getcurrentlocation") {
+                } else if (call.method == "getcurrentlocation") {
                     val appResult = getcurrentlocation()
                     result.success(appResult)
                 } else {
@@ -50,26 +44,31 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun applists(): ArrayList<String> {
-        val packageManager = packageManager
-        val mainIntent = Intent(Intent.ACTION_MAIN, null)
-        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
-        val apps: ArrayList<String> = ArrayList<String>();
+    private fun applists(): String {
+        print("Reading this?");
+        return "What is this?";
 
-        val appList: MutableList<ResolveInfo> = packageManager.queryIntentActivities(mainIntent, 0)
-        Collections.sort(appList, ResolveInfo.DisplayNameComparator(packageManager))
-        val packs: List<PackageInfo> = packageManager.getInstalledPackages(0)
-        for (i in packs.indices) {
-            val p: PackageInfo = packs[i]
-            val a: ApplicationInfo = p.applicationInfo
-            // skip system apps if they shall not be included
-            if (a.flags and ApplicationInfo.FLAG_SYSTEM === 1) {
-                continue
-            }
-            apps.add(p.packageName)
-        }
 
-        return apps;
+
+//        val packageManager = packageManager
+//        val mainIntent = Intent(Intent.ACTION_MAIN, null)
+//        mainIntent.addCategory(Intent.CATEGORY_LAUNCHER)
+//        val apps: ArrayList<String> = ArrayList<String>();
+//
+//        val appList: MutableList<ResolveInfo> = packageManager.queryIntentActivities(mainIntent, 0)
+//        Collections.sort(appList, ResolveInfo.DisplayNameComparator(packageManager))
+//        val packs: List<PackageInfo> = packageManager.getInstalledPackages(0)
+//        for (i in packs.indices) {
+//            val p: PackageInfo = packs[i]
+//            val a: ApplicationInfo = p.applicationInfo
+//            // skip system apps if they shall not be included
+//            if (a.flags and ApplicationInfo.FLAG_SYSTEM === 1) {
+//                continue
+//            }
+//            apps.add(p.packageName)
+//        }
+//        print("Teeeeest");
+//        return apps;
     }
 
     private fun disablerEnabler(): String {

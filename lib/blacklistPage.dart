@@ -32,38 +32,47 @@ class BlacklistPage extends StatefulWidget {
 class Blacklist extends State<BlacklistPage> {
   //Widget get home => _BlacklistBoxState();
 
-  static const platform = const MethodChannel('winterhack-channel');
-  List<String> _randomString = [];
+  static const platform = const MethodChannel("winterhack-channel");
+  String _randomString = '';
 
   Future<void> _getAndroidString() async {
-    List<String> randomString = [];
+    String randomString = '';
+    print("What about this?");
     try {
-      final List<String> result = await platform.invokeMethod('applists');
+      print("trying this?");
+      final String result = await platform.invokeMethod("applists");
+      print("now");
       randomString = result;
     } on PlatformException catch (e) {
-      print("error");
+      print("Biggest error");
     }
-
+    print("reading this?");
     setState(() {
       _randomString = randomString;
     });
   }
 
 
-  @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: Container(
-        child: Column(
-          children: [
-            for ( var i in _randomString ) Text(i.toString())
-          ],
-        ),
-      ),
-    );
+    _getAndroidString();
+    return Scaffold(body: Column(children:[Text(_randomString)]));
   }
 
-
+  // @override
+  // Widget build(BuildContext context) {
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("Blacklist Page"),
+  //     ),
+  //     body: Container(
+  //       child: Column(
+  //         children: [
+  //           for ( var i in _randomString ) Text(i.toString())
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
 
   // @override
   // Widget build(BuildContext context) {
