@@ -28,6 +28,7 @@ import com.google.android.libraries.places.api.net.PlacesClient
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
+    private val TAG = "MainActivity"
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
@@ -75,37 +76,36 @@ class MainActivity : FlutterActivity() {
 
 
         // Use fields to define the data types to return.
-        //val placeFields: List<Place.Field> = listOf(Place.Field.NAME)
-
+        val placeFields: List<Place.Field> = listOf(Place.Field.NAME)
         // // Use the builder to create a FindCurrentPlaceRequest.
-        //val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
+        val request: FindCurrentPlaceRequest = FindCurrentPlaceRequest.newInstance(placeFields)
 
-        // // Call findCurrentPlace and handle the response (first check that the user has granted permission).
-        // if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) ==
-        //     PackageManager.PERMISSION_GRANTED) {
+        // Call findCurrentPlace and handle the response (first check that the user has granted permission).
+        if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) ==
+            PackageManager.PERMISSION_GRANTED) {
 
-        //     val placeResponse = placesClient.findCurrentPlace(request)
-        //     placeResponse.addOnCompleteListener { task ->
-        //         if (task.isSuccessful) {
-        //             val response = task.result
-        //             for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
-        //                 Log.i(
-        //                     TAG,
-        //                     "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood}"
-        //                 )
-        //             }
-        //         } else {
-        //             val exception = task.exception
-        //             if (exception is ApiException) {
-        //                 Log.e(TAG, "Place not found: ${exception.statusCode}")
-        //             }
-        //         }
-        //     }
-        // } else {
-        //     // A local method to request required permissions;
-        //     // See https://developer.android.com/training/permissions/requesting
-        //     getLocationPermission()
-        // }
+            val placeResponse = placesClient.findCurrentPlace(request)
+            placeResponse.addOnCompleteListener { task ->
+                if (task.isSuccessful) {
+                    val response = task.result
+                    for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
+                        Log.i(
+                            TAG,
+                            "Place '${placeLikelihood.place.name}' has likelihood: ${placeLikelihood.likelihood}"
+                        )
+                    }
+                } else {
+                    val exception = task.exception
+                    if (exception is ApiException) {
+                        Log.e(TAG, "Place not found: ${exception.statusCode}")
+                    }
+                }
+            }
+        } else {
+            // A local method to request required permissions;
+            // See https://developer.android.com/training/permissions/requesting
+            //getLocationPermission()
+        }
         
         return "yoyo";
     }
