@@ -94,6 +94,7 @@ class MainActivity : FlutterActivity() {
                 if (task.isSuccessful) {
                     val response = task.result
                     for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
+                        println("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
                         Log.i(
                             TAG,
                             "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
