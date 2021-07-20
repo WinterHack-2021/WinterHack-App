@@ -45,7 +45,9 @@ class _InitialState extends State<Initial> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(onPressed: (){
-                    pageController.animateToPage(pageChanged++, duration: Duration(milliseconds: 150), curve: Curves.bounceInOut);
+                    setState(() {
+                      pageController.animateToPage(++pageChanged, duration: Duration(milliseconds: 150), curve: Curves.bounceInOut);
+                    });
                   }, icon: Icon(Icons.arrow_forward_ios, color: Colors.black45)),
                   SizedBox(width: 15)
                 ],
