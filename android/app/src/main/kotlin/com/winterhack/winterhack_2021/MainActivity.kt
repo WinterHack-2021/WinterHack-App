@@ -82,6 +82,7 @@ class MainActivity : FlutterActivity() {
             val placeResponse = placesClient.findCurrentPlace(request)
             placeResponse.addOnCompleteListener { task ->
                 val placesList = arrayListOf<String>()
+                val placesMap : HashMap<String, String> = HashMap<String, String> ()
                 if (task.isSuccessful) {
                     val response = task.result
                     for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
@@ -90,10 +91,10 @@ class MainActivity : FlutterActivity() {
                             TAG,
                             "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
                         )
-                        val res=placesList.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
-                        println("Did add: $res")
+                        placesList.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
+                        placesMap.put("${placeLikelihood.place.name}", "${placeLikelihood.place.types}")
                     }
-                    result.success(placesList)
+                    result.success(placesMap)
                 } else {
                     val exception = task.exception
                     if (exception is ApiException) {
