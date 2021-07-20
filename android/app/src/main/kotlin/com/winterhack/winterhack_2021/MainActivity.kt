@@ -5,6 +5,11 @@ import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 
 import android.Manifest.permission
+import android.app.Activity
+import android.app.ActivityManager
+import android.content.Context
+import android.content.Intent
+import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.util.Log
 import androidx.core.content.ContextCompat
@@ -26,10 +31,13 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             run {
-                if (call.method == "disablerEnabler") {
+                if (call.method.equals("disablerEnabler")) {
                     val appResult = disablerEnabler()
                     result.success(appResult)
-                } else if (call.method == "getcurrentlocation") {
+                } else if (call.method.equals("DisplayApps")) {
+                    val appResult = DisplayApps()
+                    result.success(appResult)
+                } else if (call.method.equals("getcurrentlocation")) {
                     getcurrentlocation(result)
                 } else {
                     result.error("UNAVAILABLE", "Battery level not available.", null)
@@ -39,22 +47,53 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    private fun disablerEnabler(): String {
-        return "Suuup";
+    private fun DisplayApps(): MutableList<String> {
+        val pm = packageManager
+        //get a list of installed apps.
+        val packages: List<ApplicationInfo> =
+            pm.getInstalledApplications(PackageManager.GET_META_DATA)
+
+        var apps: MutableList<String> = ArrayList<String>();
+        apps.add("hiii")
+
+        for (packageInfo in packages) {
+            apps.add(packageInfo.packageName);
+            Log.d(TAG, "Installed package :" + packageInfo.name)
+            Log.d(TAG, "Installed package :" + packageInfo.packageName)
+            Log.d(TAG, "Source dir : " + packageInfo.sourceDir)
+            Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName))
+        }
+
+        return apps;
 
     }
-//        String currentRunningApp = TaskChecker.getForegroundApplication(yourContext);
-//
-//        if(currentRunningApp.equals("com.whatsapp")){
-//            ActivityManager am = (ActivityManager)yourContext.getSystemService(Context.ACTIVITY_SERVICE);
-//
-//            Intent startMain = new Intent(Intent.ACTION_MAIN);
-//            startMain.addCategory(Intent.CATEGORY_HOME);
-//            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//            this.startActivity(startMain);
-//
-//            am.killBackgroundProcesses(currentRunningApp );
-//        }
+
+    private fun disablerEnabler(): String {
+
+
+        val currentRunningApp: String? = TaskChecker.getForegroundApplication(context)
+
+        if (currentRunningApp == "com.whatsapp") {
+            val startMain = Intent(Intent.ACTION_MAIN)
+            startMain.addCategory(Intent.CATEGORY_HOME)
+            startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
+            this.startActivity(startMain)
+            val manager = getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager
+            manager.killBackgroundProcesses(currentRunningApp)
+            print("Successs!!!!!!!!!!!!")
+        }
+        return "random string";
+    }
+
+    object TaskChecker {
+        fun getForegroundApplication(context: Context): String? {
+            val am: ActivityManager =
+                context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
+            val foreground: ActivityManager.RunningTaskInfo = am.getRunningTasks(1).get(0)
+            return foreground.topActivity?.packageName;
+        }
+    }
+
     
     private fun getcurrentlocation(result: MethodChannel.Result) {
         // Initialize the SDK

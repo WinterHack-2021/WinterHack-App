@@ -36,12 +36,13 @@ class Blacklist extends State<BlacklistPage> {
   String _randomString = '';
 
   Future<void> _getAndroidString() async {
-    String randomString;
+    String randomString = '';
     try {
-      final String result = await platform.invokeMethod('disablerEnabler');
-      randomString = 'Random string $result % .';
+      final String result = await platform.invokeMethod("disablerEnabler");
+      randomString = result;
+      print("happeniun");
     } on PlatformException catch (e) {
-      randomString = "Failed to get random string: '${e.message}'.";
+      //randomString = "Failed to get random string: '${e.message}'.";
     }
 
     setState(() {
@@ -49,17 +50,35 @@ class Blacklist extends State<BlacklistPage> {
     });
   }
 
-  @override
+  // @override
+  // Widget build(BuildContext context) {
+  //   _getAndroidString();
+  //   return Scaffold(
+  //     appBar: AppBar(
+  //       title: Text("Blacklist PAge"),
+  //     ),
+  //     body: Container(
+  //       child: Column(
+  //         children: [
+  //           for ( var i in _randomString ) Text(i.toString())
+  //         ],
+  //       ),
+  //     ),
+  //   );
+  // }
+  // @override
   Widget build(BuildContext context) {
     _getAndroidString();
-    // 1. Enable an app
-    // 2. Disable app
-    // enableApp(appId)
-    // disableApp(appId)
-    //print(_randomString);
-    return Scaffold(body: Column(children:[Text(_randomString)]));
+    //   // 1. Enable an app
+    //   // 2. Disable app
+    //   // enableApp(appId)
+    //   // disableApp(appId)
+    //   //print(_randomString);
+    return Scaffold(body: Column(children: [Text(_randomString)]));
+    // }
   }
 }
+
 
 class _BlacklistBoxState extends StatelessWidget {
   @override
