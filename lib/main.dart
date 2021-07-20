@@ -80,14 +80,20 @@ class Home extends State<HomeWidget> {
                 onChanged: (value) => setState(() => isActive = value),
               ))
         ]),
-        ClickableLocationContainer(),
-        ClickableAppsContainer(),
-        ClickableContainer(
-            child: Padding(
-                padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-                child: Text("10 Hours, 15 Minutes",
-                    style: theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
-            onClick: () {})
+        Expanded(
+            child: ListView(
+          children: [
+            ClickableLocationContainer(),
+            ClickableAppsContainer(),
+            ClickableContainer(
+                child: Padding(
+                    padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                    child: Text("10 Hours, 15 Minutes",
+                        style:
+                            theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
+                onClick: () {}),
+          ],
+        )),
       ]),
     );
   }
