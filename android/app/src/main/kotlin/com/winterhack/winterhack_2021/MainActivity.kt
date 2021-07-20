@@ -3,17 +3,11 @@ import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
-import android.app.ActivityManager.RunningTaskInfo
-import android.content.Context
-import android.app.ActivityManager
 
 import android.Manifest.permission
 import android.content.pm.PackageManager
-import android.os.Bundle
 import android.util.Log
-import androidx.annotation.Nullable
 import androidx.core.content.ContextCompat
-import androidx.appcompat.app.AppCompatActivity
 
 
 import com.google.android.libraries.places.api.Places
@@ -23,7 +17,6 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
-import com.google.android.libraries.places.api.net.PlacesClient
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
@@ -33,13 +26,11 @@ class MainActivity : FlutterActivity() {
         super.configureFlutterEngine(flutterEngine)
         MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
             run {
-                println("Hello");
                 if (call.method == "disablerEnabler") {
                     val appResult = disablerEnabler()
                     result.success(appResult)
                 } else if (call.method == "getcurrentlocation") {
-                    val appResult = getcurrentlocation()
-                    result.success(appResult)
+                    getcurrentlocation(result)
                 } else {
                     result.error("UNAVAILABLE", "Battery level not available.", null)
                 }
@@ -65,13 +56,12 @@ class MainActivity : FlutterActivity() {
 //            am.killBackgroundProcesses(currentRunningApp );
 //        }
     
-    private fun getcurrentlocation(): MutableList<String> {
+    private fun getcurrentlocation(result: MethodChannel.Result) {
         // Initialize the SDK
         fun getLocationPermission() {
             TODO()
         }
         
-        var placeslist = arrayListOf("")
 
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
 
@@ -91,32 +81,32 @@ class MainActivity : FlutterActivity() {
 
             val placeResponse = placesClient.findCurrentPlace(request)
             placeResponse.addOnCompleteListener { task ->
+                val placesList = arrayListOf<String>()
                 if (task.isSuccessful) {
                     val response = task.result
                     for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
-                        println("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
+                        // println("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
                         Log.i(
                             TAG,
                             "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
                         )
-                        placeslist.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
+                        val res=placesList.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
+                        println("Did add: $res")
                     }
+                    result.success(placesList)
                 } else {
                     val exception = task.exception
                     if (exception is ApiException) {
                         Log.e(TAG, "Place not found: ${exception.statusCode}")
                     }
+                    result.error("UNAVAILABLE", "", exception.toString())
                 }
             }
         } else {
             // A local method to request required permissions;
             // See https://developer.android.com/training/permissions/requesting
-            getLocationPermission()
+           // TODO throw error
         }
-        println(placeslist)
-        println("fuckyea")
-        println(TAG)
-        return placeslist
         // [END maps_places_current_place]
     }
 

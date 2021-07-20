@@ -41,7 +41,8 @@ class _LocationBoxState extends State<LocationBox> {
   Future<void> getPlaces() async {
     String? placefields;
     try {
-      final int result = await platform.invokeMethod('getcurrentlocation');
+      final dynamic result = await platform.invokeMethod('getcurrentlocation');
+      print(result);
       placefields = '$result';
     } on PlatformException catch (e) {
       placefields = "Failed to get places: '${e.message}'.";
