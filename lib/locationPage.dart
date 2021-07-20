@@ -5,6 +5,22 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+
+const platform = const MethodChannel('winterhack-channel');
+
+String? _placefields;
+
+getPlaces2() async {
+  String placefields;
+  try {
+    final dynamic result = await platform.invokeMethod('getcurrentlocation');
+    placefields = '$result';
+  } on PlatformException catch (e) {
+    placefields = "Failed to get places: '${e.message}'.";
+  }
+  _placefields = placefields;
+}
 
 class LocationPage extends StatelessWidget {
   @override
@@ -34,23 +50,11 @@ class _LocationBoxState extends State<LocationBox> {
     mapController = controller;
   }
 
-  static const platform = const MethodChannel('winterhack-channel');
-
   String? _placefields;
 
   Future<void> getPlaces() async {
-    String? placefields;
-    try {
-      final dynamic result = await platform.invokeMethod('getcurrentlocation');
-      print(result);
-      placefields = '$result';
-    } on PlatformException catch (e) {
-      placefields = "Failed to get places: '${e.message}'.";
-    }
-
-    setState(() {
-      _placefields = placefields;
-    });
+    getPlaces2();
+    setState(() {});
   }
 
   void _getUserPosition() async {
@@ -105,7 +109,9 @@ class _LocationBoxState extends State<LocationBox> {
       TextButton(
           child: Text('Get Places'),
           onPressed: () {
-            getPlaces();
+            setState(() {
+              getPlaces();
+            });
           }),
       Container(child: Text(_placefields.toString()))
     ]));

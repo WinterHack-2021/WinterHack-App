@@ -2,11 +2,30 @@ import 'package:flutter/cupertino.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
 import 'clickable_container.dart';
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
+import 'locationPage.dart';
+import 'dart:isolate';
 
-void main() => runApp(MaterialApp(
-      home: HomeWidget(),
-      theme: ThemeData.dark(),
-    ));
+void printHello() {
+  final DateTime now = DateTime.now();
+  final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
+  print('yoyoyoy');
+}
+
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  final int locationAlarmID = 0;
+  await AndroidAlarmManager.initialize();
+  runApp(MaterialApp(
+    home: HomeWidget(),
+    theme: ThemeData.dark(),
+  ));
+
+  await AndroidAlarmManager.periodic(
+      const Duration(seconds: 5), locationAlarmID, printHello,
+      exact: true);
+}
 
 class HomeWidget extends StatefulWidget {
   @override
