@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:winterhack_2021/saved_data.dart';
 import 'locationPage.dart';
 import 'package:flutter/cupertino.dart';
-import 'saved_data.dart';
 import 'chips.dart';
 import 'blacklistPage.dart';
 
@@ -27,15 +27,16 @@ class ClickableContainer extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                         padding:
-                            EdgeInsets.symmetric(horizontal: 35, vertical: 10),
+                        EdgeInsets.symmetric(horizontal: 35, vertical: 10),
                         child: Text(title.toUpperCase(),
-                            style: Theme.of(context)
+                            style: Theme
+                                .of(context)
                                 .textTheme
                                 .caption!
                                 .copyWith(
-                                    color: Color(0xff969696),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)))),
+                                color: Color(0xff969696),
+                                fontWeight: FontWeight.w600,
+                                fontSize: 14)))),
                 child
               ])),
           color: Color(0xff1c1c1e),
@@ -48,10 +49,9 @@ class ClickableContainer extends StatelessWidget {
     ]);
   }
 
-  ClickableContainer(
-      {required this.child,
-      required this.onClick,
-      this.title = "Sample Title"});
+  ClickableContainer({required this.child,
+    required this.onClick,
+    this.title = "Sample Title"});
 }
 
 class ClickableLocationContainer extends StatefulWidget {
@@ -63,21 +63,10 @@ class ClickableLocationContainer extends StatefulWidget {
 /// This is the private State class that goes with ClickableLocationContainer.
 class _ClickableLocationContainerState
     extends State<ClickableLocationContainer> {
-  // MaterialPageRoute navpage;
-  // _ClickableLocationContainerState(this.navpage);
-  Widget chipList() {
-    return Wrap(
-      spacing: 6.0,
-      runSpacing: -1.0,
-      alignment: WrapAlignment.center,
-      children: [for (var i in savedlocations) ChipState(i)],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ClickableContainer(
-        child: chipList(),
+        child: getChipsWidget(getSavedLocations),
         title: "Locations",
         onClick: () {
           Navigator.push(context,
@@ -92,23 +81,33 @@ class ClickableAppsContainer extends StatefulWidget {
 }
 
 class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
-  chipList() {
-    return Wrap(
-      spacing: 6.0,
-      runSpacing: -1.0,
-      alignment: WrapAlignment.center,
-      children: [for (var i in loadedapps) ChipState(i)],
-    );
-  }
-
   @override
   Widget build(BuildContext context) {
     return ClickableContainer(
         title: "Disabled Apps",
         onClick: () {
+          getDisabledApps().then((value) => value.add("Uni Melb"));
           Navigator.push(context,
               new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
         },
-        child: chipList());
+        child: getChipsWidget(getDisabledApps));
   }
+}
+
+Widget getChipsWidget(Future<StorageStringList> Function() func) {
+  return FutureBuilder(
+    future: func(),
+    builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
+      final dat = snapshot.hasData ? snapshot.data!.iter() : Set();
+      if (dat.isEmpty) {
+        return Padding(padding: EdgeInsets.fromLTRB(0,0,0,20), child: Text("(Tap to Add Items)", style: Theme.of(context).textTheme.overline!.copyWith(fontSize: 15),));
+      }
+      return Wrap(
+        spacing: 6.0,
+        runSpacing: -1.0,
+        alignment: WrapAlignment.center,
+        children: [for (var i in dat) ChipState(i)],
+      );
+    },
+  );
 }
