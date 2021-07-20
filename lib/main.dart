@@ -5,6 +5,7 @@ import 'clickable_container.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'locationPage.dart';
 import 'dart:isolate';
+import 'package:animated_text_kit/animated_text_kit.dart';
 
 void printHello() {
   final DateTime now = DateTime.now();
@@ -60,9 +61,17 @@ class Home extends State<HomeWidget> {
       body: Column(children: <Widget>[
         SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          Text((isActive ? "on" : "off") + "Track ",
-              style: theme.textTheme.headline3!
-                  .copyWith(fontWeight: FontWeight.w500, color: Colors.white)),
+          (isActive ? AnimatedTextKit(animatedTexts: [ColorizeAnimatedText(
+              'onTrack', textStyle: TextStyle(fontSize: 45.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
+              colors: [
+                Colors.white,
+                Colors.white,
+                Colors.purple,
+                Colors.blue,
+                Colors.yellow,
+                Colors.red,
+              ]
+          )], totalRepeatCount: 1,) : Text("offTrack", style: theme.textTheme.headline3!.copyWith(fontWeight: FontWeight.w500, color: Colors.white))),
           SizedBox(width: 30),
           Transform.scale(
               scale: 1.5,

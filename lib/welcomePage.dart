@@ -11,6 +11,9 @@ class WelcomePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
+            SizedBox(
+              height: 90
+            ),
             Text(
               "Stay",
               style: TextStyle(fontSize: 40.0, fontWeight: FontWeight.normal),
