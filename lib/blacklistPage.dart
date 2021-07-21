@@ -35,6 +35,11 @@ class Blacklist extends State<BlacklistPage> {
   static const platform = const MethodChannel('winterhack-channel');
   String _randomString = '';
 
+  void startServiceInPlatform() async {
+    String data = await platform.invokeMethod("startService");
+    debugPrint(data);
+  }
+
   Future<void> _getAndroidString() async {
     String randomString = '';
     try {
@@ -50,33 +55,32 @@ class Blacklist extends State<BlacklistPage> {
     });
   }
 
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.white,
+      child: Center(
+        child: ElevatedButton(
+            child: Text("Start Background"),
+            onPressed: (){
+            }
+
+        ),
+      ),
+    );
+  }
+
   // @override
   // Widget build(BuildContext context) {
   //   _getAndroidString();
-  //   return Scaffold(
-  //     appBar: AppBar(
-  //       title: Text("Blacklist PAge"),
-  //     ),
-  //     body: Container(
-  //       child: Column(
-  //         children: [
-  //           for ( var i in _randomString ) Text(i.toString())
-  //         ],
-  //       ),
-  //     ),
-  //   );
+  //   //   // 1. Enable an app
+  //   //   // 2. Disable app
+  //   //   // enableApp(appId)
+  //   //   // disableApp(appId)
+  //   //   //print(_randomString);
+  //   return Scaffold(body: Column(children: [Text(_randomString)]));
+  //   // }
   // }
-  // @override
-  Widget build(BuildContext context) {
-    _getAndroidString();
-    //   // 1. Enable an app
-    //   // 2. Disable app
-    //   // enableApp(appId)
-    //   // disableApp(appId)
-    //   //print(_randomString);
-    return Scaffold(body: Column(children: [Text(_randomString)]));
-    // }
-  }
 }
 
 

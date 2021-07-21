@@ -1,4 +1,5 @@
 package com.winterhack.winterhack_2021
+
 import androidx.annotation.NonNull
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
@@ -11,6 +12,7 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
+import android.os.Build
 import android.util.Log
 import androidx.core.content.ContextCompat
 
@@ -22,20 +24,32 @@ import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
 import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
+import io.flutter.plugins.GeneratedPluginRegistrant
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
     private val TAG = "MainActivity"
+    private var forService: Intent? = null
+
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        //GeneratedPluginRegistrant.registerWith(flutterEngine)
+        forService = Intent(this@MainActivity, MyService::class.java)
+
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            CHANNEL
+        ).setMethodCallHandler { call, result ->
             run {
                 if (call.method.equals("disablerEnabler")) {
                     val appResult = disablerEnabler()
                     result.success(appResult)
                 } else if (call.method.equals("DisplayApps")) {
                     val appResult = DisplayApps()
+                    result.success(appResult)
+                } else if (call.method.equals("startService")) {
+                    val appResult = startService()
                     result.success(appResult)
                 } else if (call.method.equals("getcurrentlocation")) {
                     getcurrentlocation(result)
@@ -94,13 +108,21 @@ class MainActivity : FlutterActivity() {
         }
     }
 
-    
+    private fun startService() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            startForegroundService(forService)
+        } else {
+            startService(forService)
+        }
+    }
+
+
     private fun getcurrentlocation(result: MethodChannel.Result) {
         // Initialize the SDK
         fun getLocationPermission() {
             TODO()
         }
-        
+
 
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
 
@@ -116,22 +138,27 @@ class MainActivity : FlutterActivity() {
 
         // Call findCurrentPlace and handle the response (first check that the user has granted permission).
         if (ContextCompat.checkSelfPermission(this, permission.ACCESS_FINE_LOCATION) ==
-            PackageManager.PERMISSION_GRANTED) {
+            PackageManager.PERMISSION_GRANTED
+        ) {
 
             val placeResponse = placesClient.findCurrentPlace(request)
             placeResponse.addOnCompleteListener { task ->
                 val placesList = arrayListOf<String>()
-                val placesMap : HashMap<String, String> = HashMap<String, String> ()
+                val placesMap: HashMap<String, String> = HashMap<String, String>()
                 if (task.isSuccessful) {
                     val response = task.result
-                    for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods ?: emptyList()) {
+                    for (placeLikelihood: PlaceLikelihood in response?.placeLikelihoods
+                        ?: emptyList()) {
                         // println("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
                         Log.i(
                             TAG,
                             "Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}"
                         )
                         placesList.add("Place '${placeLikelihood.place.name}' of type:'${placeLikelihood.place.types}' has likelihood: ${placeLikelihood.likelihood}")
-                        placesMap.put("${placeLikelihood.place.name}", "${placeLikelihood.place.types}")
+                        placesMap.put(
+                            "${placeLikelihood.place.name}",
+                            "${placeLikelihood.place.types}"
+                        )
                     }
                     result.success(placesMap)
                 } else {
@@ -145,7 +172,7 @@ class MainActivity : FlutterActivity() {
         } else {
             // A local method to request required permissions;
             // See https://developer.android.com/training/permissions/requesting
-           // TODO throw error
+            // TODO throw error
         }
         // [END maps_places_current_place]
     }
@@ -159,14 +186,4 @@ class MainActivity : FlutterActivity() {
 
     }
 }
-
-    
-//
-//public class TaskChecker{
-//    public static String getForegroundApplication(Context context){
-//        ActivityManager am=(ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
-//        RunningTaskInfo foreground=am.getRunningTasks(1).get(0);
-//        return foreground.topActivity.getPackageName();
-//    }
-//}
 
