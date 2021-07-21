@@ -1,35 +1,55 @@
+import 'dart:collection';
+
+import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String SAVED_LOCATION_KEY = "savedLocations";
 const String DISABLED_APPS_KEY = "disabledApps";
 const String TOTAL_TIME = "totalTime";
 // TODO make these providers so they update widgets on state change
-StorageStringList? _savedLocations;
-StorageStringList? _disabledApps;
 
-Future<StorageStringList> getSavedLocations() async {
-  if (_savedLocations == null) {
+class GlobalModel extends ChangeNotifier {
+  StorageStringList? _savedLocations;
+  StorageStringList? _disabledApps;
+  int _totalTime = -1;
+
+  GlobalModel() {
+    _init().then((_) {
+      _savedLocations!.addListener(() => notifyListeners());
+      _disabledApps!.addListener(() => notifyListeners());
+    });
+  }
+
+  Future<void> _init() async {
     _savedLocations = await _getStringList(SAVED_LOCATION_KEY);
-  }
-  return _savedLocations!;
-}
-
-Future<StorageStringList> getDisabledApps() async {
-  if (_disabledApps == null) {
     _disabledApps = await _getStringList(DISABLED_APPS_KEY);
+    _totalTime = await _getTotalTime();
+    notifyListeners();
   }
-  return _disabledApps!;
+
+  int get totalTime => _totalTime;
+
+  StorageStringList get savedLocations => _savedLocations == null
+      ? StorageStringList([], SAVED_LOCATION_KEY)
+      : _savedLocations!;
+
+  StorageStringList get disabledApps => _disabledApps == null
+      ? StorageStringList([], DISABLED_APPS_KEY)
+      : _disabledApps!;
+
+  setTotalTime(int time) async {
+    _totalTime = time;
+    (await SharedPreferences.getInstance()).setInt(TOTAL_TIME, _totalTime);
+    notifyListeners();
+  }
 }
 
-Future<int> getTotalTime() async {
+Future<int> _getTotalTime() async {
   final result = (await SharedPreferences.getInstance()).getInt(TOTAL_TIME);
   return result ?? 0;
 }
 
-setTotalTime(int time) async =>
-    (await SharedPreferences.getInstance()).setInt(TOTAL_TIME, time);
-
-class StorageStringList {
+class StorageStringList extends ChangeNotifier {
   late Set<String> _backingSet;
   String key;
 
@@ -43,6 +63,7 @@ class StorageStringList {
   Future<bool> add(String val) async {
     final result = _backingSet.add(val);
     if (result) await _saveList();
+    notifyListeners();
     return result;
   }
 
@@ -51,6 +72,7 @@ class StorageStringList {
     if (result) {
       await _saveList();
     }
+    notifyListeners();
     return result;
   }
 
@@ -58,9 +80,12 @@ class StorageStringList {
     return _backingSet.contains(val);
   }
 
-  Set<String> iter() {
-    return Set.unmodifiable(_backingSet);
+  clear() {
+    _backingSet.clear();
+    notifyListeners();
   }
+
+  UnmodifiableSetView<String> get items => UnmodifiableSetView(_backingSet);
 }
 
 Future<StorageStringList> _getStringList(String key) async {
@@ -68,6 +93,6 @@ Future<StorageStringList> _getStringList(String key) async {
   if (result == null) {
     return StorageStringList([], key);
   }
-  print("SET " + result.toString());
+  print("Loaded List from Storage " + result.toString());
   return StorageStringList(result, key);
 }
