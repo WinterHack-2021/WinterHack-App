@@ -16,16 +16,10 @@ void printHello() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final int locationAlarmID = 0;
-  await AndroidAlarmManager.initialize();
   runApp(MaterialApp(
     home: HomeWidget(),
     theme: ThemeData.dark(),
   ));
-
-  await AndroidAlarmManager.periodic(
-      const Duration(seconds: 5), locationAlarmID, printHello,
-      exact: true);
 }
 
 class HomeWidget extends StatefulWidget {
@@ -61,17 +55,28 @@ class Home extends State<HomeWidget> {
       body: Column(children: <Widget>[
         SizedBox(height: 20),
         Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          (isActive ? AnimatedTextKit(animatedTexts: [ColorizeAnimatedText(
-              'onTrack', textStyle: TextStyle(fontSize: 45.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
-              colors: [
-                Colors.white,
-                Colors.white,
-                Colors.purple,
-                Colors.blue,
-                Colors.yellow,
-                Colors.red,
-              ]
-          )], totalRepeatCount: 1,) : Text("offTrack", style: theme.textTheme.headline3!.copyWith(fontWeight: FontWeight.w500, color: Colors.white))),
+          (isActive
+              ? AnimatedTextKit(
+                  animatedTexts: [
+                    ColorizeAnimatedText('onTrack',
+                        textStyle: TextStyle(
+                            fontSize: 45.0,
+                            fontFamily: 'Horizon',
+                            fontWeight: FontWeight.bold),
+                        colors: [
+                          Colors.white,
+                          Colors.white,
+                          Colors.purple,
+                          Colors.blue,
+                          Colors.yellow,
+                          Colors.red,
+                        ])
+                  ],
+                  totalRepeatCount: 1,
+                )
+              : Text("offTrack",
+                  style: theme.textTheme.headline3!.copyWith(
+                      fontWeight: FontWeight.w500, color: Colors.white))),
           SizedBox(width: 30),
           Transform.scale(
               scale: 1.5,
