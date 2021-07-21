@@ -45,12 +45,9 @@ class _InitialState extends State<Initial> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(onPressed: (){
+                  IconButton(splashRadius: 20,onPressed: (){
                     if (pageChanged == 2) {
-                      Navigator.push(
-                        context,
-                        new MaterialPageRoute(builder: (ctxt) => new HomeWidget()),
-                      );
+                      Navigator.pop(context);
                     } else {
                       setState(() {
                         pageController.animateToPage(++pageChanged, duration: Duration(milliseconds: 150), curve: Curves.bounceInOut);
