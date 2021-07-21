@@ -63,6 +63,7 @@ class Blacklist extends State<BlacklistPage> {
         child: ElevatedButton(
             child: Text("Start Background"),
             onPressed: (){
+              startServiceInPlatform();
             }
 
         ),

@@ -16,11 +16,11 @@ public class MyService extends Service {
         super.onCreate();
 
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"messages")
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this,"winterhack-channel")
                     .setContentText("This is running in Background")
                     .setContentTitle("Flutter Background");
 
-            startForeground(101,builder.build());
+            startForeground(101,builder.build());   
         }
 
     }

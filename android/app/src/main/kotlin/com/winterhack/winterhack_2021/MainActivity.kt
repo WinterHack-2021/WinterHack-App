@@ -49,6 +49,7 @@ class MainActivity : FlutterActivity() {
                     val appResult = DisplayApps()
                     result.success(appResult)
                 } else if (call.method.equals("startService")) {
+                    print("working?");
                     val appResult = startService()
                     result.success(appResult)
                 } else if (call.method.equals("getcurrentlocation")) {

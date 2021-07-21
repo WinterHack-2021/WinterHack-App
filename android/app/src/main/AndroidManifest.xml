@@ -9,10 +9,11 @@
             tools:ignore="ProtectedPermissions" />
      <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
      <uses-permission android:name="android.permission.WAKE_LOCK"/>
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <uses-permission android:name="android.permission.KILL_BACKGROUND_PROCESSES"/>
    <application
-        android:label=".MyApplication"
+        android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher">
        <service android:name=".MyService" android:exported="true" android:enabled="true"/>
        <service
