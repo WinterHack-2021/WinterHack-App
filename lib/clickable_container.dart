@@ -27,16 +27,23 @@ class ClickableContainer extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 35, vertical: 10),
-                        child: Text(title.toUpperCase(),
-                            style: Theme
-                                .of(context)
-                                .textTheme
-                                .caption!
-                                .copyWith(
-                                color: Color(0xff969696),
-                                fontWeight: FontWeight.w600,
-                                fontSize: 14)))),
+                        EdgeInsets.symmetric(horizontal: 35, vertical: 17),
+                        child: Row(
+                          children: [
+                            Text(title.toUpperCase(),
+                                style: Theme
+                                    .of(context)
+                                    .textTheme
+                                    .caption!
+                                    .copyWith(
+                                    color: Color(0xff969696),
+                                    fontWeight: FontWeight.w600,
+                                    fontSize: 14)),
+                            SizedBox(width: 3),
+                            Icon(Icons.arrow_forward_ios, color: Color(0xff969696), size: 13,),
+                          ],
+                        )
+                    )),
                 child
               ])),
           color: Color(0xff1c1c1e),

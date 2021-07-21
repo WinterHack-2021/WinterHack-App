@@ -12,7 +12,7 @@ class WelcomePage extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
             SizedBox(
-              height: 90
+              height: 75
             ),
             Text(
               "Stay",

@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:winterhack_2021/WelcomeApps.dart';
 import 'package:winterhack_2021/WelcomeLocation.dart';
+import 'package:winterhack_2021/main.dart';
 import 'package:winterhack_2021/welcomePage.dart';
 
 class Initial extends StatefulWidget {
@@ -45,10 +46,17 @@ class _InitialState extends State<Initial> {
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
                   IconButton(onPressed: (){
-                    setState(() {
-                      pageController.animateToPage(++pageChanged, duration: Duration(milliseconds: 150), curve: Curves.bounceInOut);
-                    });
-                  }, icon: Icon(Icons.arrow_forward_ios, color: Colors.black45)),
+                    if (pageChanged == 2) {
+                      Navigator.push(
+                        context,
+                        new MaterialPageRoute(builder: (ctxt) => new HomeWidget()),
+                      );
+                    } else {
+                      setState(() {
+                        pageController.animateToPage(++pageChanged, duration: Duration(milliseconds: 150), curve: Curves.bounceInOut);
+                      });
+                    }
+                  }, icon: Icon(Icons.arrow_forward_ios, color: Colors.white)),
                   SizedBox(width: 15)
                 ],
               ),

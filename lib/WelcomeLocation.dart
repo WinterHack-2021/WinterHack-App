@@ -11,7 +11,14 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: Text("Hello")
+        body: Padding(
+          padding: EdgeInsets.fromLTRB(15, 80, 30, 15),
+          child: Column(
+            children: <Widget>[
+              Text('Locations'),
+            ],
+          ),
+        ),
     );
   }
 }

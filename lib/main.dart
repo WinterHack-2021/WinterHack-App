@@ -17,6 +17,7 @@ void printHello() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
+    debugShowCheckedModeBanner: false,
     home: HomeWidget(),
     theme: ThemeData.dark(),
   ));
