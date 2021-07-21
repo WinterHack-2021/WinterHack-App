@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:provider/provider.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
+import 'package:winterhack_2021/saved_data.dart';
 import 'clickable_container.dart';
 import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'locationPage.dart';
@@ -18,7 +20,8 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: HomeWidget(),
+    home: ChangeNotifierProvider(
+        create: (BuildContext context) => GlobalModel(), child: HomeWidget()),
     theme: ThemeData.dark(),
   ));
 }
@@ -91,13 +94,22 @@ class Home extends State<HomeWidget> {
           children: [
             ClickableLocationContainer(),
             ClickableAppsContainer(),
-            ClickableContainer(
-                child: Padding(
-                    padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-                    child: Text("10 Hours, 15 Minutes",
-                        style:
-                            theme.textTheme.subtitle1!.copyWith(fontSize: 23))),
-                onClick: () {}),
+            Consumer<GlobalModel>(
+              builder: (context, value, child) {
+                Duration duration = Duration(milliseconds: value.totalTime);
+
+                return ClickableContainer(
+                    child: Padding(
+                        padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                        // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
+                        child: Text("${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
+                            style: theme.textTheme.subtitle1!
+                                .copyWith(fontSize: 23))),
+                    onClick: () {
+                      value.setTotalTime(value.totalTime+100000);
+                    });
+              },
+            ),
           ],
         )),
       ]),

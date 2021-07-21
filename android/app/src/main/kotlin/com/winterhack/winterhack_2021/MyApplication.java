@@ -5,7 +5,6 @@ import android.app.NotificationManager;
 import android.os.Build;
 
 import io.flutter.app.FlutterApplication;
-import io.flutter.plugins.GeneratedPluginRegistrant;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback;
 import io.flutter.plugins.geofencing.GeofencingService;
@@ -16,7 +15,6 @@ public class MyApplication extends FlutterApplication implements PluginRegistran
     public void onCreate() {
         super.onCreate();
         //Abhi's Code
-
         GeofencingService.setPluginRegistrant(this);
         //Vishal's Code
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){

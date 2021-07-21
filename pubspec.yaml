@@ -38,6 +38,7 @@ dependencies:
   android_alarm_manager_plus: ^1.0.2
   shared_preferences: ^2.0.6
   geofencing: ^0.1.0
+  provider: ^5.0.0
 
 dev_dependencies:
   flutter_test:

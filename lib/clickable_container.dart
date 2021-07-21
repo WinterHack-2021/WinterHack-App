@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'locationPage.dart';
 import 'package:flutter/cupertino.dart';
@@ -27,7 +28,7 @@ class ClickableContainer extends StatelessWidget {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 35, vertical: 17),
+                            EdgeInsets.symmetric(horizontal: 35, vertical: 17),
                         child: Row(
                           children: [
                             Text(title.toUpperCase(),
@@ -56,9 +57,10 @@ class ClickableContainer extends StatelessWidget {
     ]);
   }
 
-  ClickableContainer({required this.child,
-    required this.onClick,
-    this.title = "Sample Title"});
+  ClickableContainer(
+      {required this.child,
+      required this.onClick,
+      this.title = "Sample Title"});
 }
 
 class ClickableLocationContainer extends StatefulWidget {
@@ -72,13 +74,14 @@ class _ClickableLocationContainerState
     extends State<ClickableLocationContainer> {
   @override
   Widget build(BuildContext context) {
-    return ClickableContainer(
-        child: getChipsWidget(getSavedLocations),
-        title: "Locations",
-        onClick: () {
-          Navigator.push(context,
-              new CupertinoPageRoute(builder: (ctxt) => LocationPage()));
-        });
+    return Consumer<GlobalModel>(
+        builder: (context, value, child) => ClickableContainer(
+            child: getChipsWidget(Future.value(value.savedLocations)),
+            title: "Locations",
+            onClick: () {
+              Navigator.push(context,
+                  new CupertinoPageRoute(builder: (ctxt) => LocationPage()));
+            }));
   }
 }
 
@@ -90,24 +93,30 @@ class ClickableAppsContainer extends StatefulWidget {
 class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   @override
   Widget build(BuildContext context) {
-    return ClickableContainer(
-        title: "Disabled Apps",
-        onClick: () {
-          getDisabledApps().then((value) => value.add("Uni Melb"));
-          Navigator.push(context,
-              new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
-        },
-        child: getChipsWidget(getDisabledApps));
+    return Consumer<GlobalModel>(
+        builder: (context, value, child) => ClickableContainer(
+            child: getChipsWidget(Future.value(value.disabledApps)),
+            title: "Disabled Apps",
+            onClick: () {
+              Navigator.push(context,
+                  new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
+            }));
   }
 }
 
-Widget getChipsWidget(Future<StorageStringList> Function() func) {
+Widget getChipsWidget(Future<StorageStringList> func) {
   return FutureBuilder(
-    future: func(),
+    future: func,
     builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.iter() : Set();
+      final dat = snapshot.hasData ? snapshot.data!.items : Set();
       if (dat.isEmpty) {
-        return Padding(padding: EdgeInsets.fromLTRB(0,0,0,20), child: Text("(Tap to Add Items)", style: Theme.of(context).textTheme.overline!.copyWith(fontSize: 15),));
+        return Padding(
+            padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
+            child: Text(
+              "(Tap to Add Items)",
+              style:
+                  Theme.of(context).textTheme.overline!.copyWith(fontSize: 15),
+            ));
       }
       return Wrap(
         spacing: 6.0,
