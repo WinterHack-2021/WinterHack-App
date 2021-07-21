@@ -7,7 +7,7 @@ class WelcomeApps extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Padding(
-        padding: EdgeInsets.fromLTRB(15, 80, 30, 15),
+        padding: EdgeInsets.fromLTRB(40, 80, 30, 45),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -21,9 +21,18 @@ class WelcomeApps extends StatelessWidget {
             ),
             SizedBox(height: 20),
             Text(
-              'APPS THAT WILL AUTOMATICALLY DISABLE WHEN YOU ENTER HIGH PRODUCTIVITY LOCATIONS',
-              textAlign: TextAlign.center,
-            )
+              'APPS THAT WILL DISABLE WHEN YOU ENTER HIGH PRODUCTIVITY LOCATIONS',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                height: 1.4,
+                fontSize: 13,
+                letterSpacing: 0.5,
+              ),
+            ),
+            SizedBox(height: 20),
+            Container(
+              color: Colors.blue,
+            ),
           ],
         ),
       )
