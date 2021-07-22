@@ -5,6 +5,8 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    const duration = const Duration(milliseconds: 50);
+    var styling = TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold);
     return Scaffold(
       body: Center(
         child: Column(
@@ -22,26 +24,31 @@ class WelcomePage extends StatelessWidget {
               height: 10.0,
             ),
             AnimatedTextKit(
+              pause: const Duration(milliseconds: 50),
               animatedTexts: [
                 TyperAnimatedText(
                     'Productive!',
                     textStyle:
-                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
+                      styling,
+                    speed: duration,
                 ),
                 TyperAnimatedText(
                     'Focused!',
                     textStyle:
-                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
+                      styling,
+                    speed: duration,
                 ),
                 TyperAnimatedText(
                     'Concentrated!',
                     textStyle:
-                      TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold)
+                      styling,
+                    speed: duration,
                 ),
                 ColorizeAnimatedText(
                     '#onTrack',
                     textStyle:
                       TextStyle(fontSize: 45.0, fontFamily: 'Horizon', fontWeight: FontWeight.bold),
+                    speed: duration,
                     colors: [
                       Colors.purple,
                       Colors.blue,
@@ -50,7 +57,7 @@ class WelcomePage extends StatelessWidget {
                     ]
                 )
               ],
-                totalRepeatCount: 1
+                totalRepeatCount: 1,
             )
           ]
         )
