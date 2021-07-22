@@ -1,19 +1,25 @@
 import 'dart:collection';
 
 import 'package:flutter/widgets.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 const String SAVED_LOCATION_KEY = "savedLocations";
 const String DISABLED_APPS_KEY = "disabledApps";
 const String TOTAL_TIME = "totalTime";
-// TODO make these providers so they update widgets on state change
 
 class GlobalModel extends ChangeNotifier {
+  static GlobalModel _singleton = GlobalModel._();
   StorageStringList? _savedLocations;
   StorageStringList? _disabledApps;
   int _totalTime = -1;
 
-  GlobalModel() {
+  static Widget asWidget(Widget child) {
+    return ChangeNotifierProvider(
+        create: (BuildContext context) => _singleton, child: child);
+  }
+
+  GlobalModel._() {
     _init().then((_) {
       _savedLocations!.addListener(() => notifyListeners());
       _disabledApps!.addListener(() => notifyListeners());
@@ -50,42 +56,48 @@ Future<int> _getTotalTime() async {
 }
 
 class StorageStringList extends ChangeNotifier {
-  late Set<String> _backingSet;
+  late Map<String, bool> _backingMap;
   String key;
 
   StorageStringList(List<String> backingList, this.key) {
-    _backingSet = Set.of(backingList);
+    _backingMap = Map();
+    for (var x in backingList) {
+      List<String> split = x.split(":");
+      _backingMap.putIfAbsent(x[0], () => x.toLowerCase() == 'true');
+    }
   }
 
-  _saveList() async => (await SharedPreferences.getInstance())
-      .setStringList(key, List.of(_backingSet));
+  _saveList() async => (await SharedPreferences.getInstance()).setStringList(
+      key, List.of(_backingMap.entries.map((e) => "${e.key}:${e.value.toString()}")));
 
-  Future<bool> add(String val) async {
-    final result = _backingSet.add(val);
-    if (result) await _saveList();
+  Future<bool> upsert(String key, bool val) async {
+    final didUpdate = _backingMap.update(key, (value) => val, ifAbsent: () => val)==val;
+    // if changed
+    if (didUpdate) await _saveList();
     notifyListeners();
-    return result;
+    return didUpdate;
   }
 
   Future<bool> remove(String val) async {
-    final result = _backingSet.remove(val);
-    if (result) {
+    final didRemove = _backingMap.remove(val) != null;
+    // if something was removed
+    if (didRemove) {
       await _saveList();
     }
     notifyListeners();
-    return result;
+    return didRemove;
   }
 
-  bool contains(String val) {
-    return _backingSet.contains(val);
+  bool? get(String val) {
+    return _backingMap[val];
   }
 
   clear() {
-    _backingSet.clear();
+    _backingMap.clear();
     notifyListeners();
   }
 
-  UnmodifiableSetView<String> get items => UnmodifiableSetView(_backingSet);
+  UnmodifiableMapView<String, bool> get items => UnmodifiableMapView(_backingMap);
 }
 
 Future<StorageStringList> _getStringList(String key) async {

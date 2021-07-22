@@ -32,19 +32,21 @@ class ClickableContainer extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(title.toUpperCase(),
-                                style: Theme
-                                    .of(context)
+                                style: Theme.of(context)
                                     .textTheme
                                     .caption!
                                     .copyWith(
-                                    color: Color(0xff969696),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                                        color: Color(0xff969696),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14)),
                             SizedBox(width: 3),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff969696), size: 13,),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(0xff969696),
+                              size: 13,
+                            ),
                           ],
-                        )
-                    )),
+                        ))),
                 child
               ])),
           color: Color(0xff1c1c1e),
@@ -80,7 +82,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => LocationPage()));
+                  new MaterialPageRoute(builder: (ctxt) => LocationPage()));
             }));
   }
 }
@@ -99,7 +101,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
             title: "Disabled Apps",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
+                  new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
             }));
   }
 }
@@ -108,7 +110,7 @@ Widget getChipsWidget(Future<StorageStringList> func) {
   return FutureBuilder(
     future: func,
     builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.items : Set();
+      final dat = snapshot.hasData ? snapshot.data!.items : Map();
       if (dat.isEmpty) {
         return Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -122,7 +124,14 @@ Widget getChipsWidget(Future<StorageStringList> func) {
         spacing: 6.0,
         runSpacing: -1.0,
         alignment: WrapAlignment.center,
-        children: [for (var i in dat) ChipState(i)],
+        children: [
+          for (var i in dat.entries)
+            ChipWidget(
+                name: i.key,
+                isChecked: i.value,
+                onSelected: (selected) =>
+                    snapshot.data!.upsert(i.key, selected))
+        ],
       );
     },
   );

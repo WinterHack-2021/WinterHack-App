@@ -20,8 +20,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ChangeNotifierProvider(
-        create: (BuildContext context) => GlobalModel(), child: HomeWidget()),
+    home: GlobalModel.asWidget(HomeWidget()),
     theme: ThemeData.dark(),
   ));
 }
@@ -102,11 +101,13 @@ class Home extends State<HomeWidget> {
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
                         // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
-                        child: Text("${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
+                        child: Text(
+                            "${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
                             style: theme.textTheme.subtitle1!
                                 .copyWith(fontSize: 23))),
                     onClick: () {
-                      value.setTotalTime(value.totalTime+100000);
+                      value.setTotalTime(value.totalTime + 100000);
+                      value.savedLocations.upsert("ff", false);
                     });
               },
             ),
