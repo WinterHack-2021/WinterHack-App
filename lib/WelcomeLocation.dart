@@ -9,6 +9,7 @@ class WelcomeLocation extends StatefulWidget {
 }
 
 class _WelcomeLocationState extends State<WelcomeLocation> {
+  bool isActive = false;
   Widget _locationCard(String name) {
     return Column(children: [
       Container(
@@ -23,13 +24,21 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 30, vertical: 10),
+                        EdgeInsets.symmetric(horizontal: 20, vertical: 25),
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Expanded(flex: 1, child: Icon(Icons.location_pin, color: Color(0xff969696),)),
-                            Expanded(flex: 6, child: Text('University', style: TextStyle(color: Color(0xff969696),),)),
-                            Expanded(flex: 4, child: Icon(Icons.toggle_off, color: Color(0xff969696), size: 70,)),
+                            Expanded(flex: 2, child: Icon(Icons.location_pin, color: Color(0xff969696),)),
+                            Expanded(flex: 6, child: Text(name, style: TextStyle(color: Color(0xff969696), fontSize: 20),)),
+                            Expanded(
+                              flex: 3,
+                              child: Transform.scale(
+                                  scale: 1.5,
+                                  child: CupertinoSwitch(
+                                    value: isActive,
+                                    onChanged: (value) => setState(() => isActive = value),
+                                  )),
+                            ),
                           ],
                         )
                     )),
@@ -48,7 +57,7 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
   Widget build(BuildContext context) {
     return Scaffold(
         body: Padding(
-      padding: EdgeInsets.fromLTRB(40, 80, 30, 45),
+      padding: EdgeInsets.fromLTRB(40, 80, 30, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -71,8 +80,11 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
           Expanded(
             child: ListView(
               children: <Widget>[
-                _locationCard("AIWUdb"),
-                _locationCard("AIWUdb")
+                _locationCard("University"),
+                _locationCard("Work"),
+                _locationCard("School"),
+                _locationCard("McDonald's"),
+                _locationCard("Vishal's Crib"),
               ],
             ),
           ),
