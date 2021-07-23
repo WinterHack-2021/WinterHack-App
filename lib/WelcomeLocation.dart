@@ -23,7 +23,7 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
     Function(bool selected) onChanged=(selected)=>setState(()=>isActive=selected);
     return Scaffold(
         body: Padding(
-      padding: EdgeInsets.fromLTRB(40, 80, 30, 30),
+      padding: EdgeInsets.fromLTRB(30, 80, 30, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
