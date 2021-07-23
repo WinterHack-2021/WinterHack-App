@@ -4,11 +4,12 @@ import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'clickable_container.dart';
-import 'geofencing.dart';
 import 'dart:isolate';
 import 'dart:ui';
 import 'package:geofencing/geofencing.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 
 void printHello() {
   final DateTime now = DateTime.now();
@@ -35,27 +36,14 @@ class HomeWidget extends StatefulWidget {
 class Home extends State<HomeWidget> {
   bool isActive = false;
 
-  String geofenceState = 'N/A';
-  ReceivePort port = ReceivePort();
-
-  Future<void> initPlatformState() async {
-    print('Initializing...');
-    await GeofencingManager.initialize();
-    print('Initialization done');
-  }
-
   @override
   void initState() {
     super.initState();
-    IsolateNameServer.registerPortWithName(
-        port.sendPort, 'geofencing_send_port');
-    port.listen((dynamic data) {
-      print('Event: $data');
-      setState(() {
-        geofenceState = data;
-      });
+    bg.BackgroundGeolocation.onGeofence((bg.GeofenceEvent event) {
+      print('trigged fence');
+      print('Action: ${event.action}');
+      print('Identifier: ${event.identifier}');
     });
-    initPlatformState();
   }
 
   @override

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart';
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 
 class GeoFence extends StatefulWidget {
   const GeoFence({Key? key}) : super(key: key);
@@ -10,13 +11,13 @@ class GeoFence extends StatefulWidget {
 }
 
 class _GeoFenceState extends State<GeoFence> {
-  String geofencename = 'Geo_Fence_2';
+  String geofencename = 'Home';
   double long = 144.685666;
   double lat = -37.842921;
-  double radius = 200;
+  double radius = 50;
 
   void addGeofence(geofencename, long, lat, radius) {
-    BackgroundGeolocation.addGeofence(Geofence(
+    bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
         radius: radius,
