@@ -18,6 +18,7 @@ import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
 import android.app.AlarmManager
+import android.app.PendingIntent
 import android.content.Context
 
 class MainActivity : FlutterActivity() {
@@ -29,13 +30,16 @@ class MainActivity : FlutterActivity() {
         //GeneratedPluginRegistrant.registerWith(flutterEngine)
         val forService = startDisablerService()
 
-        val alarmManage: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        var pendingIntent: PendingIntent? = null;
+        val alarmTime: Long = 5;
+        val alarmManager: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
         val intent = Intent(this, MyService::class.java)
         //intent.action = MyService.ACTION_SEND_TEST_MESSAGE)
         //intent.putExtra(MyService.EXTRA_MESSAGE, message)
 
-        
+        pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent)
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
