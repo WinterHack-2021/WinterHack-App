@@ -1,6 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools"
         package="com.winterhack.winterhack_2021">
+        
    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
@@ -15,6 +16,8 @@
    <application
         android:name=".MyApplication"
         android:icon="@mipmap/ic_launcher">
+
+
        <service android:name=".MyService" android:exported="true" android:enabled="true"/>
        <service
     android:name="dev.fluttercommunity.plus.androidalarmmanager.AlarmService"
@@ -36,6 +39,7 @@
 </receiver>
         <meta-data android:name="com.google.android.geo.API_KEY"
                android:value="AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A"/>
+        <meta-data android:name="com.transistorsoft.locationmanager.license" android:value="YOUR_LICENCE_KEY_HERE" />
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTop"

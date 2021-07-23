@@ -5,7 +5,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 
 const platform = const MethodChannel('winterhack-channel');
 

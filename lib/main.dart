@@ -6,7 +6,6 @@ import 'package:winterhack_2021/saved_data.dart';
 import 'clickable_container.dart';
 import 'dart:isolate';
 import 'dart:ui';
-import 'package:geofencing/geofencing.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
@@ -44,6 +43,8 @@ class Home extends State<HomeWidget> {
       print('Action: ${event.action}');
       print('Identifier: ${event.identifier}');
     });
+
+    bg.BackgroundGeolocation.start();
   }
 
   @override

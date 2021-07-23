@@ -24,6 +24,7 @@ class _GeoFenceState extends State<GeoFence> {
         identifier: '$geofencename',
         latitude: lat,
         longitude: long));
+    print('addded');
   }
 
   @override
@@ -41,7 +42,11 @@ class _GeoFenceState extends State<GeoFence> {
                   },
                   child: Text('Add Location')),
               TextButton(
-                onPressed: () {},
+                onPressed: () async {
+                  List<bg.Geofence> geofences =
+                      await bg.BackgroundGeolocation.geofences;
+                  print('[getGeofences: $geofences');
+                },
                 child: Text('Print Registed Geofences'),
               )
             ],
