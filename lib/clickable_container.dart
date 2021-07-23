@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'locationPage.dart';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'chips.dart';
 import 'blacklistPage.dart';
+import 'geofencing.dart';
 
 class ClickableContainer extends StatelessWidget {
   static const double BORDER_RADIUS = 10;
@@ -82,7 +84,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (ctxt) => LocationPage()));
+                  new MaterialPageRoute(builder: (ctxt) => GeoFence()));
             }));
   }
 }
