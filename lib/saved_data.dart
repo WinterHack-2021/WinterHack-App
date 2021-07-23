@@ -63,15 +63,21 @@ class StorageStringList extends ChangeNotifier {
     _backingMap = Map();
     for (var x in backingList) {
       List<String> split = x.split(":");
-      _backingMap.putIfAbsent(x[0], () => x.toLowerCase() == 'true');
+      _backingMap.putIfAbsent(
+          split[0],
+          // Try set boolean if it exists.
+          () => split.length > 1 ? split[1].toLowerCase() == 'true' : false);
     }
   }
 
   _saveList() async => (await SharedPreferences.getInstance()).setStringList(
-      key, List.of(_backingMap.entries.map((e) => "${e.key}:${e.value.toString()}")));
+      key,
+      List.of(
+          _backingMap.entries.map((e) => "${e.key}:${e.value.toString()}")));
 
   Future<bool> upsert(String key, bool val) async {
-    final didUpdate = _backingMap.update(key, (value) => val, ifAbsent: () => val)==val;
+    final didUpdate =
+        _backingMap.update(key, (value) => val, ifAbsent: () => val) == val;
     // if changed
     if (didUpdate) await _saveList();
     notifyListeners();
@@ -97,7 +103,8 @@ class StorageStringList extends ChangeNotifier {
     notifyListeners();
   }
 
-  UnmodifiableMapView<String, bool> get items => UnmodifiableMapView(_backingMap);
+  UnmodifiableMapView<String, bool> get items =>
+      UnmodifiableMapView(_backingMap);
 }
 
 Future<StorageStringList> _getStringList(String key) async {
