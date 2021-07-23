@@ -15,7 +15,7 @@ class _GeoFenceState extends State<GeoFence> {
   String geofenceid = 'Geo_Fence_2';
   double long = 144.685666;
   double lat = -37.842921;
-  double radius = 100;
+  double radius = 200;
   List<String> registeredGeofences = [];
 
   final List<GeofenceEvent> triggers = <GeofenceEvent>[
