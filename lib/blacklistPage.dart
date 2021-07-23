@@ -7,56 +7,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
+import 'package:winterhack_2021/clickable_container.dart';
 
 const platform = const MethodChannel('winterhack-channel');
 const String portName = "ConnectingIsolate";
 
 class BlacklistPage extends StatefulWidget {
   @override
-  State<StatefulWidget> createState() {
-    // TODO: implement createState
-    return Blacklist();
-  }
-}
-
-Future<void> printHello() async {
-
-  final DateTime now = DateTime.now();
-  //final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! function='$printHello'");
-  print('yoyoyoy');
-  final List result = await platform.invokeMethod("DisplayApps");
+  State<StatefulWidget> createState() => Blacklist();
 }
 
 class Blacklist extends State<BlacklistPage> {
-  //Widget get home => _BlacklistBoxState();
+  List<AppInfo> appList = [];
 
-
-  String _randomString = '';
-
-  void startServiceInPlatform() async {
-    //String data = await platform.invokeMethod("startService");
-    //final List result = await platform.invokeMethod("DisplayApps");
-    //print(result.first.toString());
-    //debugPrint(data);
-    final int helloAlarmID = 0;
-    await AndroidAlarmManager.initialize();
-    await AndroidAlarmManager.periodic(const Duration(seconds: 5), helloAlarmID, printHello, exact: true);
+  setDisabledApps() async {
+    await platform.invokeMethod(
+        "setDisabledApps", ["com.google.android.gm", "com.google.android.gm"]);
   }
 
-  Future<void> _getAndroidString() async {
-    String randomString = '';
-    try {
-      final String result = await platform.invokeMethod("disablerEnabler");
-      randomString = result;
-      print("happeniun");
-    } on PlatformException catch (e) {
-      //randomString = "Failed to get random string: '${e.message}'.";
-    }
-
-    setState(() {
-      _randomString = randomString;
-    });
+  @override
+  void initState() {
+    super.initState();
+    InstalledApps.getInstalledApps(true, false).then((value) => setState(() {
+          appList = value;
+        }));
   }
 
   @override
@@ -64,32 +38,25 @@ class Blacklist extends State<BlacklistPage> {
     return Container(
       color: Colors.white,
       child: Center(
-        child: ElevatedButton(
-            child: Text("Start Background"),
-            onPressed: (){
-              startServiceInPlatform();
-            }
-
+        child: ListView(
+          children: [
+            ...appList.map((app) => ClickableContainer(
+                  title: app.packageName != null ? app.packageName! : "",
+                  onClick: () {},
+                  child: SizedBox(
+                    width: 20,
+                  ),
+                )),
+            ElevatedButton(
+                child: Text("Disable First app"), onPressed: setDisabledApps)
+          ],
         ),
       ),
     );
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   _getAndroidString();
-  //   //   // 1. Enable an app
-  //   //   // 2. Disable app
-  //   //   // enableApp(appId)
-  //   //   // disableApp(appId)
-  //   //   //print(_randomString);
-  //   return Scaffold(body: Column(children: [Text(_randomString)]));
-  //   // }
-  // }
 }
 
-
-class _BlacklistBoxState extends StatelessWidget {
+class BlacklistBoxState extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
