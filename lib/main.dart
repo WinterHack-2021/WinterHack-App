@@ -1,3 +1,5 @@
+// @dart=2.9
+
 import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/initial.dart';
@@ -92,7 +94,7 @@ class Home extends State<HomeWidget> {
                   totalRepeatCount: 1,
                 )
               : Text("offTrack",
-                  style: theme.textTheme.headline3!.copyWith(
+                  style: theme.textTheme.headline3.copyWith(
                       fontWeight: FontWeight.w500, color: Colors.white))),
           SizedBox(width: 30),
           Transform.scale(
@@ -117,7 +119,7 @@ class Home extends State<HomeWidget> {
                         // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
                         child: Text(
                             "${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
-                            style: theme.textTheme.subtitle1!
+                            style: theme.textTheme.subtitle1
                                 .copyWith(fontSize: 23))),
                     onClick: () {
                       value.setTotalTime(value.totalTime + 100000);
