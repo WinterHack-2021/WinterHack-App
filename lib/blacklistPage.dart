@@ -1,25 +1,15 @@
+import 'dart:isolate';
+import 'dart:ui';
+
+import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
 
-// class BlacklistPage extends StatelessWidget {
-//   @override
-//   Widget build(BuildContext context) {
-//     return new Scaffold(
-//         appBar: AppBar(
-//       title: Text('Blacklist Page'),
-//           elevation: 0,
-//         ),
-//       body: Container(child: Column(children: [BlacklistBox()])));
-//   }
-// }
-//
-// class BlacklistBox extends StatefulWidget {
-//   @override
-//   _BlacklistBoxState createState() => _BlacklistBoxState();
-// }
+const platform = const MethodChannel('winterhack-channel');
+const String portName = "ConnectingIsolate";
 
 class BlacklistPage extends StatefulWidget {
   @override
@@ -29,15 +19,29 @@ class BlacklistPage extends StatefulWidget {
   }
 }
 
+Future<void> printHello() async {
+
+  final DateTime now = DateTime.now();
+  //final int isolateId = Isolate.current.hashCode;
+  print("[$now] Hello, world! function='$printHello'");
+  print('yoyoyoy');
+  final List result = await platform.invokeMethod("DisplayApps");
+}
+
 class Blacklist extends State<BlacklistPage> {
   //Widget get home => _BlacklistBoxState();
 
-  static const platform = const MethodChannel('winterhack-channel');
+
   String _randomString = '';
 
   void startServiceInPlatform() async {
-    String data = await platform.invokeMethod("startService");
-    debugPrint(data);
+    //String data = await platform.invokeMethod("startService");
+    //final List result = await platform.invokeMethod("DisplayApps");
+    //print(result.first.toString());
+    //debugPrint(data);
+    final int helloAlarmID = 0;
+    await AndroidAlarmManager.initialize();
+    await AndroidAlarmManager.periodic(const Duration(seconds: 5), helloAlarmID, printHello, exact: true);
   }
 
   Future<void> _getAndroidString() async {
