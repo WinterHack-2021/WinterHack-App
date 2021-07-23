@@ -2,6 +2,13 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:winterhack_2021/clickable_container.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/selector_card.dart';
 
 class WelcomeLocation extends StatefulWidget {
   @override
@@ -9,47 +16,14 @@ class WelcomeLocation extends StatefulWidget {
 }
 
 class _WelcomeLocationState extends State<WelcomeLocation> {
-  Widget _locationCard(String name) {
-    return Column(children: [
-      Container(
-        margin: EdgeInsets.all(20),
-        child: Card(
-          child: new InkWell(
-              customBorder: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
-              ),
-              onTap: (){},
-              child: Column(children: [
-                Align(
-                    alignment: Alignment.centerLeft,
-                    child: Padding(
-                        padding:
-                        EdgeInsets.symmetric(horizontal: 35, vertical: 17),
-                        child: Row(
-                          children: [
-
-                            SizedBox(width: 3),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff969696), size: 13,),
-                          ],
-                        )
-                    )),
-                Text("awdawd ")
-              ])),
-          color: Color(0xff1c1c1e),
-          elevation: 3,
-          shape: RoundedRectangleBorder(
-              side: BorderSide(width: 1, color: Colors.grey.shade800),
-              borderRadius: BorderRadius.circular(30)),
-        ),
-      ),
-    ]);
-  }
+  bool isActive = false;
 
   @override
   Widget build(BuildContext context) {
+    Function(bool selected) onChanged=(selected)=>setState(()=>isActive=selected);
     return Scaffold(
         body: Padding(
-      padding: EdgeInsets.fromLTRB(40, 80, 30, 45),
+      padding: EdgeInsets.fromLTRB(40, 80, 30, 30),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
@@ -69,14 +43,45 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
               letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 20),
-          Container(
-            child: Expanded(
-              child: ListView(
-                children: <Widget>[
-                  _locationCard("AIWUdb")
-                ],
-              ),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                SelectorCardWidget(
+                  name: "University",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "Work",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "School",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "McDonalds",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "Vishal's Crib",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "Office",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+                SelectorCardWidget(
+                  name: "Optiver's bank",
+                  isActive: isActive,
+                  onChanged: onChanged,
+                ),
+              ],
             ),
           ),
         ],

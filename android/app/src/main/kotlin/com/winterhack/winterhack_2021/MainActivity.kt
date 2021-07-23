@@ -2,9 +2,6 @@ package com.winterhack.winterhack_2021
 
 
 import android.Manifest.permission
-import android.app.Activity
-import android.app.ActivityManager
-import android.content.Context
 import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
@@ -20,98 +17,61 @@ import io.flutter.Log
 import io.flutter.embedding.android.FlutterActivity
 import io.flutter.embedding.engine.FlutterEngine
 import io.flutter.plugin.common.MethodChannel
+import android.app.AlarmManager
+import android.app.PendingIntent
+import android.content.Context
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
     private val TAG = "MainActivity"
-    private var forService: Intent? = null
-
 
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         //GeneratedPluginRegistrant.registerWith(flutterEngine)
-        forService = Intent(this@MainActivity, MyService::class.java)
+        val forService = startDisablerService()
+
+        var pendingIntent: PendingIntent? = null;
+        val alarmTime: Long = 5;
+        val alarmManager: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(this, MyService::class.java)
+        //intent.action = MyService.ACTION_SEND_TEST_MESSAGE)
+        //intent.putExtra(MyService.EXTRA_MESSAGE, message)
+
+        pendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        alarmManager.set(AlarmManager.RTC_WAKEUP, alarmTime, pendingIntent)
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             CHANNEL
         ).setMethodCallHandler { call, result ->
             run {
-                if (call.method.equals("disablerEnabler")) {
-                    val appResult = disablerEnabler()
-                    result.success(appResult)
-                } else if (call.method.equals("DisplayApps")) {
-                    val appResult = DisplayApps()
-                    result.success(appResult)
-                } else if (call.method.equals("startService")) {
-                    print("working?");
-                    val appResult = startService()
-                    result.success(appResult)
-                } else if (call.method.equals("getcurrentlocation")) {
-                    getcurrentlocation(result)
-                } else {
-                    result.error("UNAVAILABLE", "Battery level not available.", null)
+                when (call.method) {
+                    "setDisabledApps"->{
+                        val disabledApps: List<String> = call.arguments();
+                        // TODO implement
+                        println(disabledApps)
+                    }
+                    "getcurrentlocation" -> {
+                        getcurrentlocation(result)
+                    }
+                    else -> {
+                        result.error("UNAVAILABLE", "Battery level not available.", null)
+                    }
                 }
-
             }
         }
     }
 
-    private fun DisplayApps(): MutableList<String> {
-        val pm = packageManager
-        //get a list of installed apps.
-        val packages: List<ApplicationInfo> =
-            pm.getInstalledApplications(PackageManager.GET_META_DATA)
 
-        var apps: MutableList<String> = ArrayList<String>();
-        apps.add("hiii")
-
-        for (packageInfo in packages) {
-            apps.add(packageInfo.packageName);
-            if (pm.getLaunchIntentForPackage(packageInfo.packageName) != null) {
-                Log.d("TAG", "Installed name :" + packageInfo.name)
-                Log.d("TAG", "Installed package :" + packageInfo.packageName)
-                Log.d("TAG", "Source dir : " + packageInfo.sourceDir)
-                Log.d("TAG","Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName))
-            }
-        }
-
-        return apps;
-
-    }
-
-    private fun disablerEnabler(): String {
-
-
-        val currentRunningApp: String? = TaskChecker.getForegroundApplication(context)
-
-        if (currentRunningApp == "com.whatsapp") {
-            val startMain = Intent(Intent.ACTION_MAIN)
-            startMain.addCategory(Intent.CATEGORY_HOME)
-            startMain.flags = Intent.FLAG_ACTIVITY_NEW_TASK
-            this.startActivity(startMain)
-            val manager = getSystemService(Activity.ACTIVITY_SERVICE) as ActivityManager
-            manager.killBackgroundProcesses(currentRunningApp)
-            print("Successs!!!!!!!!!!!!")
-        }
-        return "random string";
-    }
-
-    object TaskChecker {
-        fun getForegroundApplication(context: Context): String? {
-            val am: ActivityManager =
-                context.getSystemService(Context.ACTIVITY_SERVICE) as ActivityManager
-            val foreground: ActivityManager.RunningTaskInfo = am.getRunningTasks(1).get(0)
-            return foreground.topActivity?.packageName;
-        }
-    }
-
-    private fun startService() {
+    private fun startDisablerService(): Intent {
+        val forService = Intent(this@MainActivity, MyService::class.java);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             startForegroundService(forService)
         } else {
             startService(forService)
         }
+        return forService;
     }
 
 

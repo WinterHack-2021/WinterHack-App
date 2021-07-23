@@ -5,7 +5,7 @@ import 'package:animated_text_kit/animated_text_kit.dart';
 class WelcomePage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    const duration = const Duration(milliseconds: 50);
+    const duration = const Duration(milliseconds: 60);
     var styling = TextStyle(fontSize: 45.0, fontWeight: FontWeight.bold);
     return Scaffold(
       body: Center(
@@ -24,7 +24,7 @@ class WelcomePage extends StatelessWidget {
               height: 10.0,
             ),
             AnimatedTextKit(
-              pause: const Duration(milliseconds: 50),
+              pause: const Duration(milliseconds: 100),
               animatedTexts: [
                 TyperAnimatedText(
                     'Productive!',
