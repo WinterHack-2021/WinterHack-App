@@ -12,7 +12,6 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
   Widget _locationCard(String name) {
     return Column(children: [
       Container(
-        margin: EdgeInsets.all(20),
         child: Card(
           child: new InkWell(
               customBorder: RoundedRectangleBorder(
@@ -24,16 +23,16 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
                     alignment: Alignment.centerLeft,
                     child: Padding(
                         padding:
-                        EdgeInsets.symmetric(horizontal: 35, vertical: 17),
+                        EdgeInsets.symmetric(horizontal: 30, vertical: 10),
                         child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-
-                            SizedBox(width: 3),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff969696), size: 13,),
+                            Expanded(flex: 1, child: Icon(Icons.location_pin, color: Color(0xff969696),)),
+                            Expanded(flex: 6, child: Text('University', style: TextStyle(color: Color(0xff969696),),)),
+                            Expanded(flex: 4, child: Icon(Icons.toggle_off, color: Color(0xff969696), size: 70,)),
                           ],
                         )
                     )),
-                Text("awdawd ")
               ])),
           color: Color(0xff1c1c1e),
           elevation: 3,
@@ -69,14 +68,12 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
               letterSpacing: 0.5,
             ),
           ),
-          SizedBox(height: 20),
-          Container(
-            child: Expanded(
-              child: ListView(
-                children: <Widget>[
-                  _locationCard("AIWUdb")
-                ],
-              ),
+          Expanded(
+            child: ListView(
+              children: <Widget>[
+                _locationCard("AIWUdb"),
+                _locationCard("AIWUdb")
+              ],
             ),
           ),
         ],
