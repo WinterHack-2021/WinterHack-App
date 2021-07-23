@@ -4,9 +4,10 @@ import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'clickable_container.dart';
-import 'package:android_alarm_manager_plus/android_alarm_manager_plus.dart';
-import 'locationPage.dart';
+import 'geofencing.dart';
 import 'dart:isolate';
+import 'dart:ui';
+import 'package:geofencing/geofencing.dart';
 import 'package:animated_text_kit/animated_text_kit.dart';
 
 void printHello() {
@@ -18,6 +19,7 @@ void printHello() {
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
     home: ChangeNotifierProvider(
@@ -33,6 +35,29 @@ class HomeWidget extends StatefulWidget {
 
 class Home extends State<HomeWidget> {
   bool isActive = false;
+
+  String geofenceState = 'N/A';
+  ReceivePort port = ReceivePort();
+
+  Future<void> initPlatformState() async {
+    print('Initializing...');
+    await GeofencingManager.initialize();
+    print('Initialization done');
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    IsolateNameServer.registerPortWithName(
+        port.sendPort, 'geofencing_send_port');
+    port.listen((dynamic data) {
+      print('Event: $data');
+      setState(() {
+        geofenceState = data;
+      });
+    });
+    initPlatformState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -102,11 +127,12 @@ class Home extends State<HomeWidget> {
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
                         // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
-                        child: Text("${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
+                        child: Text(
+                            "${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
                             style: theme.textTheme.subtitle1!
                                 .copyWith(fontSize: 23))),
                     onClick: () {
-                      value.setTotalTime(value.totalTime+100000);
+                      value.setTotalTime(value.totalTime + 100000);
                     });
               },
             ),

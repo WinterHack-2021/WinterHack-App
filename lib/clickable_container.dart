@@ -2,9 +2,11 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'locationPage.dart';
+import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'chips.dart';
 import 'blacklistPage.dart';
+import 'geofencing.dart';
 
 class ClickableContainer extends StatelessWidget {
   static const double BORDER_RADIUS = 10;
@@ -32,19 +34,21 @@ class ClickableContainer extends StatelessWidget {
                         child: Row(
                           children: [
                             Text(title.toUpperCase(),
-                                style: Theme
-                                    .of(context)
+                                style: Theme.of(context)
                                     .textTheme
                                     .caption!
                                     .copyWith(
-                                    color: Color(0xff969696),
-                                    fontWeight: FontWeight.w600,
-                                    fontSize: 14)),
+                                        color: Color(0xff969696),
+                                        fontWeight: FontWeight.w600,
+                                        fontSize: 14)),
                             SizedBox(width: 3),
-                            Icon(Icons.arrow_forward_ios, color: Color(0xff969696), size: 13,),
+                            Icon(
+                              Icons.arrow_forward_ios,
+                              color: Color(0xff969696),
+                              size: 13,
+                            ),
                           ],
-                        )
-                    )),
+                        ))),
                 child
               ])),
           color: Color(0xff1c1c1e),
@@ -80,7 +84,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => LocationPage()));
+                  new CupertinoPageRoute(builder: (ctxt) => GeoFence()));
             }));
   }
 }
