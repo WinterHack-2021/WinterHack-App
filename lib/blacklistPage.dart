@@ -8,6 +8,7 @@ import 'package:flutter/services.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:winterhack_2021/clickable_container.dart';
+import 'package:winterhack_2021/selector_card.dart';
 
 const platform = const MethodChannel('winterhack-channel');
 const String portName = "ConnectingIsolate";
@@ -40,12 +41,10 @@ class Blacklist extends State<BlacklistPage> {
       child: Center(
         child: ListView(
           children: [
-            ...appList.map((app) => ClickableContainer(
-                  title: app.packageName != null ? app.packageName! : "",
-                  onClick: () {},
-                  child: SizedBox(
-                    width: 20,
-                  ),
+            ...appList.map((app) => SelectorCardWidget(
+                  name: app.packageName != null ? app.packageName! : "",
+                  onChanged: (selected) {},
+                  isActive: false,
                 )),
             ElevatedButton(
                 child: Text("Disable First app"), onPressed: setDisabledApps)
@@ -230,17 +229,3 @@ class AppInfoScreen extends StatelessWidget {
     );
   }
 }
-
-// Widget build(BuildContext context) {
-//   return Container(
-//       child: Column(children: [
-//         TextButton(
-//             onPressed: () {
-//               setState(() {
-//                 // Some state change
-//               });
-//             },
-//             child: Text('Click for location')),
-//         Text("Lol")
-//       ]));
-// }
