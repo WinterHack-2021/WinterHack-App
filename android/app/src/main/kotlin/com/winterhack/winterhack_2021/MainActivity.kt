@@ -1,9 +1,5 @@
 package com.winterhack.winterhack_2021
 
-import androidx.annotation.NonNull
-import io.flutter.embedding.android.FlutterActivity
-import io.flutter.embedding.engine.FlutterEngine
-import io.flutter.plugin.common.MethodChannel
 
 import android.Manifest.permission
 import android.app.Activity
@@ -13,18 +9,17 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
+import androidx.annotation.NonNull
 import androidx.core.content.ContextCompat
-
-
-import com.google.android.libraries.places.api.Places
 import com.google.android.gms.common.api.ApiException
-import com.google.android.gms.tasks.Task
+import com.google.android.libraries.places.api.Places
 import com.google.android.libraries.places.api.model.Place
 import com.google.android.libraries.places.api.model.PlaceLikelihood
 import com.google.android.libraries.places.api.net.FindCurrentPlaceRequest
-import com.google.android.libraries.places.api.net.FindCurrentPlaceResponse
-import io.flutter.plugins.GeneratedPluginRegistrant
+import io.flutter.Log
+import io.flutter.embedding.android.FlutterActivity
+import io.flutter.embedding.engine.FlutterEngine
+import io.flutter.plugin.common.MethodChannel
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
@@ -73,10 +68,12 @@ class MainActivity : FlutterActivity() {
 
         for (packageInfo in packages) {
             apps.add(packageInfo.packageName);
-            Log.d(TAG, "Installed package :" + packageInfo.name)
-            Log.d(TAG, "Installed package :" + packageInfo.packageName)
-            Log.d(TAG, "Source dir : " + packageInfo.sourceDir)
-            Log.d(TAG, "Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName))
+            if (pm.getLaunchIntentForPackage(packageInfo.packageName) != null) {
+                Log.d("TAG", "Installed name :" + packageInfo.name)
+                Log.d("TAG", "Installed package :" + packageInfo.packageName)
+                Log.d("TAG", "Source dir : " + packageInfo.sourceDir)
+                Log.d("TAG","Launch Activity :" + pm.getLaunchIntentForPackage(packageInfo.packageName))
+            }
         }
 
         return apps;
