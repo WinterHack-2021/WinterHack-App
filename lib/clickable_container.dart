@@ -84,7 +84,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => GeoFence()));
+                  new MaterialPageRoute(builder: (ctxt) => GeoFence()));
             }));
   }
 }
@@ -103,7 +103,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
             title: "Disabled Apps",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
+                  new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
             }));
   }
 }
@@ -112,7 +112,7 @@ Widget getChipsWidget(Future<StorageStringList> func) {
   return FutureBuilder(
     future: func,
     builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.items : Set();
+      final dat = snapshot.hasData ? snapshot.data!.items : Map();
       if (dat.isEmpty) {
         return Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -126,7 +126,14 @@ Widget getChipsWidget(Future<StorageStringList> func) {
         spacing: 6.0,
         runSpacing: -1.0,
         alignment: WrapAlignment.center,
-        children: [for (var i in dat) ChipState(i)],
+        children: [
+          for (var i in dat.entries)
+            ChipWidget(
+                name: i.key,
+                isChecked: i.value,
+                onSelected: (selected) =>
+                    snapshot.data!.upsert(i.key, selected))
+        ],
       );
     },
   );

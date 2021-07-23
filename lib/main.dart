@@ -22,8 +22,7 @@ void main() async {
 
   runApp(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: ChangeNotifierProvider(
-        create: (BuildContext context) => GlobalModel(), child: HomeWidget()),
+    home: GlobalModel.asWidget(HomeWidget()),
     theme: ThemeData.dark(),
   ));
 }
@@ -133,6 +132,7 @@ class Home extends State<HomeWidget> {
                                 .copyWith(fontSize: 23))),
                     onClick: () {
                       value.setTotalTime(value.totalTime + 100000);
+                      value.savedLocations.upsert("ff", false);
                     });
               },
             ),
