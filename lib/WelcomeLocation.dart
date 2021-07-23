@@ -29,7 +29,7 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
                           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
                             Expanded(flex: 2, child: Icon(Icons.location_pin, color: Color(0xff969696),)),
-                            Expanded(flex: 6, child: Text(name, style: TextStyle(color: Color(0xff969696), fontSize: 20),)),
+                            Expanded(flex: 6, child: Text(name, style: TextStyle(color: Colors.white, fontSize: 20),)),
                             Expanded(
                               flex: 3,
                               child: Transform.scale(
@@ -83,8 +83,10 @@ class _WelcomeLocationState extends State<WelcomeLocation> {
                 _locationCard("University"),
                 _locationCard("Work"),
                 _locationCard("School"),
-                _locationCard("McDonald's"),
+                _locationCard("McDonalds"),
                 _locationCard("Vishal's Crib"),
+                _locationCard("Office"),
+                _locationCard("Optiver's bank"),
               ],
             ),
           ),
