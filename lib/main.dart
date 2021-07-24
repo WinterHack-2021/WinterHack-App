@@ -1,27 +1,38 @@
 // @dart=2.9
 
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-import 'package:winterhack_2021/initial.dart';
-import 'package:flutter/material.dart';
-import 'package:winterhack_2021/data/shared_storage.dart';
-import 'clickable_container.dart';
-import 'dart:isolate';
 import 'dart:ui';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+import 'package:provider/provider.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
+import 'package:winterhack_2021/initial.dart';
+import 'package:winterhack_2021/placesapi.dart';
+
+import 'clickable_container.dart';
 import 'geofencing.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(GlobalModel.asWidget(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomeWidget(),
-    theme: ThemeData.dark(),
-  )));
+  runApp(OnTrack());
   bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+}
+
+class OnTrack extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (context) => PlaceBloc(),
+        child: GlobalModel.asWidget(MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeWidget(),
+          theme: ThemeData.dark(),
+        )));
+  }
 }
 
 class HomeWidget extends StatefulWidget {
