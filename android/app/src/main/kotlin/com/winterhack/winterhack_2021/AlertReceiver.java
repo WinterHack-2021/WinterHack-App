@@ -25,11 +25,13 @@ public class AlertReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onReceive(Context context, Intent intent) {
+        ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         String fg=getForegroundProcess(context.getApplicationContext());
-        if(fg != null){
+        if(fg != null && fg=="com.google.android.youtube"){
             Log.d(TAG, "App name: "+fg);
+            am.killBackgroundProcesses(fg);
+            Log.d(TAG, fg+" Killed!");
         }else {
-
         }
         Log.d(TAG, "Alarm Service has started!");
     }
