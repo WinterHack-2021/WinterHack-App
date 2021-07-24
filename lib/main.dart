@@ -112,7 +112,7 @@ class Home extends State<HomeWidget> {
                   child: CupertinoSwitch(
                     value: state.isOnTrack,
                     onChanged: (value) =>
-                        setState(() => state.isOnTrack = value),
+                        state.isOnTrack = value,
                   ))
             ]),
             Expanded(
