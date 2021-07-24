@@ -20,11 +20,16 @@ class _GoogleMapsState extends State<GoogleMaps> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        child: GoogleMap(
-            onMapCreated: _onMapCreated,
-            initialCameraPosition: CameraPosition(
-              target: _center,
-              zoom: 11.0,
-            )));
+        height: 400,
+        margin: EdgeInsets.all(10),
+        alignment: Alignment.center,
+        child: ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: GoogleMap(
+                onMapCreated: _onMapCreated,
+                initialCameraPosition: CameraPosition(
+                  target: _center,
+                  zoom: 11.0,
+                ))));
   }
 }
