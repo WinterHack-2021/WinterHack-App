@@ -29,62 +29,25 @@ public class AlertReceiver extends BroadcastReceiver {
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
-        String appName;
+        Log.d(TAG, "Hello World");
         ArrayList<String> disabledApps = intent.getStringArrayListExtra(DISABLED_APPS_INPUT_KEY);
-
+        Log.d(TAG, "Disabled: "+disabledApps);
         ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         String fg=getForegroundProcess(context.getApplicationContext());
         Log.d(TAG, "check5: "+fg);
 
-        try {
-            appName = getAppNameFromPackageName(fg, context);
-        } catch (Exception e) {
-            Log.d(TAG, "No name");
-            appName = null;
-        }
-
-        Log.d(TAG, "check6: "+appName);
-        //Log.d(TAG, "check7: "+getPackageNamefromAppName(appName, context));
-
-
-        if(appName != null && disabledApps.contains(appName)){
+        if(disabledApps.contains(fg)){
             Log.d(TAG, "App name: "+appName);
             Intent startMain = new Intent(Intent.ACTION_MAIN);
             startMain.addCategory(Intent.CATEGORY_HOME);
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             context.startActivity(startMain);
             am.killBackgroundProcesses(appName);
-            //android.os.Process.sendSignal(getPackageNamefromAppName(fg, context), android.os.Process.SIGNAL_KILL);
-            //amKillProcess(context, appName);
             Log.d(TAG, fg+" Killed!");
         }else {
         }
         Log.d(TAG, "Alarm Service has started!");
 
-    }
-
-    public void amKillProcess(Context context, String process)
-    {
-        ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
-        final List<ActivityManager.RunningAppProcessInfo> runningProcesses = am.getRunningAppProcesses();
-
-        for(ActivityManager.RunningAppProcessInfo runningProcess : runningProcesses)
-        {
-            Log.d(TAG, runningProcess.processName);
-            if(runningProcess.processName.equals(process))
-            {
-                Log.d(TAG, "reach here?");
-                android.os.Process.sendSignal(runningProcess.pid, android.os.Process.SIGNAL_KILL);
-            }
-        }
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public String getAppNameFromPackageName(String appPackageName, Context context) {
-        PackageManager pm = context.getPackageManager();
-        List<ApplicationInfo> apps = pm.getInstalledApplications(PackageManager.GET_META_DATA);
-        return apps.stream().filter(app -> app.packageName.equals(appPackageName))
-                .map(app -> app.name).findAny().orElse(null);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)

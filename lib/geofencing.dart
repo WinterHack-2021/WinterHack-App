@@ -27,6 +27,7 @@ class _GeoFenceState extends State<GeoFence> {
   StreamSubscription locationSubscription;
 
   void addGeofence(geofencename, long, lat, radius) {
+
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
