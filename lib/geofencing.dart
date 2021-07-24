@@ -25,7 +25,6 @@ class _GeoFenceState extends State<GeoFence> {
   double radius;
 
   void addGeofence(geofencename, long, lat, radius) {
-
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
@@ -69,14 +68,16 @@ class _GeoFenceState extends State<GeoFence> {
     super.dispose();
   }
 
-  Widget build(BuildContext context) {
-    Set<Circle> circles = Set.from([
-      Circle(
-          circleId: CircleId('1'),
-          radius: radius,
-          center: LatLng(currentPlace.geometry.location.lat,
-              currentPlace.geometry.location.lng))
+  void setCircle(lat, lng, rad) {
+    circles = Set.from([
+      Circle(circleId: CircleId('1'), radius: rad, center: LatLng(lat, lng))
     ]);
+  }
+
+  Set<Circle> circles = Set.from(
+      [Circle(circleId: CircleId('1'), radius: 0, center: LatLng(0, 0))]);
+
+  Widget build(BuildContext context) {
     final placeBloc = Provider.of<PlaceBloc>(context);
     return Scaffold(
         appBar: AppBar(
@@ -144,6 +145,8 @@ class _GeoFenceState extends State<GeoFence> {
                         labelText: 'Radius (m)'),
                     onSubmitted: (t) {
                       radius = double.parse(radiusController.text);
+                      setCircle(currentPlace.geometry.location.lat,
+                          currentPlace.geometry.location.lng, radius);
                       setState(() {});
                     },
                   )),
