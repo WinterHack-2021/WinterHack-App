@@ -41,7 +41,7 @@ class Blacklist extends State<BlacklistPage> {
           Container(
               margin: EdgeInsets.only(bottom: 30),
               child: Text("Disabled Apps", style: theme.textTheme.headline3)),
-          Text("Select the apps you wish to disable",
+          Text("Select the apps you wish to disable:",
               style: theme.textTheme.headline6),
           SizedBox(
             height: 40,
