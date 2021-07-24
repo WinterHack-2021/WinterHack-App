@@ -42,11 +42,13 @@ class ClickableContainer extends StatelessWidget {
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14)),
                             SizedBox(width: 3),
-                            onClick!=null? Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xff969696),
-                              size: 13,
-                            ):SizedBox(),
+                            onClick != null
+                                ? Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xff969696),
+                                    size: 13,
+                                  )
+                                : SizedBox(),
                           ],
                         ))),
                 child
@@ -62,9 +64,7 @@ class ClickableContainer extends StatelessWidget {
   }
 
   ClickableContainer(
-      {required this.child,
-      this.onClick,
-      this.title = "Sample Title"});
+      {required this.child, this.onClick, this.title = "Sample Title"});
 }
 
 class ClickableLocationContainer extends StatefulWidget {
@@ -84,7 +84,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (ctxt) => GeoFence()));
+                  new CupertinoPageRoute(builder: (ctxt) => GeoFence()));
             }));
   }
 }
@@ -103,7 +103,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
             title: "Disabled Apps",
             onClick: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
+                  new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
             }));
   }
 }
