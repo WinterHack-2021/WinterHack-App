@@ -39,6 +39,7 @@ dependencies:
   shared_preferences: ^2.0.6
   provider: ^5.0.0
   flutter_background_geolocation: '^1.9.0'
+  permission_handler: ^8.1.4+1
 
 
 dev_dependencies:
