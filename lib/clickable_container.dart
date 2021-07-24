@@ -12,7 +12,7 @@ class ClickableContainer extends StatelessWidget {
   static const double BORDER_RADIUS = 10;
   final Widget child;
   final String title;
-  final void Function() onClick;
+  final void Function()? onClick;
 
   @override
   Widget build(BuildContext context) {
@@ -42,11 +42,11 @@ class ClickableContainer extends StatelessWidget {
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14)),
                             SizedBox(width: 3),
-                            Icon(
+                            onClick!=null? Icon(
                               Icons.arrow_forward_ios,
                               color: Color(0xff969696),
                               size: 13,
-                            ),
+                            ):SizedBox(),
                           ],
                         ))),
                 child
@@ -63,7 +63,7 @@ class ClickableContainer extends StatelessWidget {
 
   ClickableContainer(
       {required this.child,
-      required this.onClick,
+      this.onClick,
       this.title = "Sample Title"});
 }
 

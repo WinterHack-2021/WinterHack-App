@@ -110,16 +110,15 @@ class Home extends State<HomeWidget> {
                 ClickableLocationContainer(),
                 ClickableAppsContainer(),
                 ClickableContainer(
-                    child: Padding(
-                        padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
-                        // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
-                        child: Text(
-                            "${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
-                            style: theme.textTheme.subtitle1
-                                .copyWith(fontSize: 23))),
-                    onClick: () {
-                      state.totalTime += 100000;
-                    })
+                  title: "Time on Track",
+                  child: Padding(
+                      padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
+                      // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
+                      child: Text(
+                          "${duration.inHours} Hours, ${duration.inMinutes.remainder(60)} Minutes",
+                          style: theme.textTheme.subtitle1
+                              .copyWith(fontSize: 23))),
+                )
               ],
             )),
           ]);
