@@ -1,3 +1,5 @@
+import 'package:flutter/rendering.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -8,6 +10,8 @@ const String SAVED_LOCATION_KEY = "savedLocations";
 const String DISABLED_APPS_KEY = "disabledApps";
 const String TOTAL_TIME = "totalTime";
 const String ON_TRACK = "onTrack";
+
+const platform = const MethodChannel('winterhack-channel');
 
 class GlobalModel extends ChangeNotifier {
   static GlobalModel _singleton = GlobalModel._();
@@ -29,7 +33,12 @@ class GlobalModel extends ChangeNotifier {
   GlobalModel._() {
     _init().then((_) {
       _savedLocations!.addListener(() => notifyListeners());
-      _disabledApps!.addListener(() => notifyListeners());
+      _disabledApps!.addListener(() {
+
+        platform.invokeMethod(
+            "setDisabledApps", _disabledApps!.items.where((e)=>e.isEnabled).map((e) => e.packageName).toList(growable: false));
+        notifyListeners();
+      });
     });
   }
 
@@ -75,11 +84,11 @@ class GlobalModel extends ChangeNotifier {
   }
 
   StorageMap<Location> get savedLocations => _savedLocations == null
-      ? StorageMap([], SAVED_LOCATION_KEY, (val) => Location.fromJsonMap(val))
+      ? StorageMap.immutableEmpty(SAVED_LOCATION_KEY)
       : _savedLocations!;
 
   StorageMap<App> get disabledApps => _disabledApps == null
-      ? StorageMap([], DISABLED_APPS_KEY, (val) => App.fromJsonMap(val))
+      ? StorageMap.immutableEmpty(DISABLED_APPS_KEY)
       : _disabledApps!;
 }
 

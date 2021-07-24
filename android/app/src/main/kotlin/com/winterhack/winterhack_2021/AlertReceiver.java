@@ -25,12 +25,12 @@ import io.flutter.Log;
 
 public class AlertReceiver extends BroadcastReceiver {
     private static String TAG = "AlertReceiver";
-
+    protected static String DISABLED_APPS_INPUT_KEY="Disabled apps";
     @RequiresApi(api = Build.VERSION_CODES.N)
     @Override
     public void onReceive(Context context, Intent intent) {
         String appName;
-        ArrayList<String> disabledApps = intent.getStringArrayListExtra("Disabled apps");
+        ArrayList<String> disabledApps = intent.getStringArrayListExtra(DISABLED_APPS_INPUT_KEY);
 
         ActivityManager am = (ActivityManager)context.getSystemService(Context.ACTIVITY_SERVICE);
         String fg=getForegroundProcess(context.getApplicationContext());
