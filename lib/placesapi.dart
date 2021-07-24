@@ -13,7 +13,8 @@ class PlaceBloc with ChangeNotifier {
 
   Position currentLocation;
   List<PlaceSearch> searchResults;
-  StreamController<Place> selectedLocation = StreamController<Place>();
+  StreamController<Place> selectedLocation =
+      StreamController<Place>.broadcast();
 
   PlaceBloc() {
     setCurrentLocation();

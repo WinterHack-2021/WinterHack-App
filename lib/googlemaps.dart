@@ -9,60 +9,6 @@ import 'dart:convert' as convert;
 import 'placesapi.dart';
 import 'package:provider/provider.dart';
 
-class GoogleMaps extends StatefulWidget {
-  final Completer<GoogleMapController> mapController;
-  const GoogleMaps(this.mapController, {Key key}) : super(key: key);
-  @override
-  _GoogleMapsState createState() => _GoogleMapsState(mapController);
-}
-
-class _GoogleMapsState extends State<GoogleMaps> {
-
-
-  LatLng _center = LatLng(0, 0);
-  double lat = 0;
-  double long = 0;
-  Completer<GoogleMapController> mapController;
-  _GoogleMapsState(this.mapController);
-
-  void initState() {
-    super.initState();
-    _center = LatLng(lat, long);
-  }
-
-  @override
-  void dispose() {
-    final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
-    placeBloc.dispose();
-    super.dispose();
-  }
-
-  @override
-  Widget build(BuildContext context) {
-    final placeBloc = Provider.of<PlaceBloc>(context);
-    return (placeBloc.currentLocation == null)
-        ? Center(child: CircularProgressIndicator())
-        : Container(
-            height: 400,
-            margin: EdgeInsets.all(10),
-            alignment: Alignment.center,
-            child: ClipRRect(
-                borderRadius: BorderRadius.circular(10),
-                child: GoogleMap(
-                    myLocationEnabled: true,
-                    myLocationButtonEnabled: true,
-                    onMapCreated: (GoogleMapController controller) {
-                      mapController.complete(controller);
-                    },
-                    initialCameraPosition: CameraPosition(
-                      target: LatLng(placeBloc.currentLocation.latitude,
-                          placeBloc.currentLocation.longitude),
-                      zoom: 11.0,
-                    ))));
-  }
-
-}
-
 class PlaceSearch {
   String description;
   String placeId;

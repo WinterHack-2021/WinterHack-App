@@ -24,6 +24,7 @@ class _GeoFenceState extends State<GeoFence> {
   double lat = 0;
   double radius = 10;
   Completer<GoogleMapController> mapController = Completer();
+  StreamSubscription locationSubscription;
 
   void addGeofence(geofencename, long, lat, radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
@@ -36,15 +37,14 @@ class _GeoFenceState extends State<GeoFence> {
     print('addded');
   }
 
-  StreamSubscription locationSubscription;
-
   Future<void> goToPlace(Place place) async {
     final GoogleMapController controller = await mapController.future;
     controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
         target:
-        LatLng(place.geometry.location.lat, place.geometry.location.lng),
+            LatLng(place.geometry.location.lat, place.geometry.location.lng),
         zoom: 14.0)));
   }
+
   @override
   void initState() {
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
@@ -126,7 +126,26 @@ class _GeoFenceState extends State<GeoFence> {
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
                   )),
-              GoogleMaps(mapController),
+              (placeBloc.currentLocation == null)
+                  ? Center(child: CircularProgressIndicator())
+                  : Container(
+                      height: 400,
+                      margin: EdgeInsets.all(10),
+                      alignment: Alignment.center,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(10),
+                          child: GoogleMap(
+                              myLocationEnabled: true,
+                              myLocationButtonEnabled: true,
+                              onMapCreated: (GoogleMapController controller) {
+                                mapController.complete(controller);
+                              },
+                              initialCameraPosition: CameraPosition(
+                                target: LatLng(
+                                    placeBloc.currentLocation.latitude,
+                                    placeBloc.currentLocation.longitude),
+                                zoom: 11.0,
+                              )))),
               //ClickableLocationContainer(),
             ],
           ),
