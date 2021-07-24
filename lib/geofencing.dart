@@ -50,6 +50,7 @@ class _GeoFenceState extends State<GeoFence> {
   @override
   void initState() {
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
+    getGeofences();
 
     locationSubscription = placeBloc.selectedLocation.stream.listen((place) {
       if (place != null) {
@@ -74,6 +75,12 @@ class _GeoFenceState extends State<GeoFence> {
     ]);
   }
 
+  dynamic currentgeofences;
+
+  void getGeofences() async {
+    currentgeofences = await bg.BackgroundGeolocation.geofences;
+  }
+
   Set<Circle> circles = Set.from(
       [Circle(circleId: CircleId('1'), radius: 0, center: LatLng(0, 0))]);
 
@@ -94,6 +101,7 @@ class _GeoFenceState extends State<GeoFence> {
                           currentPlace.geometry.location.lng,
                           currentPlace.geometry.location.lat,
                           radius);
+                    setState(() {});
                   },
                   child: Text('Add Location')),
               Container(
@@ -171,6 +179,7 @@ class _GeoFenceState extends State<GeoFence> {
                                     placeBloc.currentLocation.longitude),
                                 zoom: 11.0,
                               )))),
+              Container(child: Text('$currentgeofences'))
               //ClickableLocationContainer(),
             ],
           ),
