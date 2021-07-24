@@ -84,6 +84,7 @@ class GlobalModel extends ChangeNotifier {
       _lastOffTime = -1;
     } else
       _lastOffTime = DateTime.now().millisecondsSinceEpoch;
+
     notifyListeners();
   }
 
