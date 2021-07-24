@@ -28,8 +28,8 @@ dependencies:
   animated_toggle_switch: ^0.2.0
   animated_text_kit: ^4.2.1
   google_maps_flutter: ^2.0.6
-  dio: ^4.0.0
   flutter_svg: ^0.22.0
+  http: ^0.12.2
 
 
   # The following adds the Cupertino Icons font to your application.
