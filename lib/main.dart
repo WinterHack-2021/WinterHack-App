@@ -11,6 +11,7 @@ import 'dart:ui';
 import 'package:animated_text_kit/animated_text_kit.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+import 'geofencing.dart';
 
 void printHello() {
   final DateTime now = DateTime.now();
@@ -27,6 +28,7 @@ void main() async {
     home: GlobalModel.asWidget(HomeWidget()),
     theme: ThemeData.dark(),
   ));
+  bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
 }
 
 class HomeWidget extends StatefulWidget {
