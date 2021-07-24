@@ -78,7 +78,7 @@ class MainActivity : FlutterActivity() {
         // Initialize the SDK
         fun getLocationPermission() {
             TODO()
-        }
+        }   
 
 
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
