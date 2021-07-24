@@ -1,15 +1,14 @@
 // @dart=2.9
 import 'dart:async';
-import 'package:google_maps_flutter/google_maps_flutter.dart';
 
-import 'main.dart';
 import 'package:flutter/material.dart';
-import 'googlemaps.dart';
-import 'clickable_container.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'placesapi.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
+
+import 'googlemaps.dart';
+import 'placesapi.dart';
 
 class GeoFence extends StatefulWidget {
   const GeoFence({Key key}) : super(key: key);
@@ -19,15 +18,12 @@ class GeoFence extends StatefulWidget {
 }
 
 class _GeoFenceState extends State<GeoFence> {
-  String geofencename = 'Home';
-  double long = 0;
-  double lat = 0;
-  double radius = 10;
   Completer<GoogleMapController> mapController = Completer();
   StreamSubscription locationSubscription;
+  TextEditingController radiusController = new TextEditingController();
+  double radius;
 
   void addGeofence(geofencename, long, lat, radius) {
-
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
@@ -36,6 +32,8 @@ class _GeoFenceState extends State<GeoFence> {
         latitude: lat,
         longitude: long));
     print('addded');
+    print('Radius: $radius');
+    print('Identifier: $geofencename');
   }
 
   Future<void> goToPlace(Place place) async {
@@ -46,13 +44,17 @@ class _GeoFenceState extends State<GeoFence> {
         zoom: 14.0)));
   }
 
+  Place currentPlace;
+
   @override
   void initState() {
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
+    getGeofences();
 
     locationSubscription = placeBloc.selectedLocation.stream.listen((place) {
       if (place != null) {
         goToPlace(place);
+        currentPlace = place;
       }
     });
     super.initState();
@@ -66,6 +68,21 @@ class _GeoFenceState extends State<GeoFence> {
     super.dispose();
   }
 
+  void setCircle(lat, lng, rad) {
+    circles = Set.from([
+      Circle(circleId: CircleId('1'), radius: rad, center: LatLng(lat, lng))
+    ]);
+  }
+
+  dynamic currentgeofences;
+
+  void getGeofences() async {
+    currentgeofences = await bg.BackgroundGeolocation.geofences;
+  }
+
+  Set<Circle> circles = Set.from(
+      [Circle(circleId: CircleId('1'), radius: 0, center: LatLng(0, 0))]);
+
   Widget build(BuildContext context) {
     final placeBloc = Provider.of<PlaceBloc>(context);
     return Scaffold(
@@ -77,7 +94,13 @@ class _GeoFenceState extends State<GeoFence> {
             children: [
               TextButton(
                   onPressed: () {
-                    addGeofence(geofencename, long, lat, radius);
+                    if (radius != null)
+                      addGeofence(
+                          currentPlace.name,
+                          currentPlace.geometry.location.lng,
+                          currentPlace.geometry.location.lat,
+                          radius);
+                    setState(() {});
                   },
                   child: Text('Add Location')),
               Container(
@@ -122,10 +145,17 @@ class _GeoFenceState extends State<GeoFence> {
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextField(
+                    controller: radiusController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
+                    onSubmitted: (t) {
+                      radius = double.parse(radiusController.text);
+                      setCircle(currentPlace.geometry.location.lat,
+                          currentPlace.geometry.location.lng, radius);
+                      setState(() {});
+                    },
                   )),
               (placeBloc.currentLocation == null)
                   ? Center(child: CircularProgressIndicator())
@@ -136,6 +166,7 @@ class _GeoFenceState extends State<GeoFence> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: GoogleMap(
+                              circles: circles,
                               myLocationEnabled: true,
                               myLocationButtonEnabled: true,
                               onMapCreated: (GoogleMapController controller) {
@@ -147,6 +178,7 @@ class _GeoFenceState extends State<GeoFence> {
                                     placeBloc.currentLocation.longitude),
                                 zoom: 11.0,
                               )))),
+              Container(child: Text('$currentgeofences'))
               //ClickableLocationContainer(),
             ],
           ),

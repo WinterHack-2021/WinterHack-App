@@ -31,7 +31,7 @@ class Blacklist extends State<BlacklistPage> {
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
+      padding: const EdgeInsets.fromLTRB(30, 80, 30, 80),
       child: Column(
         children: [
           Container(
@@ -39,9 +39,6 @@ class Blacklist extends State<BlacklistPage> {
               child: Text("Disabled Apps", style: theme.textTheme.headline3)),
           Text("Select the apps you wish to disable:",
               style: theme.textTheme.headline6),
-          SizedBox(
-            height: 40,
-          ),
           Expanded(
             child: Consumer<GlobalModel>(
               builder: (context, value, child) {

@@ -20,7 +20,8 @@
             android:name=".MyApplication"
             android:icon="@mipmap/ic_launcher"
             tools:replace="android:label"
-            android:label="OnTrack">
+            android:label="OnTrack"
+            android:requestLegacyExternalStorage="true">
 
 
         <service android:name=".DisablerService" android:exported="true" android:enabled="true"/>
