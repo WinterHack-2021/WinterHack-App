@@ -39,8 +39,10 @@ class Blacklist extends State<BlacklistPage> {
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
       child: Column(
         children: [
-          Text("Disabled Apps", style: theme.textTheme.headline3),
-          Text("Select the apps you wish to disable",
+          Container(
+              margin: EdgeInsets.only(bottom: 30),
+              child: Text("Disabled Apps", style: theme.textTheme.headline3)),
+          Text("Select the apps you wish to disable:",
               style: theme.textTheme.headline6),
           SizedBox(
             height: 40,

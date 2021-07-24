@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
+import 'package:winterhack_2021/placesapi.dart';
 import 'package:winterhack_2021/saved_data.dart';
 import 'clickable_container.dart';
 import 'dart:isolate';
@@ -16,12 +17,21 @@ import 'geofencing.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(GlobalModel.asWidget(MaterialApp(
-    debugShowCheckedModeBanner: false,
-    home: HomeWidget(),
-    theme: ThemeData.dark(),
-  )));
+  runApp(OnTrack());
   bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+}
+
+class OnTrack extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return ChangeNotifierProvider(
+        create: (context) => PlaceBloc(),
+        child: GlobalModel.asWidget(MaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: HomeWidget(),
+          theme: ThemeData.dark(),
+        )));
+  }
 }
 
 class HomeWidget extends StatefulWidget {

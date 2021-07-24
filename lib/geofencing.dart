@@ -1,15 +1,16 @@
+// @dart=2.9
 import 'dart:async';
 import 'main.dart';
 import 'package:flutter/material.dart';
-import 'package:geolocator/geolocator.dart';
 import 'googlemaps.dart';
 import 'clickable_container.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'placesapi.dart';
+import 'package:provider/provider.dart';
 
 class GeoFence extends StatefulWidget {
-  const GeoFence({Key? key}) : super(key: key);
+  const GeoFence({Key key}) : super(key: key);
 
   @override
   _GeoFenceState createState() => _GeoFenceState();
@@ -17,9 +18,9 @@ class GeoFence extends StatefulWidget {
 
 class _GeoFenceState extends State<GeoFence> {
   String geofencename = 'Home';
-  double long = 144.685666;
-  double lat = -37.842921;
-  double radius = 50;
+  double long = 0;
+  double lat = 0;
+  double radius = 10;
 
   void addGeofence(geofencename, long, lat, radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
@@ -32,8 +33,20 @@ class _GeoFenceState extends State<GeoFence> {
     print('addded');
   }
 
+  // @override
+  // void initState() {
+  //   super.initState();
+  //   //final placeApi = Provider.of<PlaceBloc>(context);
+  // }
+
+  // @override
+  // void dispose() {
+  //   final placeApi = Provider.of<PlaceBloc>(context, listen: false);
+  // }
+
   @override
   Widget build(BuildContext context) {
+    final placeBloc = Provider.of<PlaceBloc>(context);
     return Scaffold(
         appBar: AppBar(
           title: Text('Locations'),
@@ -49,18 +62,45 @@ class _GeoFenceState extends State<GeoFence> {
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextField(
+                    onChanged: (value) => placeBloc.searchPlaces(value),
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        labelText: 'Location'),
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: 'Location',
+                        suffixIcon: Icon(Icons.search)),
                   )),
+              if (placeBloc.searchResults != null &&
+                  placeBloc.searchResults.length != 0)
+                Stack(children: [
+                  Container(
+                    height: 200,
+                    margin: EdgeInsets.all(10),
+                    width: double.infinity,
+                    decoration: BoxDecoration(
+                        color: Colors.black.withOpacity(.3),
+                        backgroundBlendMode: BlendMode.darken,
+                        borderRadius: BorderRadius.circular(10)),
+                  ),
+                  Container(
+                      height: 200,
+                      margin: EdgeInsets.all(10),
+                      child: ListView.builder(
+                        itemCount: placeBloc.searchResults.length,
+                        itemBuilder: (context, index) {
+                          return ListTile(
+                            title: Text(
+                                placeBloc.searchResults[index].description),
+                          );
+                        },
+                      ))
+                ]),
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextField(
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(20)),
-                        labelText: 'Radius'),
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: 'Radius (m)'),
                   )),
               GoogleMaps(),
               //ClickableLocationContainer(),
@@ -75,29 +115,4 @@ void headlessTask(bg.HeadlessEvent headlessEvent) async {
   bg.GeofenceEvent geofenceEvent = headlessEvent.event;
   print('${geofenceEvent.action}');
   print('${geofenceEvent.identifier}');
-}
-
-void _getUserPosition() async {
-  bool serviceEnabled;
-  LocationPermission permission;
-  serviceEnabled = await Geolocator.isLocationServiceEnabled();
-  if (!serviceEnabled) {
-    return Future.error('Location services are disabled.');
-  }
-
-  permission = await Geolocator.checkPermission();
-  if (permission == LocationPermission.denied) {
-    permission = await Geolocator.requestPermission();
-    if (permission == LocationPermission.denied) {
-      return Future.error('Location permissions are denied');
-    }
-  }
-
-  if (permission == LocationPermission.deniedForever) {
-    return Future.error(
-        'Location permissions are permanently denied, we cannot request permissions.');
-  }
-
-  Position userLocation = await Geolocator.getCurrentPosition(
-      desiredAccuracy: LocationAccuracy.high);
 }
