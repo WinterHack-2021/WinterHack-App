@@ -37,7 +37,6 @@ dependencies:
   cupertino_icons: ^1.0.2
   installed_apps: ^1.2.0
   shared_preferences: ^2.0.6
-  geofencing: ^0.1.0
   provider: ^5.0.0
   flutter_background_geolocation: '^1.9.0'
 
