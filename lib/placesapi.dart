@@ -1,7 +1,7 @@
 // @dart=2.9
 import 'package:flutter/foundation.dart';
 import 'package:geolocator/geolocator.dart';
-import 'geofencing.dart';
+
 import 'googlemaps.dart';
 
 class PlaceBloc with ChangeNotifier {

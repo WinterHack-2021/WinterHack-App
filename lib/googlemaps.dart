@@ -1,12 +1,13 @@
 // @dart=2.9
 
+import 'dart:convert' as convert;
+
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'dart:convert' as convert;
-import 'placesapi.dart';
 import 'package:provider/provider.dart';
+
+import 'placesapi.dart';
 
 class GoogleMaps extends StatefulWidget {
   const GoogleMaps({Key key}) : super(key: key);

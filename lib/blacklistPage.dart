@@ -4,8 +4,10 @@ import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:provider/provider.dart';
-import 'package:winterhack_2021/saved_data.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/selector_card.dart';
+
+import 'data/schema.dart';
 
 const platform = const MethodChannel('winterhack-channel');
 const String portName = "ConnectingIsolate";
@@ -54,8 +56,8 @@ class Blacklist extends State<BlacklistPage> {
                 // Sort the list so switches that are on are at the top
                 // otherwise, preserve initial alphabetical ordering.
                 sortedAppList.sort((a, b) {
-                  final containsA = value.disabledApps.contains(a.name);
-                  final containsB = value.disabledApps.contains(b.name);
+                  final containsA = value.disabledApps.contains(a.packageName);
+                  final containsB = value.disabledApps.contains(b.packageName);
                   if ((containsA && containsB) || (!containsA && !containsB))
                     return 0;
                   return containsA && !containsB ? -1 : 1;
@@ -64,16 +66,19 @@ class Blacklist extends State<BlacklistPage> {
                   children: [
                     ...sortedAppList.map((app) => SelectorCardWidget(
                           icon: app.icon,
-                          name: app.name != null ? app.name! : "",
+                          name: app.name ?? "Unknown name",
                           onChanged: (selected) {
-                            if (app.name == null) return;
+                            if (app.name == null || app.packageName == null)
+                              return;
                             if (selected)
-                              value.disabledApps.upsert(app.name!, true);
+                              value.disabledApps.upsert(
+                                  App(app.name!, app.packageName!, selected));
                             else
-                              value.disabledApps.remove(app.name!);
+                              value.disabledApps.remove(app.packageName!);
                           },
-                          isActive: app.name != null &&
-                              (value.disabledApps.get(app.name!) ?? false),
+                          isActive: app.packageName != null &&
+                              ((value.disabledApps.get(app.packageName!) ??
+                                  false)),
                         ))
                   ],
                 );

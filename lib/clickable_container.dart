@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:winterhack_2021/saved_data.dart';
+import 'package:winterhack_2021/data/schema.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import 'locationPage.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -108,11 +109,11 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   }
 }
 
-Widget getChipsWidget(Future<StorageStringList> func) {
+Widget getChipsWidget(Future<StorageMap<WithBool>> func) {
   return FutureBuilder(
     future: func,
-    builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.items : Map();
+    builder: (context, AsyncSnapshot<StorageMap<WithBool>> snapshot) {
+      final dat = snapshot.hasData ? snapshot.data!.items : Set<WithBool>();
       if (dat.isEmpty) {
         return Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -127,12 +128,14 @@ Widget getChipsWidget(Future<StorageStringList> func) {
         runSpacing: -1.0,
         alignment: WrapAlignment.center,
         children: [
-          for (var i in dat.entries)
+          for (var i in dat)
             ChipWidget(
-                name: i.key,
-                isChecked: i.value,
-                onSelected: (selected) =>
-                    snapshot.data!.upsert(i.key, selected))
+                name: i.getKey(),
+                isChecked: i.isEnabled,
+                onSelected: (selected) {
+                  i.isEnabled = selected;
+                  snapshot.data!.upsert(i);
+                })
         ],
       );
     },

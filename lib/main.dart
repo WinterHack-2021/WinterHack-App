@@ -1,17 +1,18 @@
 // @dart=2.9
 
-import 'package:flutter/cupertino.dart';
-import 'package:provider/provider.dart';
-import 'package:winterhack_2021/initial.dart';
-import 'package:flutter/material.dart';
-import 'package:winterhack_2021/placesapi.dart';
-import 'package:winterhack_2021/saved_data.dart';
-import 'clickable_container.dart';
-import 'dart:isolate';
 import 'dart:ui';
+
 import 'package:animated_text_kit/animated_text_kit.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
+import 'package:provider/provider.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
+import 'package:winterhack_2021/initial.dart';
+import 'package:winterhack_2021/placesapi.dart';
+
+import 'clickable_container.dart';
 import 'geofencing.dart';
 
 void main() async {

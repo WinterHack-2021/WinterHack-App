@@ -1,13 +1,12 @@
 // @dart=2.9
-import 'dart:async';
-import 'main.dart';
+
 import 'package:flutter/material.dart';
-import 'googlemaps.dart';
-import 'clickable_container.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'placesapi.dart';
 import 'package:provider/provider.dart';
+
+import 'googlemaps.dart';
+import 'placesapi.dart';
 
 class GeoFence extends StatefulWidget {
   const GeoFence({Key key}) : super(key: key);
