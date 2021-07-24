@@ -48,6 +48,9 @@ class Home extends State<HomeWidget> {
       print('Identifier: ${event.identifier}');
     });
 
+    bg.BackgroundGeolocation.ready(bg.Config(
+        enableHeadless: true, stopOnTerminate: false, startOnBoot: true));
+
     bg.BackgroundGeolocation.start();
   }
 
