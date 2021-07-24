@@ -16,6 +16,11 @@ class GlobalModel extends ChangeNotifier {
   int _totalTime = -1;
   bool _isOnTrack = false;
 
+  // This value should only be above 0 if isOnTrack is currently true
+  // The idea is that when isOnTrack is turned false, the duration this var stores
+  // is transferred to totalTime and this lastofftime is reset to -1
+  int _lastOffTime = -1;
+
   static Widget asWidget(Widget child) {
     return ChangeNotifierProvider(
         create: (BuildContext context) => _singleton, child: child);
@@ -36,14 +41,17 @@ class GlobalModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  int get totalTime => _totalTime;
+  int get totalTime {
+    if (_lastOffTime <= 0) return _totalTime;
+    final timeSinceOff = DateTime.now().millisecondsSinceEpoch - _lastOffTime;
+    return _totalTime + timeSinceOff;
+  }
 
-  set totalTime(int newTime) {
-    _totalTime = newTime;
-    SharedPreferences.getInstance().then((value) =>
-        value
-            .setInt(TOTAL_TIME, _totalTime)
-            .then((value) => notifyListeners()));
+  _addTotalTime(int newTime) async {
+    _totalTime += newTime;
+    await (await SharedPreferences.getInstance())
+        .setInt(TOTAL_TIME, _totalTime);
+    notifyListeners();
   }
 
   bool get isOnTrack => _isOnTrack;
@@ -52,17 +60,23 @@ class GlobalModel extends ChangeNotifier {
     _isOnTrack = newIsOnTrack;
     SharedPreferences.getInstance().then((value) =>
         value.setBool(ON_TRACK, _isOnTrack).then((value) => notifyListeners()));
+    // if recently turned off
+    if (!newIsOnTrack) {
+      print(
+          "adding time ${DateTime.now().millisecondsSinceEpoch - _lastOffTime}");
+      _addTotalTime(DateTime.now().millisecondsSinceEpoch - _lastOffTime);
+      _lastOffTime = -1;
+    } else
+      _lastOffTime = DateTime.now().millisecondsSinceEpoch;
   }
 
-  StorageStringList get savedLocations =>
-      _savedLocations == null
-          ? StorageStringList([], SAVED_LOCATION_KEY)
-          : _savedLocations!;
+  StorageStringList get savedLocations => _savedLocations == null
+      ? StorageStringList([], SAVED_LOCATION_KEY)
+      : _savedLocations!;
 
-  StorageStringList get disabledApps =>
-      _disabledApps == null
-          ? StorageStringList([], DISABLED_APPS_KEY)
-          : _disabledApps!;
+  StorageStringList get disabledApps => _disabledApps == null
+      ? StorageStringList([], DISABLED_APPS_KEY)
+      : _disabledApps!;
 }
 
 Future<int> _getTotalTime() async {
@@ -86,19 +100,14 @@ class StorageStringList extends ChangeNotifier {
       _backingMap.putIfAbsent(
           split[0],
           // Try set boolean if it exists.
-              () =>
-          split.length > 1
-              ? split[1].toLowerCase() == 'true'
-              : false);
+          () => split.length > 1 ? split[1].toLowerCase() == 'true' : false);
     }
   }
 
-  _saveList() async =>
-      (await SharedPreferences.getInstance()).setStringList(
-          key,
-          List.of(
-              _backingMap.entries.map((e) => "${e.key}:${e.value
-                  .toString()}")));
+  _saveList() async => (await SharedPreferences.getInstance()).setStringList(
+      key,
+      List.of(
+          _backingMap.entries.map((e) => "${e.key}:${e.value.toString()}")));
 
   Future<bool> upsert(String key, bool val) async {
     final didUpdate =
