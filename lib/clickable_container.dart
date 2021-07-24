@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:winterhack_2021/saved_data.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import 'locationPage.dart';
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
@@ -108,10 +108,10 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   }
 }
 
-Widget getChipsWidget(Future<StorageStringList> func) {
+Widget getChipsWidget(Future<StorageMap> func) {
   return FutureBuilder(
     future: func,
-    builder: (context, AsyncSnapshot<StorageStringList> snapshot) {
+    builder: (context, AsyncSnapshot<StorageMap> snapshot) {
       final dat = snapshot.hasData ? snapshot.data!.items : Map();
       if (dat.isEmpty) {
         return Padding(

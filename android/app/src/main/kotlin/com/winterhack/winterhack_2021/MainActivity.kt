@@ -28,7 +28,7 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
         //GeneratedPluginRegistrant.registerWith(flutterEngine)
-        val forService = startDisablerService()
+        startDisablerService()
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
@@ -75,12 +75,6 @@ class MainActivity : FlutterActivity() {
 
 
     private fun getcurrentlocation(result: MethodChannel.Result) {
-        // Initialize the SDK
-        fun getLocationPermission() {
-            TODO()
-        }   
-
-
         Places.initialize(applicationContext, "AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A")
 
         // Create a new PlacesClient instance

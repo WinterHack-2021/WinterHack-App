@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:provider/provider.dart';
-import 'package:winterhack_2021/saved_data.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/selector_card.dart';
 
 const platform = const MethodChannel('winterhack-channel');

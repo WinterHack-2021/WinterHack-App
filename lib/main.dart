@@ -4,7 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:flutter/material.dart';
-import 'package:winterhack_2021/saved_data.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import 'clickable_container.dart';
 import 'dart:isolate';
 import 'dart:ui';
