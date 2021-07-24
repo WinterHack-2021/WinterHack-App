@@ -1,6 +1,5 @@
 // @dart=2.9
-import 'dart:async';
-import 'main.dart';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
