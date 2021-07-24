@@ -108,8 +108,11 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
   StorageMap(List<String> backingList, this.key, this.make) {
     _backingMap = Set();
     for (var x in backingList) {
+      try{
       Map<String, dynamic> jsonMap = json.decode(x);
-      _backingMap.add(make(jsonMap));
+      _backingMap.add(make(jsonMap));}catch(e){
+        print("Failed to parse: $x, error: $e");
+      }
     }
   }
 
