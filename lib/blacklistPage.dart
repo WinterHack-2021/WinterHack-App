@@ -34,7 +34,7 @@ class Blacklist extends State<BlacklistPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    return GlobalModel.asWidget(Padding(
+    return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
       child: Column(
         children: [
@@ -51,9 +51,16 @@ class Blacklist extends State<BlacklistPage> {
                   ...appList.map((app) => SelectorCardWidget(
                         icon: app.icon,
                         name: app.name != null ? app.name! : "",
-                        onChanged: (selected) {},
+                        onChanged: (selected) {
+                          if (app.name == null) return;
+                          if (selected)
+                            value.disabledApps.upsert(app.name!, true);
+                          else
+                            value.disabledApps.remove(app.name!);
+                        },
                         // TODO
-                        isActive: /*value.disabledApps.get(app.packageName!)*/ false,
+                        isActive: app.name != null &&
+                            (value.disabledApps.get(app.name!) ?? false),
                       ))
                 ],
               ),
@@ -61,6 +68,6 @@ class Blacklist extends State<BlacklistPage> {
           ),
         ],
       ),
-    ));
+    );
   }
 }

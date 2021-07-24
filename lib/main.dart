@@ -23,11 +23,11 @@ void printHello() {
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  runApp(MaterialApp(
+  runApp(GlobalModel.asWidget(MaterialApp(
     debugShowCheckedModeBanner: false,
-    home: GlobalModel.asWidget(HomeWidget()),
+    home: HomeWidget(),
     theme: ThemeData.dark(),
-  ));
+  )));
   bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
 }
 
@@ -128,7 +128,6 @@ class Home extends State<HomeWidget> {
                                 .copyWith(fontSize: 23))),
                     onClick: () {
                       value.setTotalTime(value.totalTime + 100000);
-                      value.savedLocations.upsert("ff", false);
                     });
               },
             ),
