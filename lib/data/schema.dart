@@ -103,9 +103,8 @@ class Location extends WithBool {
 class StorageMap<T extends WithBool> extends ChangeNotifier {
   late Set<T> _backingMap;
   String key;
-  T Function(Map<String, dynamic> json) make;
 
-  StorageMap(List<String> backingList, this.key, this.make) {
+  StorageMap(List<String> backingList, this.key, T Function(Map<String, dynamic> json) make) {
     _backingMap = Set();
     for (var x in backingList) {
       try{
@@ -114,6 +113,9 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
         print("Failed to parse: $x, error: $e");
       }
     }
+  }
+  StorageMap.immutableEmpty(this.key){
+    _backingMap=Set.unmodifiable([]);
   }
 
   _saveList() async => (await SharedPreferences.getInstance())

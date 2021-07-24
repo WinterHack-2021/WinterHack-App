@@ -10,7 +10,6 @@ import 'package:winterhack_2021/selector_card.dart';
 import 'data/schema.dart';
 
 const platform = const MethodChannel('winterhack-channel');
-const String portName = "ConnectingIsolate";
 
 class BlacklistPage extends StatefulWidget {
   @override
@@ -19,11 +18,6 @@ class BlacklistPage extends StatefulWidget {
 
 class Blacklist extends State<BlacklistPage> {
   List<AppInfo> appList = [];
-
-  declareDisabledApps() async {
-    await platform.invokeMethod(
-        "setDisabledApps", ["org.chromium.chrome.browser.MonochromeApplication", "com.google.android.apps.messaging"]);
-  }
 
   @override
   void initState() {
@@ -36,7 +30,6 @@ class Blacklist extends State<BlacklistPage> {
   @override
   Widget build(BuildContext context) {
     ThemeData theme = Theme.of(context);
-    declareDisabledApps();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 80),
       child: Column(

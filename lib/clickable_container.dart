@@ -100,7 +100,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   Widget build(BuildContext context) {
     return Consumer<GlobalModel>(
         builder: (context, value, child) => ClickableContainer(
-            child: getChipsWidget(Future.value(value.disabledApps)),
+            child: getChipsWidget<App>(Future.value(value.disabledApps), mapName: (v)=>v.appName),
             title: "Disabled Apps",
             onClick: () {
               Navigator.push(context,
@@ -109,11 +109,11 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   }
 }
 
-Widget getChipsWidget(Future<StorageMap<WithBool>> func) {
+Widget getChipsWidget<T extends WithBool>(Future<StorageMap<T>> func, {String Function(T val)? mapName}) {
   return FutureBuilder(
     future: func,
-    builder: (context, AsyncSnapshot<StorageMap<WithBool>> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.items : Set<WithBool>();
+    builder: (context, AsyncSnapshot<StorageMap<T>> snapshot) {
+      final dat = snapshot.hasData ? snapshot.data!.items : Set<T>();
       if (dat.isEmpty) {
         return Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -130,7 +130,7 @@ Widget getChipsWidget(Future<StorageMap<WithBool>> func) {
         children: [
           for (var i in dat)
             ChipWidget(
-                name: i.getKey(),
+                name: mapName!=null?mapName(i):i.getKey(),
                 isChecked: i.isEnabled,
                 onSelected: (selected) {
                   i.isEnabled = selected;

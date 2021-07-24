@@ -53,14 +53,14 @@ class MainActivity : FlutterActivity() {
     }
 
     private fun setDisabledApps(disabledApps: List<String>) {
-        var pendingIntent: PendingIntent? = null;
+        val pendingIntent: PendingIntent?
         val alarmManager: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
 
-        val intent = Intent(this, AlertReceiver::class.java);
-        intent.putStringArrayListExtra("Disabled apps", ArrayList(disabledApps));
+        val intent = Intent(this, AlertReceiver::class.java)
+        intent.putStringArrayListExtra(AlertReceiver.DISABLED_APPS_INPUT_KEY, ArrayList(disabledApps))
 
-        pendingIntent = PendingIntent.getBroadcast(this, 5, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 100000, pendingIntent);
+        pendingIntent = PendingIntent.getBroadcast(this, 5, intent, 0)
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 100000, pendingIntent)
     }
 
     private fun startDisablerService(): Intent {
