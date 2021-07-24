@@ -85,7 +85,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (ctxt) => GeoFence()));
+                  new CupertinoPageRoute(builder: (ctxt) => GeoFence()));
             }));
   }
 }
@@ -104,7 +104,7 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
             title: "Disabled Apps",
             onClick: () {
               Navigator.push(context,
-                  new MaterialPageRoute(builder: (ctxt) => BlacklistPage()));
+                  new CupertinoPageRoute(builder: (ctxt) => BlacklistPage()));
             }));
   }
 }

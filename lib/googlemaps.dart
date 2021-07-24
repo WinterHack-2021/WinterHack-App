@@ -1,17 +1,20 @@
-import 'dart:convert' as convert;
+// @dart=2.9
 
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:http/http.dart' as http;
+import 'dart:convert' as convert;
+import 'placesapi.dart';
+import 'package:provider/provider.dart';
 
 class GoogleMaps extends StatefulWidget {
-  const GoogleMaps({Key? key}) : super(key: key);
+  const GoogleMaps({Key key}) : super(key: key);
 
   @override
   _GoogleMapsState createState() => _GoogleMapsState();
 }
 
-late GoogleMapController mapController;
+GoogleMapController mapController;
 
 void _onMapCreated(GoogleMapController controller) {
   mapController = controller;
@@ -29,18 +32,22 @@ class _GoogleMapsState extends State<GoogleMaps> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        height: 400,
-        margin: EdgeInsets.all(10),
-        alignment: Alignment.center,
-        child: ClipRRect(
-            borderRadius: BorderRadius.circular(10),
-            child: GoogleMap(
-                onMapCreated: _onMapCreated,
-                initialCameraPosition: CameraPosition(
-                  target: _center,
-                  zoom: 11.0,
-                ))));
+    final placeBloc = Provider.of<PlaceBloc>(context);
+    return (placeBloc.currentLocation == null)
+        ? Center(child: CircularProgressIndicator())
+        : Container(
+            height: 400,
+            margin: EdgeInsets.all(10),
+            alignment: Alignment.center,
+            child: ClipRRect(
+                borderRadius: BorderRadius.circular(10),
+                child: GoogleMap(
+                    onMapCreated: _onMapCreated,
+                    initialCameraPosition: CameraPosition(
+                      target: LatLng(placeBloc.currentLocation.latitude,
+                          placeBloc.currentLocation.longitude),
+                      zoom: 11.0,
+                    ))));
   }
 }
 
@@ -48,7 +55,7 @@ class PlaceSearch {
   String description;
   String placeId;
 
-  PlaceSearch({required this.description, required this.placeId});
+  PlaceSearch({this.description, this.placeId});
 
   factory PlaceSearch.fromJson(Map<String, dynamic> json) {
     return PlaceSearch(
@@ -57,11 +64,11 @@ class PlaceSearch {
 }
 
 class PlacesService {
-  final key = 'YOUR_KEY';
+  final key = 'AIzaSyDIL0YfPsa_0ph6hN8AqCq-b-Xkv0dAS7A';
 
   Future<List<PlaceSearch>> getAutocomplete(String search) async {
     var url =
-        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&types=(cities)&key=$key';
+        'https://maps.googleapis.com/maps/api/place/autocomplete/json?input=$search&key=$key';
     var response = await http.get(url);
     var json = convert.jsonDecode(response.body);
     var jsonResults = json['predictions'] as List;
@@ -93,7 +100,7 @@ class Place {
   final String name;
   final String vicinity;
 
-  Place({required this.geometry, required this.name, required this.vicinity});
+  Place({this.geometry, this.name, this.vicinity});
 
   factory Place.fromJson(Map<String, dynamic> json) {
     return Place(
@@ -107,7 +114,7 @@ class Place {
 class Geometry {
   final Location location;
 
-  Geometry({required this.location});
+  Geometry({this.location});
 
   Geometry.fromJson(Map<dynamic, dynamic> parsedJson)
       : location = Location.fromJson(parsedJson['location']);
@@ -117,7 +124,7 @@ class Location {
   final double lat;
   final double lng;
 
-  Location({required this.lat, required this.lng});
+  Location({this.lat, this.lng});
 
   factory Location.fromJson(Map<dynamic, dynamic> parsedJson) {
     return Location(lat: parsedJson['lat'], lng: parsedJson['lng']);
