@@ -20,6 +20,7 @@ import io.flutter.plugin.common.MethodChannel
 import android.app.AlarmManager
 import android.app.PendingIntent
 import android.content.Context
+import android.provider.Settings
 
 class MainActivity : FlutterActivity() {
     private val CHANNEL = "winterhack-channel"
@@ -37,6 +38,7 @@ class MainActivity : FlutterActivity() {
 
         pendingIntent = PendingIntent.getBroadcast(this, 5, intent, 0);
         alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 100000, pendingIntent);
+        //startActivity(Intent(Settings.ACTION_ACCESSIBILITY_SETTINGS));
 
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,

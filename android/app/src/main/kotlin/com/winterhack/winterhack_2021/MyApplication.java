@@ -1,5 +1,7 @@
 package com.winterhack.winterhack_2021;
 
+import android.app.Activity;
+import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.os.Build;
@@ -8,17 +10,19 @@ import io.flutter.app.FlutterApplication;
 import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.PluginRegistrantCallback;
 
-public class MyApplication extends FlutterApplication {
+public class MyApplication extends Application {
 
-    @Override
-    public void onCreate() {
-        super.onCreate();
-        //Vishal's Code
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
-            NotificationChannel channel = new NotificationChannel("winterhack-channel","Messages", NotificationManager.IMPORTANCE_LOW);
-            NotificationManager manager = getSystemService(NotificationManager.class);
-            manager.createNotificationChannel(channel);
+
+        public void onCreate() {
+            super.onCreate();
         }
-    }
+
+        private Activity mCurrentActivity = null;
+        public Activity getCurrentActivity(){
+            return mCurrentActivity;
+        }
+        public void setCurrentActivity(Activity mCurrentActivity){
+            this.mCurrentActivity = mCurrentActivity;
+        }
 
 }
