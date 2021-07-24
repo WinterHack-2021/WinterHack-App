@@ -13,13 +13,6 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
     as bg;
 import 'geofencing.dart';
 
-void printHello() {
-  final DateTime now = DateTime.now();
-  final int isolateId = Isolate.current.hashCode;
-  print("[$now] Hello, world! isolate=${isolateId} function='$printHello'");
-  print('yoyoyoy');
-}
-
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 

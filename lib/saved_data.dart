@@ -98,6 +98,8 @@ class StorageStringList extends ChangeNotifier {
     return _backingMap[val];
   }
 
+  bool contains(String? val) => _backingMap.containsKey(val);
+
   clear() {
     _backingMap.clear();
     notifyListeners();
