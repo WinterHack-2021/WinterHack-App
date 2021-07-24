@@ -69,7 +69,6 @@ class Blacklist extends State<BlacklistPage> {
                             else
                               value.disabledApps.remove(app.name!);
                           },
-                          // TODO
                           isActive: app.name != null &&
                               (value.disabledApps.get(app.name!) ?? false),
                         ))

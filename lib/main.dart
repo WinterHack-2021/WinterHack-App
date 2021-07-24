@@ -30,8 +30,6 @@ class HomeWidget extends StatefulWidget {
 }
 
 class Home extends State<HomeWidget> {
-  bool isActive = false;
-
   @override
   void initState() {
     super.initState();
@@ -69,49 +67,49 @@ class Home extends State<HomeWidget> {
           ),
         ],
       ),
-      body: Column(children: <Widget>[
-        SizedBox(height: 20),
-        Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-          (isActive
-              ? AnimatedTextKit(
-                  animatedTexts: [
-                    ColorizeAnimatedText('onTrack',
-                        textStyle: TextStyle(
-                            fontSize: 45.0,
-                            fontFamily: 'Horizon',
-                            fontWeight: FontWeight.bold),
-                        colors: [
-                          Colors.white,
-                          Colors.white,
-                          Colors.purple,
-                          Colors.blue,
-                          Colors.yellow,
-                          Colors.red,
-                        ])
-                  ],
-                  totalRepeatCount: 1,
-                )
-              : Text("offTrack",
-                  style: theme.textTheme.headline3.copyWith(
-                      fontWeight: FontWeight.w500, color: Colors.white))),
-          SizedBox(width: 30),
-          Transform.scale(
-              scale: 1.5,
-              child: CupertinoSwitch(
-                value: isActive,
-                onChanged: (value) => setState(() => isActive = value),
-              ))
-        ]),
-        Expanded(
-            child: ListView(
-          children: [
-            ClickableLocationContainer(),
-            ClickableAppsContainer(),
-            Consumer<GlobalModel>(
-              builder: (context, value, child) {
-                Duration duration = Duration(milliseconds: value.totalTime);
-
-                return ClickableContainer(
+      body: Consumer<GlobalModel>(
+        builder: (context, state, child) {
+          Duration duration = Duration(milliseconds: state.totalTime);
+          return Column(children: <Widget>[
+            SizedBox(height: 20),
+            Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+              (state.isOnTrack
+                  ? AnimatedTextKit(
+                      animatedTexts: [
+                        ColorizeAnimatedText('onTrack',
+                            textStyle: TextStyle(
+                                fontSize: 45.0,
+                                fontFamily: 'Horizon',
+                                fontWeight: FontWeight.bold),
+                            colors: [
+                              Colors.white,
+                              Colors.white,
+                              Colors.purple,
+                              Colors.blue,
+                              Colors.yellow,
+                              Colors.red,
+                            ])
+                      ],
+                      totalRepeatCount: 1,
+                    )
+                  : Text("offTrack",
+                      style: theme.textTheme.headline3.copyWith(
+                          fontWeight: FontWeight.w500, color: Colors.white))),
+              SizedBox(width: 30),
+              Transform.scale(
+                  scale: 1.5,
+                  child: CupertinoSwitch(
+                    value: state.isOnTrack,
+                    onChanged: (value) =>
+                        setState(() => state.isOnTrack = value),
+                  ))
+            ]),
+            Expanded(
+                child: ListView(
+              children: [
+                ClickableLocationContainer(),
+                ClickableAppsContainer(),
+                ClickableContainer(
                     child: Padding(
                         padding: EdgeInsets.fromLTRB(0, 10, 0, 30),
                         // Source: https://stackoverflow.com/questions/54775097/formatting-a-duration-like-hhmmss
@@ -120,13 +118,13 @@ class Home extends State<HomeWidget> {
                             style: theme.textTheme.subtitle1
                                 .copyWith(fontSize: 23))),
                     onClick: () {
-                      value.setTotalTime(value.totalTime + 100000);
-                    });
-              },
-            ),
-          ],
-        )),
-      ]),
+                      state.totalTime += 100000;
+                    })
+              ],
+            )),
+          ]);
+        },
+      ),
     );
   }
 }
