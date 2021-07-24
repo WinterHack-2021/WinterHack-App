@@ -29,6 +29,8 @@ abstract class Serializable {
 abstract class WithBool extends Serializable {
   bool isEnabled = false;
 
+  WithBool(this.isEnabled);
+
   WithBool.fromJsonMap(Map<String, dynamic> json)
       : isEnabled = json['isEnabled'];
 
@@ -44,6 +46,8 @@ abstract class WithBool extends Serializable {
 class App extends WithBool {
   String appName;
   String packageName;
+
+  App(this.appName, this.packageName, bool isEnabled) : super(isEnabled);
 
   App.fromJsonMap(Map<String, dynamic> json)
       : appName = json['appName'],
@@ -68,6 +72,9 @@ class App extends WithBool {
 class Location extends WithBool {
   int lat, long, radius;
   String locationName;
+
+  Location(this.lat, this.long, this.radius, this.locationName, bool isEnabled)
+      : super(isEnabled);
 
   Location.fromJsonMap(Map<String, dynamic> json)
       : lat = json['lat'],
@@ -109,13 +116,13 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
   _saveList() async => (await SharedPreferences.getInstance())
       .setStringList(key, List.of(_backingMap.map((e) => e.toJson())));
 
-  Future<bool> upsert(T key) async {
-    final didUpdate = _backingMap.add(key);
+  Future<bool> upsert(T val) async {
+    final didUpdate = _backingMap.add(val);
     // if didn't change, likely boolean change
     if (!didUpdate) {
       _backingMap
-          .firstWhere((element) => element.getKey() == key.getKey())
-          .isEnabled = key.isEnabled;
+          .firstWhere((element) => element.getKey() == val.getKey())
+          .isEnabled = val.isEnabled;
     }
 
     await _saveList();
@@ -123,9 +130,8 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
     return didUpdate;
   }
 
-  void remove(String val) async {
-    _backingMap.removeWhere((element) => element.getKey() == val);
-    // if something was removed
+  void remove(String key) async {
+    _backingMap.removeWhere((element) => element.getKey() == key);
     await _saveList();
     notifyListeners();
   }
