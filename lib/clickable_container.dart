@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:winterhack_2021/data/schema.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import 'locationPage.dart';
 import 'dart:ui';
@@ -42,11 +43,13 @@ class ClickableContainer extends StatelessWidget {
                                         fontWeight: FontWeight.w600,
                                         fontSize: 14)),
                             SizedBox(width: 3),
-                            onClick!=null? Icon(
-                              Icons.arrow_forward_ios,
-                              color: Color(0xff969696),
-                              size: 13,
-                            ):SizedBox(),
+                            onClick != null
+                                ? Icon(
+                                    Icons.arrow_forward_ios,
+                                    color: Color(0xff969696),
+                                    size: 13,
+                                  )
+                                : SizedBox(),
                           ],
                         ))),
                 child
@@ -62,9 +65,7 @@ class ClickableContainer extends StatelessWidget {
   }
 
   ClickableContainer(
-      {required this.child,
-      this.onClick,
-      this.title = "Sample Title"});
+      {required this.child, this.onClick, this.title = "Sample Title"});
 }
 
 class ClickableLocationContainer extends StatefulWidget {
@@ -108,11 +109,11 @@ class _ClickableAppsContainerState extends State<ClickableAppsContainer> {
   }
 }
 
-Widget getChipsWidget(Future<StorageMap> func) {
+Widget getChipsWidget(Future<StorageMap<WithBool>> func) {
   return FutureBuilder(
     future: func,
-    builder: (context, AsyncSnapshot<StorageMap> snapshot) {
-      final dat = snapshot.hasData ? snapshot.data!.items : Map();
+    builder: (context, AsyncSnapshot<StorageMap<WithBool>> snapshot) {
+      final dat = snapshot.hasData ? snapshot.data!.items : Set<WithBool>();
       if (dat.isEmpty) {
         return Padding(
             padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
@@ -127,12 +128,14 @@ Widget getChipsWidget(Future<StorageMap> func) {
         runSpacing: -1.0,
         alignment: WrapAlignment.center,
         children: [
-          for (var i in dat.entries)
+          for (var i in dat)
             ChipWidget(
-                name: i.key,
-                isChecked: i.value,
-                onSelected: (selected) =>
-                    snapshot.data!.upsert(i.key, selected))
+                name: i.getKey(),
+                isChecked: i.isEnabled,
+                onSelected: (selected) {
+                  i.isEnabled = selected;
+                  snapshot.data!.upsert(i);
+                })
         ],
       );
     },

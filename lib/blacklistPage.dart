@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/selector_card.dart';
 
+import 'data/schema.dart';
+
 const platform = const MethodChannel('winterhack-channel');
 const String portName = "ConnectingIsolate";
 
@@ -63,9 +65,11 @@ class Blacklist extends State<BlacklistPage> {
                           icon: app.icon,
                           name: app.name != null ? app.name! : "",
                           onChanged: (selected) {
-                            if (app.name == null) return;
+                            if (app.name == null || app.packageName == null)
+                              return;
                             if (selected)
-                              value.disabledApps.upsert(app.name!, true);
+                              value.disabledApps.upsert(
+                                  App(app.name!, app.packageName!, selected));
                             else
                               value.disabledApps.remove(app.name!);
                           },
