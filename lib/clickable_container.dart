@@ -1,12 +1,13 @@
+import 'dart:ui';
+
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/schema.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
-import 'locationPage.dart';
-import 'dart:ui';
-import 'package:flutter/cupertino.dart';
-import 'chips.dart';
+
 import 'blacklistPage.dart';
+import 'chips.dart';
 import 'geofencing.dart';
 
 class ClickableContainer extends StatelessWidget {

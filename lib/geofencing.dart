@@ -1,5 +1,7 @@
 // @dart=2.9
 import 'dart:async';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
+
 import 'main.dart';
 import 'package:flutter/material.dart';
 import 'googlemaps.dart';
@@ -21,6 +23,7 @@ class _GeoFenceState extends State<GeoFence> {
   double long = 0;
   double lat = 0;
   double radius = 10;
+  Completer<GoogleMapController> mapController = Completer();
 
   void addGeofence(geofencename, long, lat, radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
@@ -35,14 +38,20 @@ class _GeoFenceState extends State<GeoFence> {
 
   StreamSubscription locationSubscription;
 
-  dynamic googleMap = GoogleMaps();
+  Future<void> goToPlace(Place place) async {
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target:
+        LatLng(place.geometry.location.lat, place.geometry.location.lng),
+        zoom: 14.0)));
+  }
   @override
   void initState() {
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
 
     locationSubscription = placeBloc.selectedLocation.stream.listen((place) {
       if (place != null) {
-        googleMap.goToPlace(place);
+        goToPlace(place);
       }
     });
     super.initState();
@@ -117,7 +126,7 @@ class _GeoFenceState extends State<GeoFence> {
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
                   )),
-              googleMap,
+              GoogleMaps(mapController),
               //ClickableLocationContainer(),
             ],
           ),

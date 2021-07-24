@@ -10,17 +10,20 @@ import 'placesapi.dart';
 import 'package:provider/provider.dart';
 
 class GoogleMaps extends StatefulWidget {
-  const GoogleMaps({Key key}) : super(key: key);
+  final Completer<GoogleMapController> mapController;
+  const GoogleMaps(this.mapController, {Key key}) : super(key: key);
   @override
-  _GoogleMapsState createState() => _GoogleMapsState();
+  _GoogleMapsState createState() => _GoogleMapsState(mapController);
 }
 
 class _GoogleMapsState extends State<GoogleMaps> {
-  Completer<GoogleMapController> mapController = Completer();
+
 
   LatLng _center = LatLng(0, 0);
   double lat = 0;
   double long = 0;
+  Completer<GoogleMapController> mapController;
+  _GoogleMapsState(this.mapController);
 
   void initState() {
     super.initState();
@@ -58,13 +61,6 @@ class _GoogleMapsState extends State<GoogleMaps> {
                     ))));
   }
 
-  Future<void> goToPlace(Place place) async {
-    final GoogleMapController controller = await mapController.future;
-    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
-        target:
-            LatLng(place.geometry.location.lat, place.geometry.location.lng),
-        zoom: 14.0)));
-  }
 }
 
 class PlaceSearch {

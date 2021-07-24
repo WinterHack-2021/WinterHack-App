@@ -34,9 +34,12 @@ class GlobalModel extends ChangeNotifier {
     _init().then((_) {
       _savedLocations!.addListener(() => notifyListeners());
       _disabledApps!.addListener(() {
-
         platform.invokeMethod(
-            "setDisabledApps", _disabledApps!.items.where((e)=>e.isEnabled).map((e) => e.packageName).toList(growable: false));
+            "setDisabledApps",
+            _disabledApps!.items
+                .where((e) => e.isEnabled)
+                .map((e) => e.packageName)
+                .toList(growable: false));
         notifyListeners();
       });
     });
