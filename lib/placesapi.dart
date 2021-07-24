@@ -1,5 +1,8 @@
 // @dart=2.9
+import 'dart:async';
+
 import 'package:flutter/foundation.dart';
+import 'package:flutter/semantics.dart';
 import 'package:geolocator/geolocator.dart';
 
 import 'googlemaps.dart';
@@ -10,6 +13,7 @@ class PlaceBloc with ChangeNotifier {
 
   Position currentLocation;
   List<PlaceSearch> searchResults;
+  StreamController<Place> selectedLocation = StreamController<Place>();
 
   PlaceBloc() {
     setCurrentLocation();
@@ -22,6 +26,17 @@ class PlaceBloc with ChangeNotifier {
   searchPlaces(String searchTerm) async {
     searchResults = await placesService.getAutocomplete(searchTerm);
     notifyListeners();
+  }
+
+  setSelectedLocation(String placeId) async {
+    selectedLocation.add(await placesService.getPlace(placeId));
+    notifyListeners();
+  }
+
+  @override
+  dispose() {
+    super.dispose();
+    selectedLocation.close();
   }
 }
 

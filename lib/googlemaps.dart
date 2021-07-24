@@ -1,28 +1,23 @@
 // @dart=2.9
 
-import 'dart:convert' as convert;
-
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
-
+import 'dart:convert' as convert;
 import 'placesapi.dart';
+import 'package:provider/provider.dart';
 
 class GoogleMaps extends StatefulWidget {
   const GoogleMaps({Key key}) : super(key: key);
-
   @override
   _GoogleMapsState createState() => _GoogleMapsState();
 }
 
-GoogleMapController mapController;
-
-void _onMapCreated(GoogleMapController controller) {
-  mapController = controller;
-}
-
 class _GoogleMapsState extends State<GoogleMaps> {
+  Completer<GoogleMapController> mapController = Completer();
+
   LatLng _center = LatLng(0, 0);
   double lat = 0;
   double long = 0;
@@ -30,6 +25,13 @@ class _GoogleMapsState extends State<GoogleMaps> {
   void initState() {
     super.initState();
     _center = LatLng(lat, long);
+  }
+
+  @override
+  void dispose() {
+    final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
+    placeBloc.dispose();
+    super.dispose();
   }
 
   @override
@@ -44,12 +46,24 @@ class _GoogleMapsState extends State<GoogleMaps> {
             child: ClipRRect(
                 borderRadius: BorderRadius.circular(10),
                 child: GoogleMap(
-                    onMapCreated: _onMapCreated,
+                    myLocationEnabled: true,
+                    myLocationButtonEnabled: true,
+                    onMapCreated: (GoogleMapController controller) {
+                      mapController.complete(controller);
+                    },
                     initialCameraPosition: CameraPosition(
                       target: LatLng(placeBloc.currentLocation.latitude,
                           placeBloc.currentLocation.longitude),
                       zoom: 11.0,
                     ))));
+  }
+
+  Future<void> goToPlace(Place place) async {
+    final GoogleMapController controller = await mapController.future;
+    controller.animateCamera(CameraUpdate.newCameraPosition(CameraPosition(
+        target:
+            LatLng(place.geometry.location.lat, place.geometry.location.lng),
+        zoom: 14.0)));
   }
 }
 
