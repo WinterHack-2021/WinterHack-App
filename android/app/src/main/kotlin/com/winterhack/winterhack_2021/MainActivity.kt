@@ -30,14 +30,6 @@ class MainActivity : FlutterActivity() {
         //GeneratedPluginRegistrant.registerWith(flutterEngine)
         val forService = startDisablerService()
 
-        var pendingIntent: PendingIntent? = null;
-        val alarmManager: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-
-        val intent = Intent(this, AlertReceiver::class.java);
-
-        pendingIntent = PendingIntent.getBroadcast(this, 5, intent, 0);
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 100000, pendingIntent);
-
         MethodChannel(
             flutterEngine.dartExecutor.binaryMessenger,
             CHANNEL
@@ -46,7 +38,7 @@ class MainActivity : FlutterActivity() {
                 when (call.method) {
                     "setDisabledApps"->{
                         val disabledApps: List<String> = call.arguments();
-                        // TODO implement
+                        setDisabledApps(disabledApps)
                         println(disabledApps)
                     }
                     "getcurrentlocation" -> {
@@ -60,6 +52,16 @@ class MainActivity : FlutterActivity() {
         }
     }
 
+    private fun setDisabledApps(disabledApps: List<String>) {
+        var pendingIntent: PendingIntent? = null;
+        val alarmManager: AlarmManager = this.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+
+        val intent = Intent(this, AlertReceiver::class.java);
+        intent.putStringArrayListExtra("Disabled apps", ArrayList(disabledApps));
+
+        pendingIntent = PendingIntent.getBroadcast(this, 5, intent, 0);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, 5000, 100000, pendingIntent);
+    }
 
     private fun startDisablerService(): Intent {
         val forService = Intent(this@MainActivity, MyService::class.java);
