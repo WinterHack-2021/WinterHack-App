@@ -1,12 +1,13 @@
 // @dart=2.9
-
+import 'dart:async';
+import 'main.dart';
 import 'package:flutter/material.dart';
+import 'googlemaps.dart';
+import 'clickable_container.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
-import 'package:provider/provider.dart';
-
-import 'googlemaps.dart';
 import 'placesapi.dart';
+import 'package:provider/provider.dart';
 
 class GeoFence extends StatefulWidget {
   const GeoFence({Key key}) : super(key: key);
@@ -32,18 +33,29 @@ class _GeoFenceState extends State<GeoFence> {
     print('addded');
   }
 
-  // @override
-  // void initState() {
-  //   super.initState();
-  //   //final placeApi = Provider.of<PlaceBloc>(context);
-  // }
+  StreamSubscription locationSubscription;
 
-  // @override
-  // void dispose() {
-  //   final placeApi = Provider.of<PlaceBloc>(context, listen: false);
-  // }
+  dynamic googleMap = GoogleMaps();
+  @override
+  void initState() {
+    final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
+
+    locationSubscription = placeBloc.selectedLocation.stream.listen((place) {
+      if (place != null) {
+        googleMap.goToPlace(place);
+      }
+    });
+    super.initState();
+  }
 
   @override
+  void dispose() {
+    final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
+    placeBloc.dispose();
+    locationSubscription.cancel();
+    super.dispose();
+  }
+
   Widget build(BuildContext context) {
     final placeBloc = Provider.of<PlaceBloc>(context);
     return Scaffold(
@@ -89,6 +101,10 @@ class _GeoFenceState extends State<GeoFence> {
                           return ListTile(
                             title: Text(
                                 placeBloc.searchResults[index].description),
+                            onTap: () {
+                              placeBloc.setSelectedLocation(
+                                  placeBloc.searchResults[index].placeId);
+                            },
                           );
                         },
                       ))
@@ -101,7 +117,7 @@ class _GeoFenceState extends State<GeoFence> {
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
                   )),
-              GoogleMaps(),
+              googleMap,
               //ClickableLocationContainer(),
             ],
           ),
