@@ -19,12 +19,10 @@ class GeoFence extends StatefulWidget {
 }
 
 class _GeoFenceState extends State<GeoFence> {
-  String geofencename = 'Home';
-  double long = 0;
-  double lat = 0;
-  double radius = 10;
   Completer<GoogleMapController> mapController = Completer();
   StreamSubscription locationSubscription;
+  TextEditingController radiusController = new TextEditingController();
+  double radius;
 
   void addGeofence(geofencename, long, lat, radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
@@ -35,6 +33,8 @@ class _GeoFenceState extends State<GeoFence> {
         latitude: lat,
         longitude: long));
     print('addded');
+    print('Radius: $radius');
+    print('Identifier: $geofencename');
   }
 
   Future<void> goToPlace(Place place) async {
@@ -45,6 +45,8 @@ class _GeoFenceState extends State<GeoFence> {
         zoom: 14.0)));
   }
 
+  Place currentPlace;
+
   @override
   void initState() {
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
@@ -52,6 +54,7 @@ class _GeoFenceState extends State<GeoFence> {
     locationSubscription = placeBloc.selectedLocation.stream.listen((place) {
       if (place != null) {
         goToPlace(place);
+        currentPlace = place;
       }
     });
     super.initState();
@@ -66,6 +69,13 @@ class _GeoFenceState extends State<GeoFence> {
   }
 
   Widget build(BuildContext context) {
+    Set<Circle> circles = Set.from([
+      Circle(
+          circleId: CircleId('1'),
+          radius: radius,
+          center: LatLng(currentPlace.geometry.location.lat,
+              currentPlace.geometry.location.lng))
+    ]);
     final placeBloc = Provider.of<PlaceBloc>(context);
     return Scaffold(
         appBar: AppBar(
@@ -76,7 +86,12 @@ class _GeoFenceState extends State<GeoFence> {
             children: [
               TextButton(
                   onPressed: () {
-                    addGeofence(geofencename, long, lat, radius);
+                    if (radius != null)
+                      addGeofence(
+                          currentPlace.name,
+                          currentPlace.geometry.location.lng,
+                          currentPlace.geometry.location.lat,
+                          radius);
                   },
                   child: Text('Add Location')),
               Container(
@@ -121,10 +136,15 @@ class _GeoFenceState extends State<GeoFence> {
               Container(
                   margin: EdgeInsets.all(10),
                   child: TextField(
+                    controller: radiusController,
                     decoration: InputDecoration(
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
+                    onSubmitted: (t) {
+                      radius = double.parse(radiusController.text);
+                      setState(() {});
+                    },
                   )),
               (placeBloc.currentLocation == null)
                   ? Center(child: CircularProgressIndicator())
@@ -135,6 +155,7 @@ class _GeoFenceState extends State<GeoFence> {
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
                           child: GoogleMap(
+                              circles: circles,
                               myLocationEnabled: true,
                               myLocationButtonEnabled: true,
                               onMapCreated: (GoogleMapController controller) {
