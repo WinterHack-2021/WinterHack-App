@@ -6,8 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/widgets/selector_card.dart';
 
-import 'data/schema.dart';
-
 class AddedLocations extends StatefulWidget {
   const AddedLocations({Key? key}) : super(key: key);
 
@@ -23,26 +21,13 @@ class _AddedLocationsState extends State<AddedLocations> {
     setState(() {});
   }
 
-  void removeGeofence(String locationName, GlobalModel model) async {
-    await bg.BackgroundGeolocation.removeGeofence(locationName);
+  void toggleGeofence(
+      String locationName, GlobalModel model, bool isSelected) async {
     var existing = model.savedLocations.getValue(locationName);
     if (existing != null) {
-      existing.isEnabled = false;
+      existing.isEnabled = isSelected;
       model.savedLocations.upsert(existing);
     }
-  }
-
-  void addGeofence(String geofencename, double long, double lat, double radius,
-      GlobalModel model) {
-    bg.BackgroundGeolocation.addGeofence(bg.Geofence(
-        notifyOnExit: true,
-        notifyOnEntry: true,
-        radius: radius,
-        identifier: '$geofencename',
-        latitude: lat,
-        longitude: long));
-    model.savedLocations
-        .upsert(SavedLocation(lat, long, radius, geofencename, true));
   }
 
   @override
@@ -65,7 +50,7 @@ class _AddedLocationsState extends State<AddedLocations> {
                     name: e.locationName,
                     isActive: e.isEnabled,
                     onChanged: (selected) {
-                      if (!selected) removeGeofence(e.locationName, value);
+                      toggleGeofence(e.locationName, value, selected);
                     });
               })
             ]);

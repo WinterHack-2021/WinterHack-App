@@ -34,13 +34,6 @@ class _GeoFencePageState extends State<GeoFencePage> {
 
   void addGeofence(String geofencename, double long, double lat, double radius,
       GlobalModel model) {
-    bg.BackgroundGeolocation.addGeofence(bg.Geofence(
-        notifyOnExit: true,
-        notifyOnEntry: true,
-        radius: radius,
-        identifier: '$geofencename',
-        latitude: lat,
-        longitude: long));
     model.savedLocations
         .upsert(SavedLocation(lat, long, radius, geofencename, true));
   }
@@ -222,13 +215,14 @@ class _GeoFencePageState extends State<GeoFencePage> {
                                   Colors.grey.shade700)),
                           onPressed: () {
                             if (radius != null && savename != null)
-                              addGeofence(
-                                  savename,
-                                  currentPlace.geometry.location.lng,
-                                  currentPlace.geometry.location.lat,
-                                  radius,
-                                  value);
-                            setState(() {});
+                              setState(() {
+                                addGeofence(
+                                    savename,
+                                    currentPlace.geometry.location.lng,
+                                    currentPlace.geometry.location.lat,
+                                    radius,
+                                    value);
+                              });
                           },
                           child: Text(
                             'Add Location',

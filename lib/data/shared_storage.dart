@@ -3,7 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter/widgets.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
+    as bg;
 import 'schema.dart';
 
 const String SAVED_LOCATION_KEY = "savedLocations";
@@ -31,14 +32,33 @@ class GlobalModel extends ChangeNotifier {
         create: (BuildContext context) => _singleton, child: child);
   }
 
+  _refreshGeofences() async {
+    await bg.BackgroundGeolocation.removeGeofences();
+    var validGeofences = List.of(savedLocations.items
+        .where((element) => element.isEnabled)
+        .map((e) => bg.Geofence(
+            notifyOnExit: true,
+            notifyOnEntry: true,
+            radius: e.radius,
+            identifier: '${e.locationName}',
+            latitude: e.lat,
+            longitude: e.long)));
+    if (validGeofences.isNotEmpty)
+      await bg.BackgroundGeolocation.addGeofences(validGeofences);
+  }
+
   GlobalModel._() {
     _init().then((_) {
-      _savedLocations!.addListener(() => notifyListeners());
+      _savedLocations!.addListener(() {
+        _refreshGeofences();
+        notifyListeners();
+      });
       _disabledApps!.addListener(() {
         _updateNativeService();
         notifyListeners();
       });
       _updateNativeService();
+      _refreshGeofences();
       notifyListeners();
       _loading = false;
     });
@@ -73,6 +93,7 @@ class GlobalModel extends ChangeNotifier {
   }
 
   bool get isOnTrack => _isOnTrack;
+
   bool get loading => _loading;
 
   set isOnTrack(bool newIsOnTrack) {
@@ -101,6 +122,7 @@ class GlobalModel extends ChangeNotifier {
   StorageMap<App> get disabledApps => _disabledApps == null
       ? StorageMap.immutableEmpty(DISABLED_APPS_KEY)
       : _disabledApps!;
+
   _addTotalTime(int newTime) async {
     _totalTime += newTime;
     await (await SharedPreferences.getInstance())
