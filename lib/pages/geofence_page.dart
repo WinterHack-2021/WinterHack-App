@@ -6,7 +6,8 @@ import 'package:flutter_background_geolocation/flutter_background_geolocation.da
     as bg;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
-
+import 'package:winterhack_2021/addedlocations.dart';
+import 'package:flutter/cupertino.dart';
 import '../googlemaps.dart';
 import '../placesapi.dart';
 
@@ -201,7 +202,12 @@ class _GeoFencePageState extends State<GeoFencePage> {
                   child: Text('Add Location')),
               Container(
                   child: TextButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      new CupertinoPageRoute(
+                          builder: (ctxt) => AddedLocations()));
+                },
                 child: Text('Current Locations'),
               ))
               //ClickableLocationContainer(),  ],)
