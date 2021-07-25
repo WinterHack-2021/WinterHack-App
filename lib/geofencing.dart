@@ -222,7 +222,9 @@ class _GeoFenceState extends State<GeoFence> {
 
 void headlessTask(bg.HeadlessEvent headlessEvent) async {
   print('Started HeadlessTask: $headlessEvent');
-  bg.GeofenceEvent geofenceEvent = headlessEvent.event;
-  print('${geofenceEvent.action}');
-  print('${geofenceEvent.identifier}');
+  if (headlessEvent is bg.GeofenceEvent) {
+    bg.GeofenceEvent geofenceEvent = headlessEvent.event;
+    print('${geofenceEvent.action}');
+    print('${geofenceEvent.identifier}');
+  }
 }

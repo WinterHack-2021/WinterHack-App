@@ -19,16 +19,19 @@ class MainActivity : FlutterActivity() {
             CHANNEL
         ).setMethodCallHandler { call, result ->
             run {
+                println("CALL NATIVE: ${call.method}")
                 when (call.method) {
                     "setDisabledApps" -> {
                         val disabledApps: MutableList<String> = call.arguments();
                         DisablerService.disabledApps = disabledApps
                         println(disabledApps)
+                        result.success(true)
                     }
                     "setEnabled" -> {
-                        val isEnabled:Boolean = call.arguments();
-                        DisablerService.isEnabled=isEnabled
+                        val isEnabled: Boolean = call.arguments();
+                        DisablerService.isEnabled = isEnabled
                         println(isEnabled)
+                        result.success(true)
                     }
                     else -> {
                         result.error("UNAVAILABLE", "Battery level not available.", null)

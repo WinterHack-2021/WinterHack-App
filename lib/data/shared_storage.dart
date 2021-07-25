@@ -34,15 +34,22 @@ class GlobalModel extends ChangeNotifier {
     _init().then((_) {
       _savedLocations!.addListener(() => notifyListeners());
       _disabledApps!.addListener(() {
-        platform.invokeMethod(
-            "setDisabledApps",
-            _disabledApps!.items
-                .where((e) => e.isEnabled)
-                .map((e) => e.packageName)
-                .toList(growable: false));
+        _updateNativeService();
         notifyListeners();
       });
+      _updateNativeService();
     });
+    // Let service know of init values
+  }
+
+  _updateNativeService() async {
+    await platform.invokeMethod("setEnabled", _isOnTrack);
+    await platform.invokeMethod(
+        "setDisabledApps",
+        _disabledApps!.items
+            .where((e) => e.isEnabled)
+            .map((e) => e.packageName)
+            .toList(growable: false));
   }
 
   Future<void> _init() async {
@@ -84,7 +91,8 @@ class GlobalModel extends ChangeNotifier {
       _lastOffTime = -1;
     } else
       _lastOffTime = DateTime.now().millisecondsSinceEpoch;
-    platform.invokeMethod("setEnabled", newIsOnTrack);
+
+    _updateNativeService();
     notifyListeners();
   }
 

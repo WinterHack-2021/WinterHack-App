@@ -42,48 +42,48 @@ public class DisablerService extends Service {
             // Normally we would do some work here, like download a file.
             // For our sample, we just sleep for 5 seconds.
             if (isRunning) {
-                Log.d(MainActivity.getTAG(), "RUNNING!");
-                Toast.makeText(DisablerService.this, "Service already running!", Toast.LENGTH_SHORT).show();
+                Log.d(MainActivity.getTAG(), "Disabler service already running!");
                 return;
             }
             isRunning = true;
             while (true) {
                 try {
-                    Log.d(MainActivity.getTAG(), "Hello World");
-                    Log.d(MainActivity.getTAG(), "Disabled: " + disabledApps);
                     Context context = DisablerService.this;
                     ActivityManager am = (ActivityManager) context.getSystemService(Context.ACTIVITY_SERVICE);
                     String fg = DisablerService.getForegroundProcess(context);
-                    Log.d(MainActivity.getTAG(), "check5: " + fg);
-
-                    if (disabledApps.contains(fg)&& isEnabled) {
+                    if (disabledApps.contains(fg) && isEnabled) {
                         Log.d(MainActivity.getTAG(), "App name: " + fg);
                         Intent startMain = new Intent(Intent.ACTION_MAIN);
                         startMain.addCategory(Intent.CATEGORY_HOME);
                         startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                         context.startActivity(startMain);
                         am.killBackgroundProcesses(fg);
+                        // Make toast
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(() -> Toast.makeText(getApplicationContext(),
+                                "You're currently onTrack! To use this app, disable onTrack or change your location",
+                                Toast.LENGTH_LONG).show());
                         Log.d(MainActivity.getTAG(), fg + " Killed!");
 
                     } else {
                     }
-                    Log.d(MainActivity.getTAG(), "Alarm Service has started!");
 
-                    Thread.sleep(5000);
+                    Thread.sleep(2500);
                 } catch (InterruptedException e) {
                     // Restore interrupt status.
                     Thread.currentThread().interrupt();
+                    break;
                 }
             }
             // Stop the service using the startId, so that we don't stop
             // the service in the middle of handling another job
-            // stopSelf(msg.arg1);
+            stopSelf(msg.arg1);
         }
     }
 
     @Override
     public void onCreate() {
-        Log.d(MainActivity.getTAG(), "onCreate");
+        Log.d(MainActivity.getTAG(), "Creating Disabler Service");
         // Start up the thread running the service. Note that we create a
         // separate thread because the service normally runs in the process's
         // main thread, which we don't want to block. We also make it
@@ -97,8 +97,9 @@ public class DisablerService extends Service {
     }
 
     @Override
-    public int onStartCommand(Intent intent, int flags, int startId) {  Log.d(MainActivity.getTAG(), "Started");
-        Toast.makeText(this, "service starting", Toast.LENGTH_SHORT).show();
+    public int onStartCommand(Intent intent, int flags, int startId) {
+        Log.d(MainActivity.getTAG(), "Started");
+        Toast.makeText(this, "Disabler Service Starting", Toast.LENGTH_SHORT).show();
 
         // For each start request, send a message to start a job and deliver the
         // start ID so we know which request we're stopping when we finish the job
@@ -117,28 +118,24 @@ public class DisablerService extends Service {
         UsageStatsManager usage = (UsageStatsManager) context.getSystemService(Context.USAGE_STATS_SERVICE);
         long time = System.currentTimeMillis();
         List<UsageStats> stats = usage.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, time - 1000 * 1000, time);
-        if (stats.isEmpty()) {
-            Log.d(MainActivity.getTAG(), "stats is empty");
-        }
+
         if (stats != null) {
+            if (stats.isEmpty()) {
+                Log.d(MainActivity.getTAG(), "stats is empty. No Permission?");
+            }
             SortedMap<Long, UsageStats> runningTask = new TreeMap<Long, UsageStats>();
             for (UsageStats usageStats : stats) {
                 runningTask.put(usageStats.getLastTimeUsed(), usageStats);
             }
-            Log.d(MainActivity.getTAG(), "check1");
             if (runningTask.isEmpty()) {
                 return null;
             }
-            Log.d(MainActivity.getTAG(), "check2");
             topPackageName = runningTask.get(runningTask.lastKey()).getPackageName();
         }
-        Log.d(MainActivity.getTAG(), "check3");
         if (topPackageName == null) {
             Intent intent = new Intent(Settings.ACTION_USAGE_ACCESS_SETTINGS);
             context.startActivity(intent);
         }
-        Log.d(MainActivity.getTAG(), "check4");
-        Log.d(MainActivity.getTAG(), topPackageName);
         return topPackageName;
 
     }
@@ -152,6 +149,6 @@ public class DisablerService extends Service {
     @Override
     public void onDestroy() {
         isRunning = false;
-        Toast.makeText(this, "service done", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, "Disabler Service Terminating", Toast.LENGTH_SHORT).show();
     }
 }
