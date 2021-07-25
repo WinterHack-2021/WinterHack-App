@@ -11,6 +11,7 @@ import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:winterhack_2021/placesapi.dart';
+import 'package:winterhack_2021/widgets/permissions_dialog.dart';
 
 import 'widgets/clickable_container.dart';
 import 'pages/geofence_page.dart';
@@ -45,6 +46,7 @@ class Home extends State<HomeWidget> {
   @override
   void initState() {
     super.initState();
+
     bg.BackgroundGeolocation.onGeofence((bg.GeofenceEvent event) {
       print('trigged fence');
       print('Action: ${event.action}');
@@ -87,6 +89,7 @@ class Home extends State<HomeWidget> {
         builder: (context, state, child) {
           Duration duration = Duration(milliseconds: state.totalTime);
           return Column(children: <Widget>[
+            PermissionsDialog(),
             SizedBox(height: 20),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               (state.isOnTrack
