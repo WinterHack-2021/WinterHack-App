@@ -8,6 +8,12 @@ Now, more than ever, it’s easy to get distracted in our modern technology-indu
 
 onTrack kills two birds with one stone, offering a neat app blocking service while also specifying the locations you want this to apply. To demo the app, download the app.apk file and run it on your android device. Ensure you give all permissions when prompted. Hope you like it!! :) 
 
+Credits:
+Abhinav Gupta
+Ryan Samarakoon
+Rishabh Dhawan
+Vishal Katwe
+
 Sample images
 ![image](https://user-images.githubusercontent.com/60831265/126900881-88514559-1da1-49d2-ab9c-848586a04f2b.png)
 ![image](https://user-images.githubusercontent.com/60831265/126900906-96014d5b-e1d5-471f-b797-8de423af87f9.png)
