@@ -24,6 +24,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
   TextEditingController radiusController = new TextEditingController();
   TextEditingController locationtextController = new TextEditingController();
   double radius;
+  String savename;
 
   void addGeofence(geofencename, long, lat, radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
@@ -42,6 +43,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
 
   @override
   void initState() {
+    super.initState();
     final placeBloc = Provider.of<PlaceBloc>(context, listen: false);
     getGeofences();
 
@@ -94,6 +96,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
         resizeToAvoidBottomInset: false,
         appBar: AppBar(
           title: Text('Locations'),
+          backgroundColor: Colors.grey.shade900,
         ),
         body: Container(
             child: Column(children: [
@@ -114,6 +117,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
           Stack(children: [
             Column(children: [
               Container(
+                  height: 45,
                   margin:
                       EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 8),
                   child: TextField(
@@ -122,18 +126,32 @@ class _GeoFencePageState extends State<GeoFencePage> {
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(10)),
                         labelText: 'Radius (m)'),
-                    onSubmitted: (t) {
+                    onChanged: (t) {
                       radius = double.parse(radiusController.text);
                       setCircle(currentPlace.geometry.location.lat,
                           currentPlace.geometry.location.lng, radius);
                       setState(() {});
                     },
                   )),
+              Container(
+                  height: 45,
+                  margin:
+                      EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 8),
+                  child: TextField(
+                    onChanged: (value) {
+                      savename = value;
+                    },
+                    decoration: InputDecoration(
+                        border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10)),
+                        labelText: 'Save Name: This will appear in the app'),
+                  )),
               (placeBloc.currentLocation == null)
                   ? Center(child: CircularProgressIndicator())
                   : Container(
                       height: 400,
-                      margin: EdgeInsets.all(10),
+                      margin: EdgeInsets.only(
+                          top: 10, left: 10, right: 10, bottom: 20),
                       alignment: Alignment.center,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(10),
@@ -188,28 +206,44 @@ class _GeoFencePageState extends State<GeoFencePage> {
                   )),
           ]),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              TextButton(
-                  onPressed: () {
-                    if (radius != null)
-                      addGeofence(
-                          currentPlace.name,
-                          currentPlace.geometry.location.lng,
-                          currentPlace.geometry.location.lat,
-                          radius);
-                    setState(() {});
-                  },
-                  child: Text('Add Location')),
               Container(
+                  margin: EdgeInsets.only(right: 10),
                   child: TextButton(
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      new CupertinoPageRoute(
-                          builder: (ctxt) => AddedLocations()));
-                },
-                child: Text('Current Locations'),
-              ))
+                      style: ButtonStyle(
+                          minimumSize: MaterialStateProperty.all(Size(150, 60)),
+                          backgroundColor:
+                              MaterialStateProperty.all(Colors.grey.shade700)),
+                      onPressed: () {
+                        if (radius != null && savename != null)
+                          addGeofence(
+                              savename,
+                              currentPlace.geometry.location.lng,
+                              currentPlace.geometry.location.lat,
+                              radius);
+                        setState(() {});
+                      },
+                      child: Text(
+                        'Add Location',
+                        style: TextStyle(color: Colors.white),
+                      ))),
+              Container(
+                  margin: EdgeInsets.only(right: 10),
+                  child: TextButton(
+                    style: ButtonStyle(
+                        minimumSize: MaterialStateProperty.all(Size(150, 60)),
+                        backgroundColor:
+                            MaterialStateProperty.all(Colors.grey.shade700)),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          new CupertinoPageRoute(
+                              builder: (ctxt) => AddedLocations()));
+                    },
+                    child: Text('Saved Locations',
+                        style: TextStyle(color: Colors.white)),
+                  ))
               //ClickableLocationContainer(),  ],)
             ],
           ),
