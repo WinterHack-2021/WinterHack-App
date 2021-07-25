@@ -53,6 +53,15 @@ class Home extends State<HomeWidget> {
       print('trigged fence');
       print('Action: ${event.action}');
       print('Identifier: ${event.identifier}');
+
+      if (event.action == "ENTER") {
+        Provider.of<GlobalModel>(context, listen: false).isOnTrack = true;
+        print('ENTER ON TRACK');
+      }
+      if (event.action == "EXIT") {
+        Provider.of<GlobalModel>(context, listen: false).isOnTrack = false;
+        print('EXIT ON TRACK');
+      }
     });
 
     bg.BackgroundGeolocation.ready(bg.Config(

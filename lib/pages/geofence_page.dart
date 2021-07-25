@@ -8,6 +8,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/addedlocations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:winterhack_2021/data/shared_storage.dart';
 import '../googlemaps.dart';
 import '../placesapi.dart';
 
@@ -263,5 +264,13 @@ void headlessTask(bg.HeadlessEvent headlessEvent) async {
     bg.GeofenceEvent geofenceEvent = headlessEvent.event;
     print('${geofenceEvent.action}');
     print('${geofenceEvent.identifier}');
+
+    // if (geofenceEvent.action == "ENTER") {
+    //   Provider.of<GlobalModel>(context, listen: false).isOnTrack = true;
+    //   print('ENTER ON TRACK');
+    // }
+    // if (geofenceEvent.action == "EXIT") {
+    //   Provider.of<GlobalModel>(context, listen: false).isOnTrack = false;
+    //   print('EXIT ON TRACK');
   }
 }
