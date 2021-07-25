@@ -1,20 +1,12 @@
 # winterhack_2021
 
-AI Facial Social Media
+onTrack
 
 ## Getting Started
 
-This project is a starting point for a Flutter application.
+Now, more than ever, it’s easy to get distracted in our modern technology-induced high-stimulus environments. This is especially detrimental when we find ourselves swiping Instagram during our ‘productive’ study session at the library. That’s where onTrack comes in.
 
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
-
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
-
+onTrack kills two birds with one stone, offering a neat app blocking service while also specifying the locations you want this to apply. To demo the app, download the app.apk file and run it on your android device. Ensure you give all permissions when prompted. Hope you like it!! :) 
 
 Sample images
 ![image](https://user-images.githubusercontent.com/60831265/126900881-88514559-1da1-49d2-ab9c-848586a04f2b.png)
