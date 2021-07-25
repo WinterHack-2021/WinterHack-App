@@ -15,6 +15,7 @@ class _AddedLocationsState extends State<AddedLocations> {
 
   void getGeofences() async {
     currentgeofences = await bg.BackgroundGeolocation.geofences;
+    setState(() {});
   }
 
   @override
@@ -29,7 +30,10 @@ class _AddedLocationsState extends State<AddedLocations> {
         appBar: AppBar(
           title: Text('Saved Locations'),
         ),
-        body: Column(
-            children: [Container(child: Text(currentgeofences.toString()))]));
+        body: Column(children: [
+          (currentgeofences == null)
+              ? Center(child: CircularProgressIndicator())
+              : Container(child: Text(currentgeofences.toString()))
+        ]));
   }
 }

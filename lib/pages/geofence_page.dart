@@ -209,7 +209,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(left: 0),
                   child: TextButton(
                       style: ButtonStyle(
                           minimumSize: MaterialStateProperty.all(Size(150, 60)),
@@ -229,7 +229,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
                         style: TextStyle(color: Colors.white),
                       ))),
               Container(
-                  margin: EdgeInsets.only(right: 10),
+                  margin: EdgeInsets.only(left: 20),
                   child: TextButton(
                     style: ButtonStyle(
                         minimumSize: MaterialStateProperty.all(Size(150, 60)),
