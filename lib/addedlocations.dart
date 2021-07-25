@@ -1,4 +1,5 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 
 class AddedLocations extends StatefulWidget {
   const AddedLocations({Key? key}) : super(key: key);
@@ -10,6 +11,10 @@ class AddedLocations extends StatefulWidget {
 class _AddedLocationsState extends State<AddedLocations> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+        appBar: AppBar(
+          title: Text('Saved Locations'),
+        ),
+        body: Column(children: [Text('herl')]));
   }
 }
