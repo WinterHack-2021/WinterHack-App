@@ -1,13 +1,12 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
-import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/widgets/selector_card.dart';
 
-import 'data/schema.dart';
+import '../data/schema.dart';
 
 class BlacklistPage extends StatelessWidget {
   @override
