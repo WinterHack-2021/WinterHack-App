@@ -69,14 +69,15 @@ class App extends WithBool {
   }
 }
 
-class Location extends WithBool {
-  int lat, long, radius;
+class SavedLocation extends WithBool {
+  double lat, long, radius;
   String locationName;
 
-  Location(this.lat, this.long, this.radius, this.locationName, bool isEnabled)
+  SavedLocation(
+      this.lat, this.long, this.radius, this.locationName, bool isEnabled)
       : super(isEnabled);
 
-  Location.fromJsonMap(Map<String, dynamic> json)
+  SavedLocation.fromJsonMap(Map<String, dynamic> json)
       : lat = json['lat'],
         long = json['long'],
         radius = json['radius'],
@@ -104,18 +105,21 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
   late Set<T> _backingMap;
   String key;
 
-  StorageMap(List<String> backingList, this.key, T Function(Map<String, dynamic> json) make) {
+  StorageMap(List<String> backingList, this.key,
+      T Function(Map<String, dynamic> json) make) {
     _backingMap = Set();
     for (var x in backingList) {
-      try{
-      Map<String, dynamic> jsonMap = json.decode(x);
-      _backingMap.add(make(jsonMap));}catch(e){
+      try {
+        Map<String, dynamic> jsonMap = json.decode(x);
+        _backingMap.add(make(jsonMap));
+      } catch (e) {
         print("Failed to parse: $x, error: $e");
       }
     }
   }
-  StorageMap.immutableEmpty(this.key){
-    _backingMap=Set.unmodifiable([]);
+
+  StorageMap.immutableEmpty(this.key) {
+    _backingMap = Set.unmodifiable([]);
   }
 
   _saveList() async => (await SharedPreferences.getInstance())
@@ -142,10 +146,12 @@ class StorageMap<T extends WithBool> extends ChangeNotifier {
   }
 
   bool? get(String key) {
+    return getValue(key)?.isEnabled;
+  }
+
+  T? getValue(String key) {
     try {
-      return _backingMap
-          .firstWhere((element) => element.getKey() == key)
-          .isEnabled;
+      return _backingMap.firstWhere((element) => element.getKey() == key);
     } catch (e) {
       return null;
     }

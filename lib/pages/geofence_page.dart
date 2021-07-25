@@ -9,6 +9,7 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/addedlocations.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:winterhack_2021/data/schema.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import '../googlemaps.dart';
 import '../placesapi.dart';
@@ -31,8 +32,8 @@ class _GeoFencePageState extends State<GeoFencePage> {
   String savename;
   Place currentPlace;
 
-  void addGeofence(
-      String geofencename, double long, double lat, double radius) {
+  void addGeofence(String geofencename, double long, double lat, double radius,
+      GlobalModel model) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
@@ -40,8 +41,8 @@ class _GeoFencePageState extends State<GeoFencePage> {
         identifier: '$geofencename',
         latitude: lat,
         longitude: long));
-    print('Radius: $radius');
-    print('Identifier: $geofencename');
+    model.savedLocations
+        .upsert(SavedLocation(lat, long, radius, geofencename, true));
   }
 
   @override
@@ -209,26 +210,32 @@ class _GeoFencePageState extends State<GeoFencePage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Container(
-                  margin: EdgeInsets.only(left: 0),
-                  child: TextButton(
-                      style: ButtonStyle(
-                          minimumSize: MaterialStateProperty.all(Size(150, 60)),
-                          backgroundColor:
-                              MaterialStateProperty.all(Colors.grey.shade700)),
-                      onPressed: () {
-                        if (radius != null && savename != null)
-                          addGeofence(
-                              savename,
-                              currentPlace.geometry.location.lng,
-                              currentPlace.geometry.location.lat,
-                              radius);
-                        setState(() {});
-                      },
-                      child: Text(
-                        'Add Location',
-                        style: TextStyle(color: Colors.white),
-                      ))),
+              Consumer<GlobalModel>(
+                builder: (context, value, child) {
+                  return Container(
+                      margin: EdgeInsets.only(left: 0),
+                      child: TextButton(
+                          style: ButtonStyle(
+                              minimumSize:
+                                  MaterialStateProperty.all(Size(150, 60)),
+                              backgroundColor: MaterialStateProperty.all(
+                                  Colors.grey.shade700)),
+                          onPressed: () {
+                            if (radius != null && savename != null)
+                              addGeofence(
+                                  savename,
+                                  currentPlace.geometry.location.lng,
+                                  currentPlace.geometry.location.lat,
+                                  radius,
+                                  value);
+                            setState(() {});
+                          },
+                          child: Text(
+                            'Add Location',
+                            style: TextStyle(color: Colors.white),
+                          )));
+                },
+              ),
               Container(
                   margin: EdgeInsets.only(left: 20),
                   child: TextButton(

@@ -49,10 +49,11 @@ class _PermissionsDialogState extends State<PermissionsDialog> {
     return FutureBuilder<dynamic>(
         future: platform.invokeMethod("getNeededPermission"),
         builder: (context, snapshot) {
-          print("Asking for permission: ${snapshot.data}");
-          if (snapshot.data != null)
+          if (snapshot.data != null) {
+            print("Asking for permission: ${snapshot.data}");
             Future.delayed(
                 Duration.zero, () => showAlertDialog(context, snapshot.data));
+          }
           return Container();
         });
   }

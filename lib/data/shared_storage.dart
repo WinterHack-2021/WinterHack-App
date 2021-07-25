@@ -15,7 +15,7 @@ const platform = const MethodChannel('winterhack-channel');
 
 class GlobalModel extends ChangeNotifier {
   static GlobalModel _singleton = GlobalModel._();
-  StorageMap<Location>? _savedLocations;
+  StorageMap<SavedLocation>? _savedLocations;
   StorageMap<App>? _disabledApps;
   int _totalTime = -1;
   bool _isOnTrack = false;
@@ -56,9 +56,9 @@ class GlobalModel extends ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _savedLocations = (await _getStringList<Location>(
-            SAVED_LOCATION_KEY, (val) => Location.fromJsonMap(val)))
-        as StorageMap<Location>?;
+    _savedLocations = (await _getStringList<SavedLocation>(
+            SAVED_LOCATION_KEY, (val) => SavedLocation.fromJsonMap(val)))
+        as StorageMap<SavedLocation>?;
     _disabledApps = (await _getStringList<App>(
         DISABLED_APPS_KEY, (val) => App.fromJsonMap(val))) as StorageMap<App>?;
     _totalTime = await _getTotalTime();
@@ -94,7 +94,7 @@ class GlobalModel extends ChangeNotifier {
     notifyListeners();
   }
 
-  StorageMap<Location> get savedLocations => _savedLocations == null
+  StorageMap<SavedLocation> get savedLocations => _savedLocations == null
       ? StorageMap.immutableEmpty(SAVED_LOCATION_KEY)
       : _savedLocations!;
 

@@ -81,9 +81,7 @@ class MainActivity : FlutterActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun openNeededSettings() {
-        val neededPermission = getNeededPermission()
-        if(neededPermission==null)
-            return
+        val neededPermission = getNeededPermission() ?: return
         Log.d(TAG, "Asking for permission: $neededPermission")
         when (neededPermission) {
             NeededSettings.DRAW_OVER_APPS -> {
