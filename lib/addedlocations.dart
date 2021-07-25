@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/widgets/selector_card.dart';
 
+import 'data/schema.dart';
+
 class AddedLocations extends StatefulWidget {
   const AddedLocations({Key? key}) : super(key: key);
 
@@ -22,14 +24,6 @@ class _AddedLocationsState extends State<AddedLocations> {
   }
 
   void removeGeofence(String locationName, GlobalModel model) async {
-    await bg.BackgroundGeolocation.removeGeofence(locationName);
-    var existing = model.savedLocations.getValue(locationName);
-    if (existing != null) {
-      existing.isEnabled = false;
-      model.savedLocations.upsert(existing);
-    }
-  }
-  void addGeofence(String locationName, GlobalModel model) async {
     await bg.BackgroundGeolocation.removeGeofence(locationName);
     var existing = model.savedLocations.getValue(locationName);
     if (existing != null) {

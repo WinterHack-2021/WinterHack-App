@@ -74,6 +74,7 @@ class Home extends State<HomeWidget> {
         bg.BackgroundGeolocation.start();
       }
     });
+    bg.BackgroundGeolocation.start();
   }
 
   @override
@@ -92,29 +93,12 @@ class Home extends State<HomeWidget> {
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        centerTitle: true,
-        elevation: 0,
-        actions: [
-          IconButton(
-            icon: const Icon(Icons.notifications, color: Colors.white),
-            tooltip: 'Notifications',
-            padding: EdgeInsets.only(right: 20),
-            onPressed: () {
-              Navigator.push(
-                context,
-                new MaterialPageRoute(builder: (ctxt) => new Initial()),
-              );
-            },
-          ),
-        ],
-      ),
       body: Consumer<GlobalModel>(
         builder: (context, state, child) {
           Duration duration = Duration(milliseconds: state.totalTime);
           return Column(children: <Widget>[
             PermissionsDialog(),
-            SizedBox(height: 20),
+            SizedBox(height: 90),
             Row(mainAxisAlignment: MainAxisAlignment.center, children: [
               (state.isOnTrack
                   ? AnimatedTextKit(
