@@ -1,15 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:animated_text_kit/animated_text_kit.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:winterhack_2021/clickable_container.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
-import 'package:winterhack_2021/selector_card.dart';
+import 'package:winterhack_2021/widgets/selector_card.dart';
 
 class WelcomeLocation extends StatefulWidget {
   @override

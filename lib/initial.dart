@@ -1,10 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
-import 'package:winterhack_2021/WelcomeApps.dart';
-import 'package:winterhack_2021/WelcomeLocation.dart';
-import 'package:winterhack_2021/main.dart';
-import 'package:winterhack_2021/welcomePage.dart';
+import 'package:winterhack_2021/pages/onboarding/welcome_apps.dart';
+import 'package:winterhack_2021/pages/onboarding/welcome_location.dart';
+import 'package:winterhack_2021/pages/onboarding/welcome_page.dart';
 
 class Initial extends StatefulWidget {
   @override

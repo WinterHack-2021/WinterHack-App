@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:winterhack_2021/blacklistPage.dart';
+import 'package:winterhack_2021/pages/blacklist_page.dart';
 
 class WelcomeApps extends StatelessWidget {
   Widget build(BuildContext context) {
