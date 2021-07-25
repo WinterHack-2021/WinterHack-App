@@ -20,6 +20,7 @@ void main() async {
 
   runApp(OnTrack());
   bg.BackgroundGeolocation.registerHeadlessTask(headlessTask);
+  print('task stared');
 }
 
 class OnTrack extends StatelessWidget {
@@ -53,7 +54,11 @@ class Home extends State<HomeWidget> {
     bg.BackgroundGeolocation.ready(bg.Config(
         enableHeadless: true, stopOnTerminate: false, startOnBoot: true));
 
-    bg.BackgroundGeolocation.start();
+    startgeolocation();
+  }
+
+  void startgeolocation() async {
+    await bg.BackgroundGeolocation.start();
   }
 
   @override
@@ -111,8 +116,7 @@ class Home extends State<HomeWidget> {
                   scale: 1.5,
                   child: CupertinoSwitch(
                     value: state.isOnTrack,
-                    onChanged: (value) =>
-                        state.isOnTrack = value,
+                    onChanged: (value) => state.isOnTrack = value,
                   ))
             ]),
             Expanded(
