@@ -2,6 +2,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
     as bg;
 import 'package:google_maps_flutter/google_maps_flutter.dart';
@@ -11,6 +12,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 import '../googlemaps.dart';
 import '../placesapi.dart';
+
+const platform = const MethodChannel('winterhack-channel');
 
 class GeoFencePage extends StatefulWidget {
   const GeoFencePage({Key key}) : super(key: key);
@@ -265,12 +268,6 @@ void headlessTask(bg.HeadlessEvent headlessEvent) async {
     print('${geofenceEvent.action}');
     print('${geofenceEvent.identifier}');
 
-    // if (geofenceEvent.action == "ENTER") {
-    //   Provider.of<GlobalModel>(context, listen: false).isOnTrack = true;
-    //   print('ENTER ON TRACK');
-    // }
-    // if (geofenceEvent.action == "EXIT") {
-    //   Provider.of<GlobalModel>(context, listen: false).isOnTrack = false;
-    //   print('EXIT ON TRACK');
+    platform.invokeMethod("setEnabled", geofenceEvent.action == "ENTER");
   }
 }
