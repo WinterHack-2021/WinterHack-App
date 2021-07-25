@@ -8,17 +8,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:winterhack_2021/addedlocations.dart';
 import 'package:flutter/cupertino.dart';
-import 'googlemaps.dart';
-import 'placesapi.dart';
+import '../googlemaps.dart';
+import '../placesapi.dart';
 
-class GeoFence extends StatefulWidget {
-  const GeoFence({Key key}) : super(key: key);
+class GeoFencePage extends StatefulWidget {
+  const GeoFencePage({Key key}) : super(key: key);
 
   @override
-  _GeoFenceState createState() => _GeoFenceState();
+  _GeoFencePageState createState() => _GeoFencePageState();
 }
 
-class _GeoFenceState extends State<GeoFence> {
+class _GeoFencePageState extends State<GeoFencePage> {
   Completer<GoogleMapController> mapController = Completer();
   StreamSubscription locationSubscription;
   TextEditingController radiusController = new TextEditingController();

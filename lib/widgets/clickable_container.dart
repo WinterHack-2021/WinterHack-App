@@ -6,9 +6,9 @@ import 'package:provider/provider.dart';
 import 'package:winterhack_2021/data/schema.dart';
 import 'package:winterhack_2021/data/shared_storage.dart';
 
-import 'blacklistPage.dart';
+import '../pages/blacklist_page.dart';
 import 'chips.dart';
-import 'geofencing.dart';
+import '../pages/geofence_page.dart';
 
 class ClickableContainer extends StatelessWidget {
   static const double BORDER_RADIUS = 10;
@@ -86,7 +86,7 @@ class _ClickableLocationContainerState
             title: "Locations",
             onClick: () {
               Navigator.push(context,
-                  new CupertinoPageRoute(builder: (ctxt) => GeoFence()));
+                  new CupertinoPageRoute(builder: (ctxt) => GeoFencePage()));
             }));
   }
 }

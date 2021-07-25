@@ -12,8 +12,8 @@ import 'package:winterhack_2021/data/shared_storage.dart';
 import 'package:winterhack_2021/initial.dart';
 import 'package:winterhack_2021/placesapi.dart';
 
-import 'clickable_container.dart';
-import 'geofencing.dart';
+import 'widgets/clickable_container.dart';
+import 'pages/geofence_page.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
