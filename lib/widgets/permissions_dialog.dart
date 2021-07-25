@@ -3,16 +3,26 @@ import 'package:flutter/services.dart';
 
 const platform = const MethodChannel('winterhack-channel');
 
-class PermissionsDialog extends StatelessWidget {
+class PermissionsDialog extends StatefulWidget {
+  @override
+  _PermissionsDialogState createState() => _PermissionsDialogState();
+}
+
+class _PermissionsDialogState extends State<PermissionsDialog> {
+  bool isOpen = false;
+
   showAlertDialog(BuildContext context, String permission) {
-    // set up the buttons
-    Widget cancelButton = TextButton(
-      child: Text("Cancel"),
-      onPressed: () => Navigator.of(context, rootNavigator: true).pop('dialog'),
-    );
+    if (isOpen) return;
+    var close = () {
+      Navigator.of(context, rootNavigator: true).pop('dialog');
+      setState(() => isOpen = false);
+    };
     Widget continueButton = TextButton(
-      child: Text("Yes"),
-      onPressed: () => platform.invokeMethod("openNeededSettings"),
+      child: Text("Allow Access"),
+      onPressed: () {
+        platform.invokeMethod("openNeededSettings");
+        close();
+      },
     );
 
     // set up the AlertDialog
@@ -20,7 +30,6 @@ class PermissionsDialog extends StatelessWidget {
       title: Text("Enable Permissions"),
       content: Text("Please Enable: $permission"),
       actions: [
-        cancelButton,
         continueButton,
       ],
     );
@@ -29,6 +38,7 @@ class PermissionsDialog extends StatelessWidget {
     showDialog(
       context: context,
       builder: (BuildContext context) {
+        isOpen = true;
         return alert;
       },
     );
@@ -43,7 +53,6 @@ class PermissionsDialog extends StatelessWidget {
           if (snapshot.data != null)
             Future.delayed(
                 Duration.zero, () => showAlertDialog(context, snapshot.data));
-
           return Container();
         });
   }

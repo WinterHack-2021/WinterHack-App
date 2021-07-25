@@ -57,9 +57,8 @@ class GlobalModel extends ChangeNotifier {
     _savedLocations = (await _getStringList<Location>(
             SAVED_LOCATION_KEY, (val) => Location.fromJsonMap(val)))
         as StorageMap<Location>?;
-    _disabledApps =
-        (await _getStringList<App>(DISABLED_APPS_KEY, (val) => App.fromJsonMap(val)))
-            as StorageMap<App>?;
+    _disabledApps = (await _getStringList<App>(
+        DISABLED_APPS_KEY, (val) => App.fromJsonMap(val))) as StorageMap<App>?;
     _totalTime = await _getTotalTime();
     _isOnTrack = await _getIsOnTrack();
     notifyListeners();
@@ -86,10 +85,12 @@ class GlobalModel extends ChangeNotifier {
         value.setBool(ON_TRACK, _isOnTrack).then((value) => notifyListeners()));
     // if recently turned off
     if (!newIsOnTrack) {
-      print(
-          "adding time ${DateTime.now().millisecondsSinceEpoch - _lastOffTime}");
-      _addTotalTime(DateTime.now().millisecondsSinceEpoch - _lastOffTime);
-      _lastOffTime = -1;
+      if (_lastOffTime > 0) {
+        print(
+            "adding time ${DateTime.now().millisecondsSinceEpoch - _lastOffTime}");
+        _addTotalTime(DateTime.now().millisecondsSinceEpoch - _lastOffTime);
+        _lastOffTime = -1;
+      }
     } else
       _lastOffTime = DateTime.now().millisecondsSinceEpoch;
 
