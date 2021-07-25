@@ -52,13 +52,15 @@ class Home extends State<HomeWidget> {
     });
 
     bg.BackgroundGeolocation.ready(bg.Config(
-        enableHeadless: true, stopOnTerminate: false, startOnBoot: true));
-
-    startgeolocation();
-  }
-
-  void startgeolocation() async {
-    await bg.BackgroundGeolocation.start();
+            enableHeadless: true, stopOnTerminate: false, startOnBoot: true))
+        .then((bg.State state) {
+      if (!state.enabled) {
+        ////
+        // 3.  Start the plugin.
+        //
+        bg.BackgroundGeolocation.start();
+      }
+    });
   }
 
   @override
