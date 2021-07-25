@@ -43,6 +43,8 @@ class HomeWidget extends StatefulWidget {
 }
 
 class Home extends State<HomeWidget> {
+  bool firstTime = true;
+
   @override
   void initState() {
     super.initState();
@@ -67,6 +69,17 @@ class Home extends State<HomeWidget> {
 
   @override
   Widget build(BuildContext context) {
+    var model = Provider.of<GlobalModel>(context);
+    if (model.disabledApps.items.isEmpty &&
+        model.savedLocations.items.isEmpty &&
+        !model.loading &&
+        firstTime) {
+      Future.delayed(
+          Duration.zero,
+          () => Navigator.push(context,
+              new MaterialPageRoute(builder: (ctxt) => new Initial())));
+      firstTime = false;
+    }
     var theme = Theme.of(context);
     return Scaffold(
       backgroundColor: Colors.black,

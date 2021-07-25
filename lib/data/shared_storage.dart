@@ -19,6 +19,7 @@ class GlobalModel extends ChangeNotifier {
   StorageMap<App>? _disabledApps;
   int _totalTime = -1;
   bool _isOnTrack = false;
+  bool _loading = true;
 
   // This value should only be above 0 if isOnTrack is currently true
   // The idea is that when isOnTrack is turned false, the duration this var stores
@@ -39,6 +40,7 @@ class GlobalModel extends ChangeNotifier {
       });
       _updateNativeService();
       notifyListeners();
+      _loading = false;
     });
     // Let service know of init values
   }
@@ -70,14 +72,8 @@ class GlobalModel extends ChangeNotifier {
     return _totalTime + timeSinceOff;
   }
 
-  _addTotalTime(int newTime) async {
-    _totalTime += newTime;
-    await (await SharedPreferences.getInstance())
-        .setInt(TOTAL_TIME, _totalTime);
-    notifyListeners();
-  }
-
   bool get isOnTrack => _isOnTrack;
+  bool get loading => _loading;
 
   set isOnTrack(bool newIsOnTrack) {
     _isOnTrack = newIsOnTrack;
@@ -105,6 +101,12 @@ class GlobalModel extends ChangeNotifier {
   StorageMap<App> get disabledApps => _disabledApps == null
       ? StorageMap.immutableEmpty(DISABLED_APPS_KEY)
       : _disabledApps!;
+  _addTotalTime(int newTime) async {
+    _totalTime += newTime;
+    await (await SharedPreferences.getInstance())
+        .setInt(TOTAL_TIME, _totalTime);
+    notifyListeners();
+  }
 }
 
 Future<int> _getTotalTime() async {

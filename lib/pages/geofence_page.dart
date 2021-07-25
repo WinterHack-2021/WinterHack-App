@@ -25,8 +25,10 @@ class _GeoFencePageState extends State<GeoFencePage> {
   TextEditingController locationtextController = new TextEditingController();
   double radius;
   String savename;
+  Place currentPlace;
 
-  void addGeofence(geofencename, long, lat, radius) {
+  void addGeofence(
+      String geofencename, double long, double lat, double radius) {
     bg.BackgroundGeolocation.addGeofence(bg.Geofence(
         notifyOnExit: true,
         notifyOnEntry: true,
@@ -34,12 +36,9 @@ class _GeoFencePageState extends State<GeoFencePage> {
         identifier: '$geofencename',
         latitude: lat,
         longitude: long));
-    print('addded');
     print('Radius: $radius');
     print('Identifier: $geofencename');
   }
-
-  Place currentPlace;
 
   @override
   void initState() {
