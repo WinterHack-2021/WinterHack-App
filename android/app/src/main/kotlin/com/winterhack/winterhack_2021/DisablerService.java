@@ -62,7 +62,7 @@ public class DisablerService extends Service {
                         Handler handler = new Handler(Looper.getMainLooper());
                         handler.post(() -> Toast.makeText(getApplicationContext(),
                                 "You're currently onTrack! To use this app, disable onTrack or change your location",
-                                Toast.LENGTH_LONG).show());
+                                Toast.LENGTH_SHORT).show());
                         Log.d(MainActivity.getTAG(), fg + " Killed!");
 
                     } else {

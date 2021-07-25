@@ -38,6 +38,7 @@ class GlobalModel extends ChangeNotifier {
         notifyListeners();
       });
       _updateNativeService();
+      notifyListeners();
     });
     // Let service know of init values
   }
@@ -53,11 +54,11 @@ class GlobalModel extends ChangeNotifier {
   }
 
   Future<void> _init() async {
-    _savedLocations = (await _getStringList(
+    _savedLocations = (await _getStringList<Location>(
             SAVED_LOCATION_KEY, (val) => Location.fromJsonMap(val)))
         as StorageMap<Location>?;
     _disabledApps =
-        (await _getStringList(DISABLED_APPS_KEY, (val) => App.fromJsonMap(val)))
+        (await _getStringList<App>(DISABLED_APPS_KEY, (val) => App.fromJsonMap(val)))
             as StorageMap<App>?;
     _totalTime = await _getTotalTime();
     _isOnTrack = await _getIsOnTrack();
@@ -119,7 +120,7 @@ Future<StorageMap> _getStringList<T extends WithBool>(
     String key, T Function(Map<String, dynamic> json) make) async {
   final result = (await SharedPreferences.getInstance()).getStringList(key);
   if (result == null) {
-    return StorageMap([], key, make);
+    return StorageMap<T>([], key, make);
   }
   print("Loaded List from Storage " + result.toString());
   return StorageMap<T>(result, key, make);
