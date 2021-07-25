@@ -59,9 +59,11 @@ class MainActivity : FlutterActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getNeededPermission(): NeededSettings? {
-       // println("USAGEEE " + DisablerService.getForegroundProcess(this));
+        // println("USAGEEE " + DisablerService.getForegroundProcess(this));
         if (DisablerService.getForegroundProcess(this) == null) {
             return NeededSettings.USAGE_STATS
+        } else if (!Settings.canDrawOverlays(this)) {
+            return NeededSettings.DRAW_OVER_APPS
         } else if (ActivityCompat.checkSelfPermission(
                 this,
                 android.Manifest.permission.ACCESS_FINE_LOCATION
@@ -74,8 +76,6 @@ class MainActivity : FlutterActivity() {
             ) != PackageManager.PERMISSION_GRANTED
         ) {
             return NeededSettings.PHYSICAL_ACTIVITY
-        } else if (!Settings.canDrawOverlays(this)) {
-            return NeededSettings.DRAW_OVER_APPS
         }
         return null
     }
