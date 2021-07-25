@@ -34,6 +34,10 @@ class PlaceBloc with ChangeNotifier {
     notifyListeners();
   }
 
+  clearSearches() {
+    searchResults = null;
+  }
+
   @override
   dispose() {
     super.dispose();
