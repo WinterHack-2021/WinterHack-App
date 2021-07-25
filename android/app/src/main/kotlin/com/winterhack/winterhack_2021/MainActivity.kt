@@ -59,7 +59,6 @@ class MainActivity : FlutterActivity() {
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun getNeededPermission(): NeededSettings? {
-        // println("USAGEEE " + DisablerService.getForegroundProcess(this));
         if (DisablerService.getForegroundProcess(this) == null) {
             return NeededSettings.USAGE_STATS
         } else if (!Settings.canDrawOverlays(this)) {
@@ -82,7 +81,9 @@ class MainActivity : FlutterActivity() {
 
     @RequiresApi(Build.VERSION_CODES.Q)
     private fun openNeededSettings() {
-        val neededPermission = getNeededPermission() ?: return
+        val neededPermission = getNeededPermission()
+        if(neededPermission==null)
+            return
         Log.d(TAG, "Asking for permission: $neededPermission")
         when (neededPermission) {
             NeededSettings.DRAW_OVER_APPS -> {

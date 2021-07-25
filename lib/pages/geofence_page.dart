@@ -70,7 +70,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
     ]);
   }
 
-  dynamic currentgeofences;
+  var currentgeofences;
 
   void getGeofences() async {
     currentgeofences = await bg.BackgroundGeolocation.geofences;
