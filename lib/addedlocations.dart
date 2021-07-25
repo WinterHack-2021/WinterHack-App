@@ -11,7 +11,7 @@ class AddedLocations extends StatefulWidget {
 }
 
 class _AddedLocationsState extends State<AddedLocations> {
-  dynamic currentgeofences;
+  var currentgeofences;
 
   void getGeofences() async {
     currentgeofences = await bg.BackgroundGeolocation.geofences;

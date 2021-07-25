@@ -101,7 +101,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
         body: Container(
             child: Column(children: [
           Container(
-              margin: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 10),
+              margin: EdgeInsets.only(left: 10, right: 10, top: 15, bottom: 0),
               child: TextField(
                 onTap: () {
                   show = true;
@@ -115,60 +115,27 @@ class _GeoFencePageState extends State<GeoFencePage> {
                     suffixIcon: Icon(Icons.search)),
               )),
           Stack(children: [
-            Column(children: [
-              Container(
-                  height: 45,
-                  margin:
-                      EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 8),
-                  child: TextField(
-                    controller: radiusController,
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: 'Radius (m)'),
-                    onChanged: (t) {
-                      radius = double.parse(radiusController.text);
-                      setCircle(currentPlace.geometry.location.lat,
-                          currentPlace.geometry.location.lng, radius);
-                      setState(() {});
-                    },
-                  )),
-              Container(
-                  height: 45,
-                  margin:
-                      EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 8),
-                  child: TextField(
-                    onChanged: (value) {
-                      savename = value;
-                    },
-                    decoration: InputDecoration(
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(10)),
-                        labelText: 'Save Name: This will appear in the app'),
-                  )),
-              (placeBloc.currentLocation == null)
-                  ? Center(child: CircularProgressIndicator())
-                  : Container(
-                      height: 400,
-                      margin: EdgeInsets.only(
-                          top: 10, left: 10, right: 10, bottom: 20),
-                      alignment: Alignment.center,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(10),
-                          child: GoogleMap(
-                              circles: circles,
-                              myLocationEnabled: true,
-                              myLocationButtonEnabled: true,
-                              onMapCreated: (GoogleMapController controller) {
-                                mapController.complete(controller);
-                              },
-                              initialCameraPosition: CameraPosition(
-                                target: LatLng(
-                                    placeBloc.currentLocation.latitude,
-                                    placeBloc.currentLocation.longitude),
-                                zoom: 11.0,
-                              )))),
-            ]),
+            (placeBloc.currentLocation == null)
+                ? Center(child: CircularProgressIndicator())
+                : Container(
+                    height: 300,
+                    margin: EdgeInsets.only(
+                        top: 20, left: 10, right: 10, bottom: 10),
+                    alignment: Alignment.center,
+                    child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: GoogleMap(
+                            circles: circles,
+                            myLocationEnabled: true,
+                            myLocationButtonEnabled: true,
+                            onMapCreated: (GoogleMapController controller) {
+                              mapController.complete(controller);
+                            },
+                            initialCameraPosition: CameraPosition(
+                              target: LatLng(placeBloc.currentLocation.latitude,
+                                  placeBloc.currentLocation.longitude),
+                              zoom: 11.0,
+                            )))),
             if (placeBloc.searchResults != null &&
                 placeBloc.searchResults.length != 0 &&
                 show == true)
@@ -177,7 +144,7 @@ class _GeoFencePageState extends State<GeoFencePage> {
                 margin: EdgeInsets.only(left: 10, right: 10, top: 0),
                 width: double.infinity,
                 decoration: BoxDecoration(
-                    color: Colors.black.withOpacity(.6),
+                    color: Colors.black.withOpacity(0.9),
                     backgroundBlendMode: BlendMode.darken,
                     borderRadius: BorderRadius.circular(10)),
               ),
@@ -204,6 +171,37 @@ class _GeoFencePageState extends State<GeoFencePage> {
                       );
                     },
                   )),
+          ]),
+          Column(children: [
+            Container(
+                height: 45,
+                margin: EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 8),
+                child: TextField(
+                  onChanged: (value) {
+                    savename = value;
+                  },
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      labelText: 'Save Name: This will appear in the app'),
+                )),
+            Container(
+                height: 45,
+                margin:
+                    EdgeInsets.only(right: 10, left: 10, top: 8, bottom: 20),
+                child: TextField(
+                  controller: radiusController,
+                  decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(10)),
+                      labelText: 'Radius (m)'),
+                  onChanged: (t) {
+                    radius = double.parse(radiusController.text);
+                    setCircle(currentPlace.geometry.location.lat,
+                        currentPlace.geometry.location.lng, radius);
+                    setState(() {});
+                  },
+                )),
           ]),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
